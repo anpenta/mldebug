@@ -1,6 +1,7 @@
 # mldebug
 
-![CI](https://github.com/anpenta/mldebug/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/anpenta/mldebug/actions/workflows/ci.yml/badge.svg)](https://github.com/anpenta/mldebug/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/anpenta/mldebug/graph/badge.svg?token=XPN447G4S9)](https://codecov.io/gh/anpenta/mldebug)
 
 mldebug is a lightweight Python toolkit for debugging machine learning systems in production.
 
