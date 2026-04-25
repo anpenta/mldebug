@@ -17,43 +17,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-          restore-keys: |
-            uv-${{ runner.os }}-
-      - name: Setup direnv
-        run: |
-          curl -sfL https://direnv.net/install.sh | bash
+      - uses: actions/checkout@v6
       - name: Run linting
         run: |
-          eval "$(direnv hook bash)"
-          direnv allow
-          eval "$(direnv export bash)"
-          uv sync --group dev
+          source .envrc
           poe lint-ci-all
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-          restore-keys: |
-            uv-${{ runner.os }}-
-      - name: Setup direnv
-        run: |
-          curl -sfL https://direnv.net/install.sh | bash
+      - uses: actions/checkout@v6
       - name: Run tests
         run: |
-          eval "$(direnv hook bash)"
-          direnv allow
-          eval "$(direnv export bash)"
-          uv sync --group dev
+          source .envrc
           poe test-all
       - name: Upload coverage
         uses: codecov/codecov-action@v5
@@ -67,31 +43,20 @@ jobs:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-          restore-keys: |
-            uv-${{ runner.os }}-
-      - name: Setup direnv
+      - uses: actions/checkout@v6
+      - name: Build package and docs
         run: |
-          curl -sfL https://direnv.net/install.sh | bash
-      - name: Build package
-        run: |
-          eval "$(direnv hook bash)"
-          direnv allow
-          eval "$(direnv export bash)"
+          source .envrc
+          pdoc src/* -d numpy -o ./docs --no-show-source
           uv sync --no-dev --frozen
           uv build --out-dir ./dist
-          pdoc src/* -d numpy -o ./docs --no-show-source
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
       - name: Upload docs artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs
           path: docs/
@@ -101,9 +66,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Download docs
-        uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - name: Download docs artifacts
+        uses: actions/download-artifact@v8
         with:
           name: docs
           path: docs/
@@ -118,20 +83,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Download dist
-        uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - name: Download package artifacts
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
-      - name: Setup direnv
-        run: |
-          curl -sfL https://direnv.net/install.sh | bash
       - name: Publish to PyPI
         run: |
-          eval "$(direnv hook bash)"
-          direnv allow
-          eval "$(direnv export bash)"
+          source .envrc
           uv publish dist/*.whl
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
