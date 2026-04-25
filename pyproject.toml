@@ -42,8 +42,8 @@ dev = [
   "pytest-cov>=7.1.0",
   "ruff>=0.15.7",
   "pdoc>=16.0.0",
-  "tox-uv>=1.33.4",
   "tox>=4.50.3",
+  "tox-uv-bare>=1.35.1",
 ]
 
 [build-system]
