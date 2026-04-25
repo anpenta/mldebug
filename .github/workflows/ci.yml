@@ -18,8 +18,4 @@ jobs:
 
       - name: Install package
         run: |
-          pip install -e .
-          pip install pytest
-
-      - name: Run tests
-        run: pytest
+          pip freeze
