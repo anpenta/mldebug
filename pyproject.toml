@@ -1,0 +1,123 @@
+[project]
+name = "mldebug"
+description = "mldebug is a lightweight Python toolkit for debugging machine learning systems in production."
+authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.noreply.github.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["machine-learning", "debugging", "production", "ml", "monitoring"]
+dynamic = ["version"]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+dependencies = [
+]
+
+[project.urls]
+Homepage = "https://github.com/anpenta/mldebug"
+Repository = "https://github.com/anpenta/mldebug"
+Documentation = "https://anpenta.github.io/mldebug"
+Issues = "https://github.com/anpenta/mldebug/issues"
+
+[dependency-groups]
+dev = [
+  "pyright[nodejs]>=1.1.408",
+  "poethepoet>=0.42.1",
+  "pytest>=9.0.2",
+  "pytest-cov>=7.1.0",
+  "ruff>=0.15.7",
+  "pdoc>=16.0.0",
+  "tox-uv>=1.33.4",
+  "tox>=4.50.3",
+]
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0" # Used when no git-based version can be resolved.
+
+[tool.poe]
+default_array_item_task_type = "cmd"
+executor.type = "simple"
+
+[tool.poe.tasks]
+
+test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5"
+test-all.sequence = [
+  # We combine the coverage from all environment runs to provide a unified report.
+  "coverage erase",
+  "tox run -- poe test --cov-append"
+]
+
+lint-ci.sequence = [
+  "ruff format --diff",
+  "ruff check --no-fix",
+  "pyright src",
+  "uv lock --check"
+]
+lint-ci.ignore_fail = "return_non_zero" # Ensures all lint checks run even if one fails.
+lint-ci-all = "tox run -- poe lint-ci"
+
+lint = [
+  "ruff format",
+  "ruff check --fix",
+  "pyright src",
+  "uv lock --check"
+]
+
+[tool.tox]
+envlist = ["py310", "py311", "py312", "py313", "py314"]
+requires = ["tox>=4.0"]
+skip_missing_interpreters = false
+
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+package = "uv"
+dependency_groups = ["dev"]
+# Allows forwarding commands through tox for reusable task execution.
+commands = [[ { replace = "posargs", extend = true } ]]
+
+[tool.ruff]
+line-length = 120
+lint.select = ["ALL"]
+lint.ignore = [
+  "COM812",
+  "TRY003",
+  "D203",
+  "D211",
+  "D213",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "D100",
+  "D103",
+  "D104",
+  "ANN001",
+  "ANN201",
+  "S101",
+]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+reportMissingImports = false

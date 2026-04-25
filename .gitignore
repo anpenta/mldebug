@@ -1,0 +1,78 @@
+# =========================
+# Python virtual environments
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Bytecode / caches
+# =========================
+**/*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# =========================
+# IDEs
+# =========================
+.idea/
+!.idea/runConfigurations/
+.vscode/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Ruff / lint caches
+# =========================
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.pytype/
+
+# =========================
+# Build artifacts
+# =========================
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+
+# =========================
+# Testing / coverage
+# =========================
+.pytest_cache/
+.coverage*
+coverage.xml
+htmlcov/
+
+# =========================
+# Documentation builds
+# =========================
+docs/
+site/
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+!.env.example
+!.envrc
+
+# =========================
+# Local tooling / system files
+# =========================
+.local/
+.tox/
+.mypy_cache/
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db
