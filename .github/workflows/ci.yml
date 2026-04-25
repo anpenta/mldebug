@@ -82,6 +82,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
+    environment: pypi 
     permissions:
       id-token: write
       contents: read
