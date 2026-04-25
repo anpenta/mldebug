@@ -15,4 +15,5 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install pytest
+      - name: Install package
+        run: pip freeze
