@@ -69,14 +69,14 @@ test-all.sequence = [
   "tox run -- poe test --cov-append"
 ]
 
-lint-ci.sequence = [
+lint-check.sequence = [
   "ruff format --diff",
   "ruff check --no-fix",
   "pyright src",
   "uv lock --check"
 ]
-lint-ci.ignore_fail = "return_non_zero" # Ensures all lint checks run even if one fails.
-lint-ci-all = "tox run -- poe lint-ci"
+lint-check.ignore_fail = "return_non_zero" # Ensures all lint checks run even if one fails.
+lint-check-all = "tox run -- poe lint-check"
 
 lint = [
   "ruff format",

@@ -71,11 +71,20 @@ poe test
 poe lint
 ```
 
+### Check linting
+
+```bash
+poe lint-check
+```
+
 ### Run full CI parity checks
 
 ```bash
 poe test-all
-poe lint-ci-all
+```
+
+```bash
+poe lint-check-all
 ```
 
 ### CI/CD

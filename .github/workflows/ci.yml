@@ -21,7 +21,7 @@ jobs:
       - name: Run linting
         run: |
           source .envrc
-          poe lint-ci-all
+          poe lint-check-all
 
   test:
     runs-on: ubuntu-latest
