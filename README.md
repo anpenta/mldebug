@@ -33,11 +33,11 @@ pip install mldebug
 
 ## Example Usage
 
-See [tests/test_public_api.py](tests/test_public_api.py) for real usage examples.
+See [https://github.com/anpenta/mldebug/blob/main/tests/test_public_api.py](https://github.com/anpenta/mldebug/blob/main/tests/test_public_api.py) for real usage examples.
 
 ## Documentation
 
-See [github pages](https://anpenta.github.io/mldebug).
+See [https://anpenta.github.io/mldebug](https://anpenta.github.io/mldebug).
 
 ## Development Setup
 
@@ -91,7 +91,7 @@ poe lint-check-all
 
 CI runs multi-Python version testing and linting. All pull requests must pass the checks. Merging is blocked unless all checks pass.
 
-See [.github/workflows/ci.yml](.github/workflows/ci.yml) for details.
+See [https://github.com/anpenta/mldebug/blob/main/.github/workflows/ci.yml](https://github.com/anpenta/mldebug/blob/main/.github/workflows/ci.yml) for details.
 
 ## Contributing
 
@@ -107,4 +107,4 @@ Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/
 
 ## License
 
-See [LICENSE](LICENSE).
+See [LICENSE](https://github.com/anpenta/mldebug/blob/main/LICENSE).
