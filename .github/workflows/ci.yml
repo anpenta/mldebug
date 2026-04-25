@@ -27,13 +27,13 @@ jobs:
       - name: Setup direnv
         run: |
           curl -sfL https://direnv.net/install.sh | bash
-      - name: Load environment
+      - name: Run linting
         run: |
           eval "$(direnv hook bash)"
           direnv allow
           eval "$(direnv export bash)"
-      - name: Run linting
-        run: poe lint-ci-all
+          uv sync --group dev
+          poe lint-ci-all
 
   test:
     runs-on: ubuntu-latest
@@ -48,13 +48,13 @@ jobs:
       - name: Setup direnv
         run: |
           curl -sfL https://direnv.net/install.sh | bash
-      - name: Load environment
+      - name: Run tests
         run: |
           eval "$(direnv hook bash)"
           direnv allow
           eval "$(direnv export bash)"
-      - name: Run tests
-        run: poe test-all
+          uv sync --group dev
+          poe test-all
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
@@ -76,15 +76,14 @@ jobs:
       - name: Setup direnv
         run: |
           curl -sfL https://direnv.net/install.sh | bash
-      - name: Load environment
+      - name: Build package
         run: |
           eval "$(direnv hook bash)"
           direnv allow
           eval "$(direnv export bash)"
-      - name: Build package
-        run: uv build --out-dir ./dist
-      - name: Generate docs
-        run: pdoc src/* -d numpy -o ./docs --no-show-source
+          uv sync --group dev
+          uv build --out-dir ./dist
+          pdoc src/* -d numpy -o ./docs --no-show-source
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
