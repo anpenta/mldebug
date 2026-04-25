@@ -82,7 +82,7 @@ jobs:
           eval "$(direnv hook bash)"
           direnv allow
           eval "$(direnv export bash)"
-          uv sync --group dev
+          uv sync --no-dev --frozen
           uv build --out-dir ./dist
           pdoc src/* -d numpy -o ./docs --no-show-source
       - name: Upload build artifacts
@@ -124,8 +124,14 @@ jobs:
         with:
           name: dist
           path: dist/
+      - name: Setup direnv
+        run: |
+          curl -sfL https://direnv.net/install.sh | bash
       - name: Publish to PyPI
         run: |
+          eval "$(direnv hook bash)"
+          direnv allow
+          eval "$(direnv export bash)"
           uv publish dist/*.whl
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
