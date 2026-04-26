@@ -1,10 +1,10 @@
 from mldebug import detect_drift
-from tests.fixtures.data import normal_data, shifted_normal_data
+from tests.fixtures.data import make_shifted_normal_data, normal_data
 
 
 def test_detect_drift_runs():
     ref = normal_data()
-    cur = shifted_normal_data()
+    cur = make_shifted_normal_data()
 
     report = detect_drift(ref, cur)
 
@@ -14,7 +14,7 @@ def test_detect_drift_runs():
 
 def test_detect_drift_default_behavior():
     ref = normal_data()
-    cur = shifted_normal_data()
+    cur = make_shifted_normal_data()
 
     report = detect_drift(ref, cur)
 
