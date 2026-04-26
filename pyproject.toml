@@ -103,9 +103,7 @@ line-length = 120
 lint.select = ["ALL"]
 lint.ignore = [
   "COM812",
-  "TRY003",
   "D203",
-  "D211",
   "D213",
 ]
 
