@@ -27,6 +27,7 @@ classifiers = [
 
 dependencies = [
     "numpy>=2.2.6",
+    "scipy>=1.15.3",
 ]
 
 [project.urls]
