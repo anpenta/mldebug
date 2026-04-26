@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from mldebug.checks.base import BaseCheck
 from mldebug.checks.data_quality.missing_values import MissingValueCheck
-from mldebug.checks.drift.ks_test import KSTestCheck
+from mldebug.checks.drift.detector import DriftDetector
+from mldebug.checks.drift.ks import KSTestCheck
 from mldebug.checks.drift.psi import PSIDriftCheck
 from mldebug.core.report import Report
-from mldebug.drift.detector import DriftDetector
 
 
 def default_checks() -> list[BaseCheck]:

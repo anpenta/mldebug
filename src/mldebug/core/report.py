@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import dict, list
 
 from .issue import Issue, Severity
 
