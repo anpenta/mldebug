@@ -116,6 +116,7 @@ lint.ignore = [
   "ANN001",
   "ANN201",
   "S101",
+  "PLR2004",
 ]
 
 [tool.pyright]

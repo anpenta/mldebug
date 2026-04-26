@@ -1,6 +1,16 @@
-from __future__ import annotations
+"""Core reporting object for ML debugging results.
+
+The Report class aggregates issues detected during a debugging run, such as data drift, missing values,
+or distribution anomalies.
+
+It provides a structured view of all detected issues, along with utility methods for summarization and
+serialization for logging, debugging, or downstream systems.
+
+This is the primary output artifact of mldebug pipelines.
+"""
 
 from dataclasses import dataclass
+from typing import Any
 
 from .issue import Issue, Severity
 
@@ -24,23 +34,7 @@ class Report:
 
         return counts
 
-    def filter(
-        self,
-        severity: Severity | None = None,
-        feature: str | None = None,
-    ) -> Report:
-        """Returns a filtered view of the report."""
-        filtered = self.issues
-
-        if severity is not None:
-            filtered = [i for i in filtered if i.severity == severity]
-
-        if feature is not None:
-            filtered = [i for i in filtered if i.feature == feature]
-
-        return Report(filtered)
-
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize report for logging / APIs."""
         return {
             "issues": [
