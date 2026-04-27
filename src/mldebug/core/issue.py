@@ -1,10 +1,30 @@
-from __future__ import annotations
+"""Core abstractions for representing issues detected in ML validation and monitoring.
+
+This module defines the standard output format used across all checks in the library. Each check
+produces one or more `Issue` objects describing detected problems such as data drift, missing values,
+or schema inconsistencies.
+"""
 
 from dataclasses import dataclass
 from enum import Enum
 
 
 class Severity(Enum):
+    """Importance level of a detected issue.
+
+    Levels
+    ------
+    INFO
+        Informational issue with no immediate impact.
+
+    Warning:
+        Potential problem that should be reviewed.
+
+    CRITICAL
+        Serious issue likely to affect model performance or reliability.
+
+    """
+
     INFO = "info"
     WARNING = "warning"
     CRITICAL = "critical"
@@ -12,9 +32,34 @@ class Severity(Enum):
 
 @dataclass(frozen=True, slots=True)
 class Issue:
-    """Core unit of any detected ML problem.
+    """Represents a detected issue from a validation or monitoring check.
 
-    This is the atomic output of all checks.
+    This is the atomic output of all checks and is intended to be consumed by downstream reporting,
+    alerting, or debugging components.
+
+    Parameters
+    ----------
+    name : str
+        Identifier of the issue type (e.g., "feature_drift", "missing_values").
+
+    metric : str
+        Name of the metric used to detect the issue (e.g., "ks", "psi").
+
+    severity : Severity
+        Importance level of the issue.
+
+    message : str
+        Human-readable explanation of the issue.
+
+    feature : str | None, optional
+        Feature associated with the issue. None for global issues.
+
+    value : float | None, optional
+        Observed metric value that triggered the issue.
+
+    threshold : float | None, optional
+        Threshold used for comparison. Interpretation depends on the metric.
+
     """
 
     name: str
