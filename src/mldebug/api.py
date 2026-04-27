@@ -1,73 +1,85 @@
-from __future__ import annotations
+from typing import Any, Literal
 
-from mldebug.checks.base import BaseCheck
-from mldebug.checks.data_quality.missing_values import MissingValueCheck
-from mldebug.checks.drift.detector import DriftDetector
-from mldebug.checks.drift.ks import KSTestCheck
-from mldebug.checks.drift.psi import PSIDriftCheck
-from mldebug.core.report import Report
+from numpy.typing import NDArray
 
-
-def default_checks() -> list[BaseCheck]:
-    """Default ML debugging configuration for v1.
-
-    Designed to cover:
-    - distribution shift (PSI)
-    - statistical shift (KS test)
-    - data quality degradation (missing values)
-    """
-    return [
-        PSIDriftCheck(threshold=0.2),
-        KSTestCheck(alpha=0.05),
-        MissingValueCheck(threshold=0.1),
-    ]
+from .checks import run_drift_check, run_missing_values_check
+from .core.issue import Issue, Severity
+from .core.report import Report
 
 
-def detect_drift(
-    reference,
-    current,
-    checks: list[BaseCheck] | None = None,
+def run_checks(
+    reference: dict[str, NDArray[Any]],
+    current: dict[str, NDArray[Any]],
+    schema: dict[str, Literal["numeric", "categorical"]],
 ) -> Report:
-    """Run ML drift detection between reference and current datasets.
+    """Run all validation checks on input data.
 
-    This is the main entry point for mldebug v1.
+    This is the main public entrypoint of the library. It executes a suite of checks (e.g.,
+    missing values, data drift) on the provided datasets and returns a structured report of
+    detected issues.
 
     Parameters
     ----------
-    reference :
-        Baseline dataset (training / historical data)
-    current :
-        New dataset (production / inference data)
-    checks :
-        Optional custom list of checks. If None, uses defaults.
+    reference : dict[str, NDArray[Any]]
+        Reference dataset keyed by feature name (e.g., training dataset).
+
+    current : dict[str, NDArray[Any]]
+        Current dataset keyed by feature name (e.g., production dataset).
+
+    schema: dict[str, Literal["numeric", "categorical"]],
+        Feature schema mapping feature name to type.
 
     Returns
     -------
     Report
-        Aggregated drift report with all detected issues.
+        Aggregated report containing all detected issues.
 
     """
-    detector = DriftDetector(checks=checks or default_checks())
+    issues: list[Issue] = []
 
-    return detector.run(reference, current)
+    for feature, ftype in schema.items():
+        ref = reference.get(feature)
+        cur = current.get(feature)
 
+        if ref is None:
+            issues.append(
+                Issue(
+                    name="missing_feature_reference",
+                    metric="schema",
+                    severity=Severity.CRITICAL,
+                    message=f"{feature} missing in reference data",
+                    feature=feature,
+                )
+            )
 
-def run_checks(
-    reference,
-    current,
-    checks: list[BaseCheck],
-) -> Report:
-    """Run a custom set of checks explicitly.
+        if cur is None:
+            issues.append(
+                Issue(
+                    name="missing_feature_current",
+                    metric="schema",
+                    severity=Severity.CRITICAL,
+                    message=f"{feature} missing in current data",
+                    feature=feature,
+                )
+            )
 
-    This bypasses default configuration.
-    """
-    detector = DriftDetector(checks=checks)
-    return detector.run(reference, current)
+        if ref is not None and cur is not None:
+            issues.extend(
+                run_missing_values_check(
+                    feature=feature,
+                    reference=ref,
+                    current=cur,
+                    feature_type=ftype,
+                )
+            )
 
+            issues.extend(
+                run_drift_check(
+                    feature=feature,
+                    reference=ref,
+                    current=cur,
+                    feature_type=ftype,
+                )
+            )
 
-def generate_report(issues) -> Report:
-    """Build a Report object from raw issues.
-
-    Useful for testing or custom pipelines.
-    """
-    return Report(issues)
+    return Report(issues=issues)

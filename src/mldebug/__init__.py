@@ -1,29 +1,31 @@
-"""mldebug v1
+"""mldebug: Lightweight ML debugging toolkit for detecting issues in tabular ML data.
 
-Lightweight ML debugging toolkit for:
+The library runs a suite of statistical and data quality checks on a reference and current dataset,
+producing structured reports of detected issues.
+
+Core capabilities include:
 - data drift detection
-- data quality checks
-- statistical monitoring
+- missing value detection
+- schema consistency checks
+
+Outputs are standardized as `Issue` objects aggregated into a `Report`.
+
+Notes
+-----
+- Designed for batch validation of tabular datasets.
+- Operates on dictionary-of-arrays inputs (no pandas dependency).
+
 """
 
-from mldebug.api import (
-    detect_drift,
-    generate_report,
-    run_checks,
-)
-from mldebug.checks.base import BaseCheck
+from mldebug.api import run_checks
 from mldebug.core.issue import Issue, Severity
 from mldebug.core.report import Report
 
 __all__ = [
-    # main API
-    "detect_drift",
+    # Main API.
     "run_checks",
-    "generate_report",
-    # core types
+    # Core types.
     "Issue",
     "Report",
     "Severity",
-    # extension point
-    "BaseCheck",
 ]
