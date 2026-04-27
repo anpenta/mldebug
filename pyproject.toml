@@ -100,7 +100,7 @@ dependency_groups = ["dev"]
 commands = [[ { replace = "posargs", extend = true } ]]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 lint.select = ["ALL"]
 lint.ignore = [
   "COM812",
