@@ -46,9 +46,9 @@ def run_missing_value_check(
     if delta > threshold:
         return Issue(
             name="missing_values",
-            metric="missing_delta",
+            metric="missing_rate_change",
             severity=Severity.WARNING,
-            message=f"{feature}: missing values increased by {delta:.4f}",
+            message=f"{feature}: missing rate drift detected ({delta:.4f})",
             feature=feature,
             value=float(delta),
             threshold=threshold,
