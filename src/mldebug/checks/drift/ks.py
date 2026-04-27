@@ -1,28 +1,58 @@
+"""Kolmogorov-Smirnov (KS) drift check.
+
+Detects distribution shift between reference and current data for a single numeric feature using
+the two-sample KS test.
+"""
+
+import numpy as np
+from numpy.typing import NDArray
 from scipy.stats import ks_2samp
 
-from mldebug.checks.base import BaseCheck
 from mldebug.core.issue import Issue, Severity
 
 
-class KSTestCheck(BaseCheck):
-    """Kolmogorov-Smirnov test for distribution shift."""
+def run_ks_test_check(
+    feature: str,
+    reference: NDArray[np.floating],
+    current: NDArray[np.floating],
+    alpha: float = 0.05,
+) -> Issue | None:
+    """Detect distribution shift using the Kolmogorov-Smirnov test.
 
-    name = "ks_test"
+    The KS test compares the empirical distributions of reference and current
+    data for a given feature.
 
-    def __init__(self, alpha: float = 0.05):
-        self.alpha = alpha
+    Parameters
+    ----------
+    feature : str
+        Name of the feature being checked.
 
-    def run(self, reference, current):
-        stat, p_value = ks_2samp(reference, current)
+    reference : NDArray[np.floating]
+        Reference (baseline) data.
 
-        if p_value < self.alpha:
-            return Issue(
-                name=self.name,
-                metric="ks_pvalue",
-                severity=Severity.WARNING,
-                message=f"KS test rejected null hypothesis (p={p_value:.6f})",
-                value=p_value,
-                threshold=self.alpha,
-            )
+    current : NDArray[np.floating]
+        Current data to evaluate.
 
-        return None
+    alpha : float, optional
+        Significance level for rejecting the null hypothesis.
+
+    Returns
+    -------
+    Issue | None
+        Issue if distribution shift is detected, otherwise None.
+
+    """
+    p_value = ks_2samp(reference, current).pvalue
+
+    if p_value < alpha:
+        return Issue(
+            name="ks_test",
+            metric="distribution_shift_score",
+            severity=Severity.WARNING,
+            message=f"{feature}: distribution shift detected (p={p_value:.6f})",
+            feature=feature,
+            value=float(p_value),
+            threshold=alpha,
+        )
+
+    return None
