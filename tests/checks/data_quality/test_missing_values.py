@@ -1,14 +1,54 @@
-from mldebug.checks.data_quality.missing_values import MissingValueCheck
+from mldebug.checks.data_quality.missing_values import run_missing_value_check
 from tests.fixtures.data import generate_normal_data, inject_missing_values
 
 
 def test_missing_values_detects_increase():
+    feature = "feature_1"
+
     ref = inject_missing_values(generate_normal_data(), rate=0.01)
     cur = inject_missing_values(generate_normal_data(), rate=0.2)
 
-    check = MissingValueCheck(threshold=0.05)
-
-    issue = check.run(ref, cur)
+    issue = run_missing_value_check(
+        feature=feature,
+        reference=ref,
+        current=cur,
+        threshold=0.05,
+    )
 
     assert issue is not None
     assert issue.metric == "missing_delta"
+    assert issue.feature == feature
+    assert issue.value is not None
+    assert issue.value > 0
+
+
+def test_missing_values_no_detection_when_stable():
+    feature = "feature_1"
+
+    ref = inject_missing_values(generate_normal_data(), rate=0.05)
+    cur = inject_missing_values(generate_normal_data(), rate=0.05)
+
+    issue = run_missing_value_check(
+        feature=feature,
+        reference=ref,
+        current=cur,
+        threshold=0.05,
+    )
+
+    assert issue is None
+
+
+def test_missing_values_no_detection_when_decrease():
+    feature = "feature_1"
+
+    ref = inject_missing_values(generate_normal_data(), rate=0.25)
+    cur = inject_missing_values(generate_normal_data(), rate=0.05)
+
+    issue = run_missing_value_check(
+        feature=feature,
+        reference=ref,
+        current=cur,
+        threshold=0.05,
+    )
+
+    assert issue is None
