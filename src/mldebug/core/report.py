@@ -1,12 +1,11 @@
-"""Core reporting object for ML debugging results.
+"""Reporting utilities for ML debugging results.
 
-The Report class aggregates issues detected during a debugging run, such as data drift, missing values,
-or distribution anomalies.
+This module defines the `Report` class, which aggregates issues detected during a debugging or validation
+run (e.g., data drift, missing values, distribution anomalies).
 
-It provides a structured view of all detected issues, along with utility methods for summarization and
-serialization for logging, debugging, or downstream systems.
+The report provides a structured representation of all detected issues, along with utilities for summarization
+and serialization.
 
-This is the primary output artifact of mldebug pipelines.
 """
 
 from dataclasses import dataclass
@@ -17,12 +16,26 @@ from .issue import Issue, Severity
 
 @dataclass(frozen=True, slots=True)
 class Report:
-    """Aggregated output of a full ML debugging run."""
+    """Aggregated output of a full ML debugging run.
+
+    Parameters
+    ----------
+    issues : list of Issue
+        Collection of detected issues.
+
+    """
 
     issues: list[Issue]
 
     def summary(self) -> dict[str, int]:
-        """Count issues by severity."""
+        """Count issues grouped by severity.
+
+        Returns
+        -------
+        dict[str, int]
+            Mapping from severity level ("info", "warning", "critical") to the number of issues.
+
+        """
         counts = {
             Severity.INFO.value: 0,
             Severity.WARNING.value: 0,
