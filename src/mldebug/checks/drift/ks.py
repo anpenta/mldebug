@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from scipy.stats import ks_2samp
 
 from mldebug.checks.base import BaseCheck

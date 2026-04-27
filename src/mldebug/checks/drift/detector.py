@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from mldebug.checks.base import BaseCheck
 from mldebug.core.issue import Issue
 from mldebug.core.report import Report
