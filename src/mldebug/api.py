@@ -61,7 +61,7 @@ def run_checks(
                     severity=Severity.CRITICAL,
                     message=f"{feature} missing in reference data",
                     feature=feature,
-                )
+                ),
             )
 
         if cur is None:
@@ -72,7 +72,7 @@ def run_checks(
                     severity=Severity.CRITICAL,
                     message=f"{feature} missing in current data",
                     feature=feature,
-                )
+                ),
             )
 
         if ref is None or cur is None:

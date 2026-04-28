@@ -1,6 +1,6 @@
 [project]
 name = "mldebug"
-description = "mldebug is a lightweight Python toolkit for debugging machine learning systems in production."
+description = "A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
 authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.noreply.github.com"}]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -104,22 +104,16 @@ commands = [[ { replace = "posargs", extend = true } ]]
 line-length = 120
 lint.select = ["ALL"]
 lint.ignore = [
-  "COM812",
   "D100",
   "D104",
   "D203",
   "D213",
+  "PLR2004",
 ]
-
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
   "D103",
-  "ANN001",
-  "ANN201",
   "S101",
-  "PLR2004",
 ]
-
 [tool.pyright]
 typeCheckingMode = "strict"
-reportMissingImports = false

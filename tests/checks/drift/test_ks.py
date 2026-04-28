@@ -2,7 +2,7 @@ from mldebug.checks.drift.ks import run_ks_test_check
 from tests.fixtures.data import generate_normal_data
 
 
-def test_ks_detects_shift():
+def test_ks_detects_shift() -> None:
     feature = "feature_1"
 
     reference = generate_normal_data()
@@ -20,7 +20,7 @@ def test_ks_detects_shift():
     assert issue.feature == feature
 
 
-def test_ks_no_detection_when_stable():
+def test_ks_no_detection_when_stable() -> None:
     feature = "feature_1"
 
     reference = generate_normal_data()

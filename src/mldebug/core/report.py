@@ -61,5 +61,5 @@ class Report:
                     "threshold": i.threshold,
                 }
                 for i in self.issues
-            ]
+            ],
         }

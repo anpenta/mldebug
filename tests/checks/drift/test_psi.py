@@ -3,7 +3,7 @@ import numpy as np
 from mldebug.checks.drift.psi import run_psi_drift_check_categorical
 
 
-def test_run_psi_drift_check_categorical_detects_shift():
+def test_run_psi_drift_check_categorical_detects_shift() -> None:
     reference = np.array(["A"] * 80 + ["B"] * 20, dtype="object")
     current = np.array(["A"] * 40 + ["B"] * 40 + ["C"] * 20, dtype="object")
 
@@ -20,7 +20,7 @@ def test_run_psi_drift_check_categorical_detects_shift():
     assert issue.value > 0.1
 
 
-def test_run_psi_drift_check_categorical_no_detection_when_stable():
+def test_run_psi_drift_check_categorical_no_detection_when_stable() -> None:
     reference = np.array(["A"] * 50 + ["B"] * 50, dtype="object")
     current = np.array(["A"] * 52 + ["B"] * 48, dtype="object")
 

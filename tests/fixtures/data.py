@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-def generate_normal_data(n: int = 1000, mean: float = 0, std: float = 1, seed: int = 42):
+def generate_normal_data(n: int = 1000, mean: float = 0, std: float = 1, seed: int = 42) -> NDArray[np.float64]:
     rng = np.random.default_rng(seed)
     return rng.normal(loc=mean, scale=std, size=n)
 

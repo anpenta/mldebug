@@ -2,7 +2,7 @@ from mldebug.checks.data_quality.missing_values import run_missing_value_check
 from tests.fixtures.data import generate_normal_data, inject_missing_values
 
 
-def test_missing_values_detects_increase():
+def test_missing_values_detects_increase() -> None:
     feature = "feature_1"
 
     ref = inject_missing_values(generate_normal_data(), rate=0.01)
@@ -22,7 +22,7 @@ def test_missing_values_detects_increase():
     assert issue.value > 0
 
 
-def test_missing_values_no_detection_when_stable():
+def test_missing_values_no_detection_when_stable() -> None:
     feature = "feature_1"
 
     ref = inject_missing_values(generate_normal_data(), rate=0.05)
@@ -38,7 +38,7 @@ def test_missing_values_no_detection_when_stable():
     assert issue is None
 
 
-def test_missing_values_no_detection_when_decrease():
+def test_missing_values_no_detection_when_decrease() -> None:
     feature = "feature_1"
 
     ref = inject_missing_values(generate_normal_data(), rate=0.25)

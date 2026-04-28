@@ -2,13 +2,13 @@ from mldebug.core.issue import Issue, Severity
 from mldebug.core.report import Report
 
 
-def test_report_summary_counts_issues_by_severity():
+def test_report_summary_counts_issues_by_severity() -> None:
     report = Report(
         [
             Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
-        ]
+        ],
     )
 
     summary = report.summary()
@@ -18,12 +18,12 @@ def test_report_summary_counts_issues_by_severity():
     assert summary["critical"] == 0
 
 
-def test_report_to_dict_returns_dict_with_correct_structure():
+def test_report_to_dict_returns_dict_with_correct_structure() -> None:
     report = Report(
         [
             Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
-        ]
+        ],
     )
 
     report_as_dict = report.to_dict()
@@ -48,5 +48,5 @@ def test_report_to_dict_returns_dict_with_correct_structure():
                 "value": None,
                 "threshold": None,
             },
-        ]
+        ],
     }

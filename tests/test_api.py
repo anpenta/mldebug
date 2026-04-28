@@ -3,7 +3,7 @@ from mldebug.core.issue import Severity
 from tests.fixtures.data import generate_normal_data, inject_missing_values
 
 
-def test_run_checks_detects_numeric_drift():
+def test_run_checks_detects_numeric_drift() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {"feature_1": generate_normal_data(mean=5)}
 
@@ -21,17 +21,17 @@ def test_run_checks_detects_numeric_drift():
     assert all(i.severity == Severity.WARNING for i in ks_issues)
 
 
-def test_run_checks_detects_categorical_drift():
+def test_run_checks_detects_categorical_drift() -> None:
     raise NotImplementedError
 
 
-def test_run_checks_detects_missing_values():
+def test_run_checks_detects_missing_values() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {
         "feature_1": inject_missing_values(
             generate_normal_data(mean=0),
             rate=0.3,
-        )
+        ),
     }
 
     schema = {"feature_1": "numeric"}
