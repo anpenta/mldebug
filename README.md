@@ -3,7 +3,7 @@
 [![CI](https://github.com/anpenta/mldebug/actions/workflows/ci.yml/badge.svg)](https://github.com/anpenta/mldebug/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/anpenta/mldebug/graph/badge.svg?token=XPN447G4S9)](https://codecov.io/gh/anpenta/mldebug)
 
-mldebug is a lightweight Python toolkit for debugging machine learning systems in production.
+mldebug is a lightweight Python package that acts as a drop-in monitoring layer for machine learning systems, enabling you to compare any pair of datasets and detect unexpected changes or issues in production.
 
 ## Quick Start
 

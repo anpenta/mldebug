@@ -1,20 +1,8 @@
-"""mldebug: Lightweight ML debugging toolkit for detecting issues in tabular ML data.
+"""mldebug: A lightweight Python package for comparing datasets and detecting unexpected changes or issues.
 
-The library runs a suite of statistical and data quality checks on a reference and current dataset,
-producing structured reports of detected issues.
-
-Core capabilities include:
-- data drift detection
-- missing value detection
-- schema consistency checks
+The library runs a suite of checks on a reference and current dataset, producing structured reports of detected issues.
 
 Outputs are standardized as `Issue` objects aggregated into a `Report`.
-
-Notes
------
-- Designed for batch validation of tabular datasets.
-- Operates on dictionary-of-arrays inputs (no pandas dependency).
-
 """
 
 from mldebug.api import run_checks
