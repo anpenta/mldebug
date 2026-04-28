@@ -1,49 +1,76 @@
 import numpy as np
+from collections import Counter
+from numpy.typing import NDArray
 
-from mldebug.checks.base import BaseCheck
 from mldebug.core.issue import Issue, Severity
-from mldebug.utils.stats import normalize_distribution, safe_histogram
 
 
-def psi_score(expected, actual, bins=10) -> float:
-    """Population Stability Index (PSI)
-    Measures distribution shift between two samples.
-    """
-    exp_hist, edges = safe_histogram(expected, bins=bins)
-    act_hist, _ = safe_histogram(actual, bins=edges)
+def _compute_psi_categorical(
+    reference: NDArray[np.object_],
+    current: NDArray[np.object_],
+    eps: float = 1e-8,
+) -> float:
+    ref_counts = Counter(reference)
+    cur_counts = Counter(current)
 
-    exp_dist = normalize_distribution(exp_hist)
-    act_dist = normalize_distribution(act_hist)
+    all_categories = set(ref_counts) | set(cur_counts)
 
-    eps = 1e-8
-    exp_dist = np.clip(exp_dist, eps, 1)
-    act_dist = np.clip(act_dist, eps, 1)
+    ref_total = sum(ref_counts.values())
+    cur_total = sum(cur_counts.values())
 
-    psi = np.sum((act_dist - exp_dist) * np.log(act_dist / exp_dist))
+    psi = 0.0
+
+    for cat in all_categories:
+        p = ref_counts.get(cat, 0) / ref_total
+        q = cur_counts.get(cat, 0) / cur_total
+
+        p = max(p, eps)
+        q = max(q, eps)
+
+        psi += (p - q) * np.log(p / q)
+
     return float(psi)
 
 
-class PSIDriftCheck(BaseCheck):
-    """Detects distribution shift using PSI."""
+def run_psi_drift_check_categorical(
+    feature: str,
+    reference: NDArray[np.object_],
+    current: NDArray[np.object_],
+    threshold: float = 0.2,
+) -> Issue | None:
+    """Detect categorical distribution drift using PSI.
 
-    name = "psi_drift"
+    Parameters
+    ----------
+    feature : str
+        Name of the feature being checked.
 
-    def __init__(self, threshold: float = 0.2, bins: int = 10):
-        self.threshold = threshold
-        self.bins = bins
+    reference : NDArray[np.object_]
+        Reference data (baseline categorical values).
 
-    def run(self, reference, current):
-        # assume 1D numeric arrays for v1
-        psi = psi_score(reference, current, bins=self.bins)
+    current : NDArray[np.object_]
+        Current data to evaluate.
 
-        if psi > self.threshold:
-            return Issue(
-                name=self.name,
-                metric="psi",
-                severity=Severity.WARNING,
-                message=f"PSI drift detected (psi={psi:.4f})",
-                value=psi,
-                threshold=self.threshold,
-            )
+    threshold : float
+        PSI threshold for detecting drift.
 
-        return None
+    Returns
+    -------
+    Issue | None
+        Issue if PSI exceeds threshold.
+
+    """
+    psi = _compute_psi_categorical(reference, current)
+
+    if psi > threshold:
+        return Issue(
+            name="psi_drift",
+            metric="psi",
+            severity=Severity.WARNING,
+            message=f"{feature}: PSI drift detected ({psi:.4f})",
+            feature=feature,
+            value=psi,
+            threshold=threshold,
+        )
+
+    return None
