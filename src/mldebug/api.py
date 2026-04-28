@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 
 from .checks.data_quality.missing_values import run_missing_value_check
 from .checks.drift.ks import run_ks_test_check
-from .checks.drift.psi import run_psi_drift_check
+from .checks.drift.psi import run_psi_drift_check_categorical
 from .core.issue import Issue, Severity
 from .core.report import Report
 
@@ -91,7 +91,7 @@ def run_checks(
                 issues.append(ks_issue)
 
         if ftype == "categorical":
-            psi_issue = run_psi_drift_check(
+            psi_issue = run_psi_drift_check_categorical(
                 feature=feature,
                 reference=ref,
                 current=cur,
