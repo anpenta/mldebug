@@ -1,9 +1,3 @@
-"""Missing value drift check.
-
-Detects increases in missing value rate between reference and current data for a
-single numeric feature.
-"""
-
 import numpy as np
 from numpy.typing import NDArray
 

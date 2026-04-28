@@ -1,13 +1,3 @@
-"""Reporting utilities for ML debugging results.
-
-This module defines the `Report` class, which aggregates issues detected during a debugging or validation
-run (e.g., data drift, missing values, distribution anomalies).
-
-The report provides a structured representation of all detected issues, along with utilities for summarization
-and serialization.
-
-"""
-
 from dataclasses import dataclass
 from typing import Any
 

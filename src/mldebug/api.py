@@ -23,10 +23,10 @@ def run_checks(
     Parameters
     ----------
     reference : dict[str, NDArray[Any]]
-        Reference dataset keyed by feature name (e.g., training dataset).
+        Reference dataset keyed by feature name (e.g. training dataset).
 
     current : dict[str, NDArray[Any]]
-        Current dataset keyed by feature name (e.g., production dataset).
+        Current dataset keyed by feature name (e.g. production dataset).
 
     schema: dict[str, Literal["numeric", "categorical"]],
         Feature schema mapping feature name to type.

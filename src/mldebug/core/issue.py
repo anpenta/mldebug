@@ -1,10 +1,3 @@
-"""Core abstractions for representing issues detected in ML validation and monitoring.
-
-This module defines the standard output format used across all checks in the library. Each check
-produces one or more `Issue` objects describing detected problems such as data drift, missing values,
-or schema inconsistencies.
-"""
-
 from dataclasses import dataclass
 from enum import Enum
 

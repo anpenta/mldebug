@@ -1,9 +1,3 @@
-"""Kolmogorov-Smirnov (KS) drift check.
-
-Detects distribution shift between reference and current data for a single numeric feature using
-the two-sample KS test.
-"""
-
 import numpy as np
 from numpy.typing import NDArray
 from scipy.stats import ks_2samp
