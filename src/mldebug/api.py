@@ -37,13 +37,22 @@ def run_checks(
         Aggregated report containing all detected issues.
 
     """
+    checks = {
+        "numeric": [
+            run_missing_value_check,
+            run_ks_test_check,
+        ],
+        "categorical": [
+            run_psi_drift_check_categorical,
+        ],
+    }
+
     issues: list[Issue] = []
 
     for feature, ftype in schema.items():
         ref = reference.get(feature)
         cur = current.get(feature)
 
-        # Schema-level checks (all features).
         if ref is None:
             issues.append(
                 Issue(
@@ -66,37 +75,12 @@ def run_checks(
                 )
             )
 
-        # If feature missing in either dataset, skip downstream checks.
         if ref is None or cur is None:
             continue
 
-        # Missing value check (numeric only).
-        if ftype == "numeric":
-            issue = run_missing_value_check(
-                feature=feature,
-                reference=ref,
-                current=cur,
-            )
+        for check_fn in checks.get(ftype, []):
+            issue = check_fn(feature=feature, reference=ref, current=cur)
             if issue is not None:
                 issues.append(issue)
-
-        # Drift checks.
-        if ftype == "numeric":
-            ks_issue = run_ks_test_check(
-                feature=feature,
-                reference=ref,
-                current=cur,
-            )
-            if ks_issue is not None:
-                issues.append(ks_issue)
-
-        if ftype == "categorical":
-            psi_issue = run_psi_drift_check_categorical(
-                feature=feature,
-                reference=ref,
-                current=cur,
-            )
-            if psi_issue is not None:
-                issues.append(psi_issue)
 
     return Report(issues=issues)

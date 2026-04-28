@@ -46,6 +46,7 @@ dev = [
   "pdoc>=16.0.0",
   "tox>=4.50.3",
   "tox-uv-bare>=1.35.1",
+  "scipy-stubs>=1.15.3.0",
 ]
 
 [build-system]
