@@ -104,6 +104,7 @@ commands = [[ { replace = "posargs", extend = true } ]]
 line-length = 120
 lint.select = ["ALL"]
 lint.ignore = [
+  "COM812",
   "D100",
   "D104",
   "D203",
