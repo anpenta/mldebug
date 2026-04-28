@@ -110,6 +110,7 @@ lint.ignore = [
   "D203",
   "D213",
   "PLR2004",
+  "TID252",
 ]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
