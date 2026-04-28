@@ -55,6 +55,42 @@ def run_checks(
 
     issues: list[Issue] = []
 
+    schema_keys = set(schema)
+    ref_keys = set(reference)
+    cur_keys = set(current)
+
+    # Schema validation.
+    extra_ref = ref_keys - schema_keys
+    extra_cur = cur_keys - schema_keys
+    missing_schema = (ref_keys | cur_keys) - schema_keys
+
+    for f in extra_ref:
+        issues.append(  # noqa: PERF401 # Hurts readability.
+            Issue(
+                name="unexpected_feature_reference",
+                metric="schema",
+                severity=Severity.WARNING,
+                message=f"'{f}' present in reference but not in schema",
+                feature=f,
+            )
+        )
+
+    for f in extra_cur:
+        issues.append(  # noqa: PERF401 # Hurts readability.
+            Issue(
+                name="unexpected_feature_current",
+                metric="schema",
+                severity=Severity.WARNING,
+                message=f"'{f}' present in current but not in schema",
+                feature=f,
+            )
+        )
+
+    if missing_schema:
+        error_msg = f"Missing schema definitions for features: {sorted(missing_schema)}"
+        raise ValueError(error_msg)
+
+    # Feature loop.
     for feature, ftype in schema.items():
         ref = reference.get(feature)
         cur = current.get(feature)
@@ -65,7 +101,7 @@ def run_checks(
                     name="missing_feature_reference",
                     metric="schema",
                     severity=Severity.CRITICAL,
-                    message=f"{feature} missing in reference data",
+                    message=f"'{feature}' missing in reference data",
                     feature=feature,
                 )
             )
@@ -76,12 +112,24 @@ def run_checks(
                     name="missing_feature_current",
                     metric="schema",
                     severity=Severity.CRITICAL,
-                    message=f"{feature} missing in current data",
+                    message=f"'{feature}' missing in current data",
                     feature=feature,
                 )
             )
 
         if ref is None or cur is None:
+            continue
+
+        if len(ref) == 0 or len(cur) == 0:
+            issues.append(
+                Issue(
+                    name="empty_feature_data",
+                    metric="data_quality",
+                    severity=Severity.WARNING,
+                    message=f"'{feature}' has empty data",
+                    feature=feature,
+                )
+            )
             continue
 
         if ftype not in _CHECKS:
