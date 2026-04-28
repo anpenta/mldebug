@@ -60,7 +60,7 @@ schema = {
     "country": "categorical",
 }
 
-report = run_checks(reference, current, schema)
+report = run_checks(reference=reference, current=current, schema=schema)
 
 for issue in report.issues:
     print(issue)
