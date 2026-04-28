@@ -1,12 +1,10 @@
 from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING, Any, Literal
+from typing import Any, Literal
 
 from .core.feature import run_feature_checks
+from .core.issue import Issue, Severity
 from .core.report import Report
-from .core.schema import check_schema_mismatches, validate_schema
-
-if TYPE_CHECKING:
-    from .core.issue import Issue
+from .core.schema import validate_schema
 
 
 def run_checks(
@@ -37,13 +35,53 @@ def run_checks(
         Aggregated report containing all detected issues.
 
     """
-    validate_schema(schema=schema, reference=reference, current=current)
-
     issues: list[Issue] = []
 
-    issues.extend(check_schema_mismatches(schema=schema, reference=reference, current=current))
+    # 1. Schema validation (structural issues)
+    issues.extend(
+        validate_schema(
+            schema=schema,
+            reference=reference,
+            current=current,
+        )
+    )
 
+    # 2. Explicit mismatch detection (IMPORTANT FIX)
+    ref_keys = set(reference)
+    cur_keys = set(current)
+    schema_keys = set(schema)
+
+    for f in ref_keys - schema_keys:
+        issues.append(  # noqa: PERF401 # Hurts readability.
+            Issue(
+                name="unexpected_feature_reference",
+                metric="schema",
+                severity=Severity.WARNING,
+                message=f"'{f}' present in reference but not in schema",
+                feature=f,
+            )
+        )
+
+    for f in cur_keys - schema_keys:
+        issues.append(  # noqa: PERF401 # Hurts readability.
+            Issue(
+                name="unexpected_feature_current",
+                metric="schema",
+                severity=Severity.WARNING,
+                message=f"'{f}' present in current but not in schema",
+                feature=f,
+            )
+        )
+
+    # 3. Feature-level checks (schema-driven execution)
     for feature, ftype in schema.items():
-        issues.extend(run_feature_checks(feature=feature, ftype=ftype, reference=reference, current=current))
+        issues.extend(
+            run_feature_checks(
+                feature=feature,
+                ftype=ftype,
+                reference=reference,
+                current=current,
+            )
+        )
 
     return Report(issues=issues)

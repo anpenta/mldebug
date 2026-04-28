@@ -75,3 +75,96 @@ def test_run_checks_handles_missing_feature() -> None:
     report = run_checks(ref, cur, schema)
 
     assert any(i.metric == "schema" for i in report.issues)
+
+
+def test_run_checks_handles_empty_feature() -> None:
+    ref = {"feature_1": []}
+    cur = {"feature_1": []}
+
+    schema = {"feature_1": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "empty_feature_data" for i in report.issues)
+
+
+def test_run_checks_handles_empty_schema() -> None:
+    ref = {"a": [1, 2, 3]}
+    cur = {"a": [1, 2, 3]}
+    schema = {}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "empty_schema" for i in report.issues)
+
+
+def test_run_checks_returns_schema_issues() -> None:
+    ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
+    cur = {"a": [1, 2, 3]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "missing_schema_definitions" for i in report.issues)
+
+
+def test_run_checks_detects_unexpected_reference_feature() -> None:
+    ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
+    cur = {"a": [1, 2, 3]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "unexpected_feature_reference" for i in report.issues)
+
+
+def test_run_checks_detects_unexpected_current_feature() -> None:
+    ref = {"a": [1, 2, 3]}
+    cur = {"a": [1, 2, 3], "b": [1, 2, 3]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "unexpected_feature_current" for i in report.issues)
+
+
+def test_run_checks_handles_missing_reference_feature() -> None:
+    ref = {}
+    cur = {"a": [1, 2, 3]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.metric == "schema" for i in report.issues)
+
+
+def test_run_checks_returns_no_issues_for_clean_data() -> None:
+    ref = {"a": [1, 2, 3]}
+    cur = {"a": [1, 2, 3]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert report is not None
+    assert isinstance(report.issues, list)
+    assert len(report.issues) == 0
+
+
+def test_run_checks_handles_mixed_numeric_input() -> None:
+    ref = {"a": ["1", "2", "3"]}
+    cur = {"a": ["2", "3", "4"]}
+    schema = {"a": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert report is not None
+
+
+def test_run_checks_handles_empty_datasets() -> None:
+    ref = {}
+    cur = {}
+    schema = {}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "empty_schema" for i in report.issues)
