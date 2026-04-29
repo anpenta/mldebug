@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/anpenta/mldebug/actions/workflows/ci.yml/badge.svg)](https://github.com/anpenta/mldebug/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/anpenta/mldebug/graph/badge.svg?token=XPN447G4S9)](https://codecov.io/gh/anpenta/mldebug)
+
 [![PyPI](https://img.shields.io/pypi/v/mldebug.svg)](https://pypi.org/project/mldebug/)
 [![Python](https://img.shields.io/pypi/pyversions/mldebug.svg)](https://pypi.org/project/mldebug/)
 [![License](https://img.shields.io/github/license/anpenta/mldebug)](https://github.com/anpenta/mldebug/blob/main/LICENSE)
@@ -64,6 +65,10 @@ report = run_checks(reference=reference, current=current, schema=schema)
 
 for issue in report.issues:
     print(issue)
+
+print(report.summary())
+
+print(report.to_dict())
 ```
 
 ## Example Output

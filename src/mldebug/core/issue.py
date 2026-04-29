@@ -64,3 +64,19 @@ class Issue:
     feature: str | None = None
     value: float | None = None
     threshold: float | None = None
+
+    def __str__(self) -> str:
+        return f"[{self.severity.value.upper()}] {self.name} - {self.message}"
+
+    def __repr__(self) -> str:
+        return (
+            f"Issue("
+            f"name={self.name!r}, "
+            f"metric={self.metric!r}, "
+            f"severity={self.severity.value!r}, "
+            f"message={self.message!r}, "
+            f"feature={self.feature!r}, "
+            f"value={self.value}, "
+            f"threshold={self.threshold}"
+            f")"
+        )
