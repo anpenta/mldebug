@@ -1,5 +1,5 @@
 from mldebug.checks.missing_values import run_missing_value_check
-from tests.fixtures.data import generate_normal_data, inject_missing_values
+from tests.factories.data import generate_normal_data, inject_missing_values
 
 
 def test_missing_values_detects_increase() -> None:

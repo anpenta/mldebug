@@ -1,6 +1,6 @@
 from mldebug import run_checks
 from mldebug.core.issue import Severity
-from tests.fixtures.data import generate_normal_data, inject_missing_values
+from tests.factories.data import generate_normal_data, inject_missing_values
 
 
 def test_run_checks_detects_numeric_drift() -> None:

@@ -1,5 +1,5 @@
 from mldebug.checks.ks import run_ks_test_check
-from tests.fixtures.data import generate_normal_data
+from tests.factories.data import generate_normal_data
 
 
 def test_ks_detects_shift() -> None:
