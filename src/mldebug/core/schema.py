@@ -1,7 +1,7 @@
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from ..core.issue import Issue, Severity
+from mldebug.core.issue import Issue, Severity
 
 
 def analyze_schema(

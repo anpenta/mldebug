@@ -4,10 +4,10 @@ from typing import Any, Literal
 import numpy as np
 from numpy.typing import NDArray
 
-from ..checks.ks import run_ks_test_check
-from ..checks.missing_values import run_missing_value_check
-from ..checks.psi import run_psi_drift_check_categorical
-from ..core.issue import Issue, Severity
+from mldebug.checks.ks import run_ks_test_check
+from mldebug.checks.missing_values import run_missing_value_check
+from mldebug.checks.psi import run_psi_drift_check_categorical
+from mldebug.core.issue import Issue, Severity
 
 _CHECKS = {
     "numeric": [

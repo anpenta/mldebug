@@ -112,10 +112,12 @@ lint.ignore = [
   "PLR2004",
   "TID252",
 ]
+
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
   "D103",
   "S101",
 ]
+
 [tool.pyright]
 typeCheckingMode = "strict"

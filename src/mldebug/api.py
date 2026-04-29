@@ -1,9 +1,9 @@
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Literal
 
-from .core.feature import run_feature_checks
-from .core.report import Report
-from .core.schema import analyze_schema
+from mldebug.core.feature import run_feature_checks
+from mldebug.core.report import Report
+from mldebug.core.schema import analyze_schema
 
 if TYPE_CHECKING:
     from .core.issue import Issue
