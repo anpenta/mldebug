@@ -40,7 +40,7 @@ def run_missing_value_check(
     if delta > threshold:
         return Issue(
             name="missing_values",
-            metric="missing_rate_change",
+            metric="missing_rate_increase",
             severity=Severity.WARNING,
             message=f"{feature}: missing rate drift detected ({delta:.4f})",
             feature=feature,

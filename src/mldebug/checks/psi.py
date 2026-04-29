@@ -6,33 +6,6 @@ from numpy.typing import NDArray
 from mldebug.core.issue import Issue, Severity
 
 
-def _compute_psi_categorical(
-    reference: NDArray[np.object_],
-    current: NDArray[np.object_],
-    eps: float = 1e-8,
-) -> float:
-    ref_counts = Counter(reference)
-    cur_counts = Counter(current)
-
-    all_categories = set(ref_counts) | set(cur_counts)
-
-    ref_total = sum(ref_counts.values())
-    cur_total = sum(cur_counts.values())
-
-    psi = 0.0
-
-    for cat in all_categories:
-        p = ref_counts.get(cat, 0) / ref_total
-        q = cur_counts.get(cat, 0) / cur_total
-
-        p = max(p, eps)
-        q = max(q, eps)
-
-        psi += (p - q) * np.log(p / q)
-
-    return float(psi)
-
-
 def run_psi_drift_check_categorical(
     feature: str,
     reference: NDArray[np.object_],
@@ -75,3 +48,30 @@ def run_psi_drift_check_categorical(
         )
 
     return None
+
+
+def _compute_psi_categorical(
+    reference: NDArray[np.object_],
+    current: NDArray[np.object_],
+    eps: float = 1e-8,
+) -> float:
+    ref_counts = Counter(reference)
+    cur_counts = Counter(current)
+
+    all_categories = set(ref_counts) | set(cur_counts)
+
+    ref_total = sum(ref_counts.values())
+    cur_total = sum(cur_counts.values())
+
+    psi = 0.0
+
+    for cat in all_categories:
+        p = ref_counts.get(cat, 0) / ref_total
+        q = cur_counts.get(cat, 0) / cur_total
+
+        p = max(p, eps)
+        q = max(q, eps)
+
+        psi += (p - q) * np.log(p / q)
+
+    return float(psi)

@@ -13,8 +13,7 @@ def run_ks_test_check(
 ) -> Issue | None:
     """Detect distribution shift using the Kolmogorov-Smirnov test.
 
-    The KS test compares the empirical distributions of reference and current
-    data for a given feature.
+    The KS test compares the empirical distributions of reference and current data for a given feature.
 
     Parameters
     ----------
@@ -27,7 +26,7 @@ def run_ks_test_check(
     current : NDArray[np.floating]
         Current data to evaluate.
 
-    alpha : float, optional
+    alpha : float = 0.05, optional
         Significance level for rejecting the null hypothesis.
 
     Returns

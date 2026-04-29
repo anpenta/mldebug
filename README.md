@@ -93,7 +93,7 @@ Issue(
 
 Issue(
     name="missing_values",
-    metric="missing_rate_change",
+    metric="missing_rate_increase",
     severity=Severity.WARNING,
     message="income: missing rate drift detected (0.0740)",
     feature="income",

@@ -16,7 +16,7 @@ def test_missing_values_detects_increase() -> None:
     )
 
     assert issue is not None
-    assert issue.metric == "missing_rate_change"
+    assert issue.metric == "missing_rate_increase"
     assert issue.feature == feature
     assert issue.value is not None
     assert issue.value > 0
