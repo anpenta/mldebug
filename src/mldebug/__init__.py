@@ -1,11 +1,17 @@
-"""mldebug: A lightweight Python toolkit for debugging machine learning systems in production.
+"""mldebug: A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems.
 
-This module provides the public API for the mldebug package, including utilities for monitoring, diagnosing,
-and troubleshooting ML pipelines in production environments.
-"""
+It compares a reference and current dataset, runs validation checks, and produces a structured report of issues.
 
-from ._example import run_public_func
+Results are standardized as `Issue` objects aggregated into a `Report`.
+"""  # noqa: E501 # First line is the package's headline.
+
+from mldebug.api import run_checks
+from mldebug.core.issue import Issue, Severity
+from mldebug.core.report import Report
 
 __all__ = [
-    "run_public_func",
+    "Issue",
+    "Report",
+    "Severity",
+    "run_checks",
 ]

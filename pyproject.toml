@@ -1,6 +1,6 @@
 [project]
 name = "mldebug"
-description = "mldebug is a lightweight Python toolkit for debugging machine learning systems in production."
+description = "A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
 authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.noreply.github.com"}]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,6 +26,8 @@ classifiers = [
 ]
 
 dependencies = [
+    "numpy>=2.2.6",
+    "scipy>=1.15.3",
 ]
 
 [project.urls]
@@ -44,6 +46,7 @@ dev = [
   "pdoc>=16.0.0",
   "tox>=4.50.3",
   "tox-uv-bare>=1.35.1",
+  "scipy-stubs>=1.15.3.0",
 ]
 
 [build-system]
@@ -62,7 +65,7 @@ executor.type = "simple"
 
 [tool.poe.tasks]
 
-test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5"
+test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=80"
 test-all.sequence = [
   # We combine the coverage from all environment runs to provide a unified report.
   "coverage erase",
@@ -102,22 +105,20 @@ line-length = 120
 lint.select = ["ALL"]
 lint.ignore = [
   "COM812",
-  "TRY003",
+  "D100",
+  "D104",
+  "D105",
   "D203",
-  "D211",
   "D213",
+  "PLR2004",
+  "TID252",
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
-  "D100",
   "D103",
-  "D104",
-  "ANN001",
-  "ANN201",
   "S101",
 ]
 
 [tool.pyright]
 typeCheckingMode = "strict"
-reportMissingImports = false

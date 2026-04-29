@@ -1,78 +1,53 @@
-# =========================
-# Python virtual environments
-# =========================
+# Virtual envs / local binaries
 .venv/
 venv/
 env/
+.local/
+local/
 
-# =========================
-# Bytecode / caches
-# =========================
-**/*.pyc
+# Python cache
 __pycache__/
+*.pyc
 *.pyo
 *.pyd
 
-# =========================
-# IDEs
-# =========================
-.idea/
-!.idea/runConfigurations/
-.vscode/
-
-# =========================
-# Jupyter
-# =========================
-.ipynb_checkpoints/
-
-# =========================
-# Ruff / lint caches
-# =========================
-.ruff_cache/
-.mypy_cache/
-.pyright/
-.pytype/
-
-# =========================
 # Build artifacts
-# =========================
 build/
 dist/
 .eggs/
 *.egg-info/
 *.egg
 
-# =========================
 # Testing / coverage
-# =========================
 .pytest_cache/
 .coverage*
 coverage.xml
 htmlcov/
 
-# =========================
-# Documentation builds
-# =========================
+# Lint / type caches
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.pytype/
+.tox/
+
+# IDEs
+.idea/
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docs builds
 docs/
 site/
 
-# =========================
 # Environment files
-# =========================
 .env
 .env.*
 !.env.example
 !.envrc
 
-# =========================
-# Local tooling / system files
-# =========================
-.local/
-.tox/
-.mypy_cache/
-
-# =========================
-# OS junk
-# =========================
+# OS files
 .DS_Store
 Thumbs.db
