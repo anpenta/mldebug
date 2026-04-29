@@ -148,9 +148,9 @@ See [documentation pages](https://anpenta.github.io/mldebug).
 
 ## Status
 
-Active development (v0.x).
+Active development (v0.x). APIs may evolve before v1.0.0.
 
-APIs may evolve before v1.0.0.
+See [CHANGELOG.md](https://github.com/anpenta/mldebug/blob/main/CHANGELOG.md) for version history and updates.
 
 ## Development Setup
 
