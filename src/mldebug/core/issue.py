@@ -3,17 +3,15 @@ from enum import Enum
 
 
 class Severity(Enum):
-    """Importance level of a detected issue.
+    """Severity level of a detected issue.
 
-    Levels
-    ------
-    INFO
+    INFO:
         Informational issue with no immediate impact.
 
-    Warning:
+    WARNING:
         Potential problem that should be reviewed.
 
-    CRITICAL
+    CRITICAL:
         Serious issue likely to affect model performance or reliability.
 
     """
