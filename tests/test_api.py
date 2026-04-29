@@ -88,7 +88,7 @@ def test_run_checks_detects_missing_current_feature() -> None:
 
     report = run_checks(ref, cur, schema)
 
-    assert any(i.metric == "missing_feature_current" for i in report.issues)
+    assert any(i.name == "missing_feature_current" for i in report.issues)
 
 
 def test_run_checks_detects_unexpected_reference_feature() -> None:
@@ -111,15 +111,26 @@ def test_run_checks_detects_unexpected_current_feature() -> None:
     assert any(i.name == "unexpected_feature_current" for i in report.issues)
 
 
-def test_run_checks_detects_empty_feature() -> None:
+def test_run_checks_detects_empty_reference_feature() -> None:
     ref = {"feature_1": []}
+    cur = {"feature_1": [1, 2, 3]}
+
+    schema = {"feature_1": "numeric"}
+
+    report = run_checks(ref, cur, schema)
+
+    assert any(i.name == "empty_feature_reference" for i in report.issues)
+
+
+def test_run_checks_detects_empty_current_feature() -> None:
+    ref = {"feature_1": [1, 2, 3]}
     cur = {"feature_1": []}
 
     schema = {"feature_1": "numeric"}
 
     report = run_checks(ref, cur, schema)
 
-    assert any(i.name == "empty_feature_data" for i in report.issues)
+    assert any(i.name == "empty_feature_current" for i in report.issues)
 
 
 def test_run_checks_returns_no_issues_for_clean_data() -> None:
