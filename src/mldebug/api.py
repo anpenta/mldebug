@@ -14,11 +14,10 @@ def run_checks(
     current: Mapping[str, Sequence[Any]],
     schema: Mapping[str, Literal["numeric", "categorical"]],
 ) -> Report:
-    """Run data quality and drift checks on reference and current datasets.
+    """Run checks on reference and current datasets.
 
-    This is the main entrypoint of the library. It performs schema analysis
-    (validation and mismatch detection) followed by feature-level checks
-    based on the provided schema, and returns a structured report of issues.
+    This is the main entrypoint of the library. It performs schema analysis (validation and mismatch detection)
+    followed by feature-level checks based on the provided schema, and returns a structured report of issues.
 
     Parameters
     ----------
@@ -39,10 +38,10 @@ def run_checks(
     """
     issues: list[Issue] = []
 
-    # 1. Schema analysis (validation + reconciliation)
+    # Schema analysis (validation and mismatch detection).
     issues.extend(analyze_schema(schema, reference, current))
 
-    # 2. Feature execution (schema-driven)
+    # Feature execution (schema-driven).
     for feature, ftype in schema.items():
         issues.extend(
             run_feature_checks(
