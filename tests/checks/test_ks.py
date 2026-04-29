@@ -1,4 +1,4 @@
-from mldebug.checks.drift.ks import run_ks_test_check
+from mldebug.checks.ks import run_ks_test_check
 from tests.fixtures.data import generate_normal_data
 
 

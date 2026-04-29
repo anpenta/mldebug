@@ -4,9 +4,9 @@ from typing import Any, Literal
 import numpy as np
 from numpy.typing import NDArray
 
-from ..checks.data_quality.missing_values import run_missing_value_check
-from ..checks.drift.ks import run_ks_test_check
-from ..checks.drift.psi import run_psi_drift_check_categorical
+from ..checks.missing_values import run_missing_value_check
+from ..checks.ks import run_ks_test_check
+from ..checks.psi import run_psi_drift_check_categorical
 from ..core.issue import Issue, Severity
 
 _CHECKS = {

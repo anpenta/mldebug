@@ -1,4 +1,4 @@
-from mldebug.checks.data_quality.missing_values import run_missing_value_check
+from mldebug.checks.missing_values import run_missing_value_check
 from tests.fixtures.data import generate_normal_data, inject_missing_values
 
 
