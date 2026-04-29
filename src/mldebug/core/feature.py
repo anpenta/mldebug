@@ -50,15 +50,34 @@ def run_feature_checks(
     """
     issues: list[Issue] = []
 
-    ref = reference.get(feature)
-    cur = current.get(feature)
+    ref = reference[feature]
+    cur = current[feature]
 
-    issues.extend(_check_missing_features(feature, ref, cur))
-    if ref is None or cur is None:
-        return issues
+    is_empty_ref = _is_empty(ref)
+    if is_empty_ref:
+        issues.append(
+            Issue(
+                name="empty_feature_reference",
+                metric="data_quality",
+                severity=Severity.CRITICAL,
+                message=f"'{feature}' has empty data in reference",
+                feature=feature,
+            )
+        )
 
-    issues.extend(_check_empty_feature(feature, ref, cur))
-    if _is_empty(ref) or _is_empty(cur):
+    is_empty_cur = _is_empty(cur)
+    if is_empty_cur:
+        issues.append(
+            Issue(
+                name="empty_feature_current",
+                metric="data_quality",
+                severity=Severity.CRITICAL,
+                message=f"'{feature}' has empty data in current",
+                feature=feature,
+            )
+        )
+
+    if is_empty_ref or is_empty_cur:
         return issues
 
     ref_arr = _normalize(ftype, ref)
@@ -70,27 +89,6 @@ def run_feature_checks(
             issues.append(issue)
 
     return issues
-
-
-
-
-
-def _check_empty_feature(
-    feature: str,
-    ref: Sequence[Any],
-    cur: Sequence[Any],
-) -> list[Issue]:
-    if _is_empty(ref) or _is_empty(cur):
-        return [
-            Issue(
-                name="empty_feature_data",
-                metric="data_quality",
-                severity=Severity.WARNING,
-                message=f"'{feature}' has empty data",
-                feature=feature,
-            )
-        ]
-    return []
 
 
 def _is_empty(data: Sequence[Any]) -> bool:

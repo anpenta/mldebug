@@ -51,7 +51,7 @@ def analyze_schema(
 
     # Missing expected features.
     for f in schema_keys - ref_keys:
-        issues.append( # noqa: PERF401 # Hurts readability.
+        issues.append(  # noqa: PERF401 # Hurts readability.
             Issue(
                 name="missing_feature_reference",
                 metric="schema",
@@ -62,7 +62,7 @@ def analyze_schema(
         )
 
     for f in schema_keys - cur_keys:
-        issues.append( # noqa: PERF401 # Hurts readability.
+        issues.append(  # noqa: PERF401 # Hurts readability.
             Issue(
                 name="missing_feature_current",
                 metric="schema",

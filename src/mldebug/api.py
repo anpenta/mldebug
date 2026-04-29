@@ -2,6 +2,7 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Literal
 
 from mldebug.core.feature import run_feature_checks
+from mldebug.core.filtering import get_valid_features
 from mldebug.core.report import Report
 from mldebug.core.schema import analyze_schema
 
@@ -39,10 +40,13 @@ def run_checks(
     issues: list[Issue] = []
 
     # Schema analysis (validation and mismatch detection).
-    issues.extend(analyze_schema(schema, reference, current))
+    issues.extend(analyze_schema(schema=schema, reference=reference, current=current))
+
+    valid_features = get_valid_features(reference=reference, current=current, schema=schema)
 
     # Feature execution (schema-driven).
-    for feature, ftype in schema.items():
+    for feature in valid_features:
+        ftype = schema[feature]
         issues.extend(
             run_feature_checks(
                 feature=feature,
