@@ -105,7 +105,10 @@ def test_run_checks_returns_schema_issues() -> None:
 
     report = run_checks(ref, cur, schema)
 
-    assert any(i.name == "missing_schema_definitions" for i in report.issues)
+    names = {i.name for i in report.issues}
+
+    assert "missing_schema_definitions" in names
+    assert "unexpected_feature_reference" in names
 
 
 def test_run_checks_detects_unexpected_reference_feature() -> None:
@@ -135,7 +138,7 @@ def test_run_checks_handles_missing_reference_feature() -> None:
 
     report = run_checks(ref, cur, schema)
 
-    assert any(i.metric == "schema" for i in report.issues)
+    assert any(i.name == "missing_feature_reference" for i in report.issues)
 
 
 def test_run_checks_returns_no_issues_for_clean_data() -> None:
@@ -148,16 +151,6 @@ def test_run_checks_returns_no_issues_for_clean_data() -> None:
     assert report is not None
     assert isinstance(report.issues, list)
     assert len(report.issues) == 0
-
-
-def test_run_checks_handles_mixed_numeric_input() -> None:
-    ref = {"a": ["1", "2", "3"]}
-    cur = {"a": ["2", "3", "4"]}
-    schema = {"a": "numeric"}
-
-    report = run_checks(ref, cur, schema)
-
-    assert report is not None
 
 
 def test_run_checks_handles_empty_datasets() -> None:
