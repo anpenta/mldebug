@@ -17,15 +17,8 @@ class Report:
 
     issues: list[Issue]
 
-    def summary(self) -> dict[str, int]:
-        """Count issues grouped by severity.
-
-        Returns
-        -------
-        dict[str, int]
-            Mapping from severity level ("info", "warning", "critical") to the number of issues.
-
-        """
+    def summary(self) -> dict[str, Any]:
+        """Summarize issues by severity and total count."""
         counts = {
             Severity.INFO.value: 0,
             Severity.WARNING.value: 0,
@@ -35,7 +28,11 @@ class Report:
         for issue in self.issues:
             counts[issue.severity.value] += 1
 
-        return counts
+        return {
+            "total": len(self.issues),
+            "by_severity": counts,
+            "status": "clean" if len(self.issues) == 0 else "issues_detected",
+        }
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize report for logging / APIs."""
@@ -53,3 +50,7 @@ class Report:
                 for i in self.issues
             ],
         }
+
+    def to_logs(self) -> list[str]:
+        """Return human-readable log-style representation."""
+        return [f"[{i.severity.value.upper()}] {i.name} - {i.message}" for i in self.issues]
