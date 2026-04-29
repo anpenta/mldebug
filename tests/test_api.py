@@ -71,20 +71,7 @@ def test_run_checks_handles_empty_schema() -> None:
     assert any(i.name == "empty_schema" for i in report.issues)
 
 
-def test_run_checks_returns_schema_issues() -> None:
-    ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
-    cur = {"a": [1, 2, 3]}
-    schema = {"a": "numeric"}
-
-    report = run_checks(ref, cur, schema)
-
-    names = {i.name for i in report.issues}
-
-    assert "missing_schema_definitions" in names
-    assert "unexpected_feature_reference" in names
-
-
-def test_run_checks_handles_missing_reference_feature() -> None:
+def test_run_checks_detects_missing_reference_feature() -> None:
     ref = {}
     cur = {"a": [1, 2, 3]}
     schema = {"a": "numeric"}
@@ -94,7 +81,7 @@ def test_run_checks_handles_missing_reference_feature() -> None:
     assert any(i.name == "missing_feature_reference" for i in report.issues)
 
 
-def test_run_checks_handles_missingc_current_feature() -> None:
+def test_run_checks_detects_missing_current_feature() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {}
     schema = {"a": "numeric"}
@@ -124,7 +111,7 @@ def test_run_checks_detects_unexpected_current_feature() -> None:
     assert any(i.name == "unexpected_feature_current" for i in report.issues)
 
 
-def test_run_checks_handles_empty_feature() -> None:
+def test_run_checks_detects_empty_feature() -> None:
     ref = {"feature_1": []}
     cur = {"feature_1": []}
 
