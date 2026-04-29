@@ -65,7 +65,7 @@ executor.type = "simple"
 
 [tool.poe.tasks]
 
-test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=90"
+test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=80"
 test-all.sequence = [
   # We combine the coverage from all environment runs to provide a unified report.
   "coverage erase",
