@@ -72,36 +72,7 @@ def run_feature_checks(
     return issues
 
 
-def _check_missing_features(
-    feature: str,
-    ref: Sequence[Any] | None,
-    cur: Sequence[Any] | None,
-) -> list[Issue]:
-    issues: list[Issue] = []
 
-    if ref is None:
-        issues.append(
-            Issue(
-                name="missing_feature_reference",
-                metric="schema",
-                severity=Severity.CRITICAL,
-                message=f"'{feature}' missing in reference data",
-                feature=feature,
-            )
-        )
-
-    if cur is None:
-        issues.append(
-            Issue(
-                name="missing_feature_current",
-                metric="schema",
-                severity=Severity.CRITICAL,
-                message=f"'{feature}' missing in current data",
-                feature=feature,
-            )
-        )
-
-    return issues
 
 
 def _check_empty_feature(

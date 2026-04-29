@@ -11,9 +11,8 @@ def analyze_schema(
 ) -> list[Issue]:
     """Analyze schema consistency against reference and current datasets.
 
-    Performs schema validation and detects mismatches between the provided
-    schema and the observed features in the datasets, including missing
-    schema definitions and unexpected features.
+    Performs schema validation and detects mismatches between the provided schema and the observed features
+    in the datasets, including missing expected features and unexpected features.
 
     Parameters
     ----------
@@ -50,26 +49,36 @@ def analyze_schema(
     ref_keys = set(reference)
     cur_keys = set(current)
 
-    # Missing schema definitions
-    missing = (ref_keys | cur_keys) - schema_keys
-    if missing:
-        issues.append(
+    # Missing expected features.
+    for f in schema_keys - ref_keys:
+        issues.append( # noqa: PERF401 # Hurts readability.
             Issue(
-                name="missing_schema_definitions",
+                name="missing_feature_reference",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message=f"Missing schema definitions for features: {sorted(missing)}",
-                feature=None,
+                message=f"'{f}' missing in reference data",
+                feature=f,
             )
         )
 
-    # Unexpected features
+    for f in schema_keys - cur_keys:
+        issues.append( # noqa: PERF401 # Hurts readability.
+            Issue(
+                name="missing_feature_current",
+                metric="schema",
+                severity=Severity.CRITICAL,
+                message=f"'{f}' missing in current data",
+                feature=f,
+            )
+        )
+
+    # Unexpected features.
     for f in ref_keys - schema_keys:
         issues.append(  # noqa: PERF401 # Hurts readability.
             Issue(
                 name="unexpected_feature_reference",
                 metric="schema",
-                severity=Severity.WARNING,
+                severity=Severity.CRITICAL,
                 message=f"'{f}' present in reference but not in schema",
                 feature=f,
             )
@@ -80,7 +89,7 @@ def analyze_schema(
             Issue(
                 name="unexpected_feature_current",
                 metric="schema",
-                severity=Severity.WARNING,
+                severity=Severity.CRITICAL,
                 message=f"'{f}' present in current but not in schema",
                 feature=f,
             )
