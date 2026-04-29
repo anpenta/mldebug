@@ -62,49 +62,70 @@ schema = {
 }
 
 report = run_checks(reference=reference, current=current, schema=schema)
+```
 
+## Inspect detected issues
+
+### Human-readable output
+
+```python
 for issue in report.issues:
     print(issue)
+```
 
+```text
+[WARNING] psi_drift - country: PSI drift detected (18.0152)
+```
+
+## Summary
+
+```python
 print(report.summary())
+```
 
+```python
+{
+  "total": 1,
+  "by_severity": {
+    "info": 0,
+    "warning": 1,
+    "critical": 0
+  },
+  "status": "issues_detected"
+}
+```
+
+## Structured output
+
+```python
 print(report.to_dict())
 ```
 
-## Example Output
+```json
+{
+  "issues": [
+    {
+      "name": "psi_drift",
+      "metric": "psi",
+      "severity": "warning",
+      "message": "country: PSI drift detected (18.0152)",
+      "feature": "country",
+      "value": 18.01521528247136,
+      "threshold": 0.2
+    }
+  ]
+}
+```
+
+## Logs
 
 ```python
-from mldebug import Issue, Severity
+for line in report.to_logs():
+    print(line)
+```
 
-Issue(
-    name="ks_test",
-    metric="distribution_shift_score",
-    severity=Severity.WARNING,
-    message="age: distribution shift detected (p=0.003214)",
-    feature="age",
-    value=0.003214,
-    threshold=0.05,
-)
-
-Issue(
-    name="psi_drift",
-    metric="psi",
-    severity=Severity.WARNING,
-    message="country: PSI drift detected (0.3200)",
-    feature="country",
-    value=0.32,
-    threshold=0.2,
-)
-
-Issue(
-    name="missing_values",
-    metric="missing_rate_increase",
-    severity=Severity.WARNING,
-    message="income: missing rate drift detected (0.0740)",
-    feature="income",
-    value=0.0740,
-    threshold=0.05,
-)
+```text
+[WARNING] psi_drift - country: PSI drift detected (18.0152)
 ```
 
 ## Supported Checks
@@ -129,7 +150,7 @@ See [documentation pages](https://anpenta.github.io/mldebug).
 
 Active development (v0.x).
 
-APIs may evolve before v1.0.
+APIs may evolve before v1.0.0.
 
 ## Development Setup
 
