@@ -50,7 +50,3 @@ class Report:
                 for i in self.issues
             ],
         }
-
-    def to_logs(self) -> list[str]:
-        """Return human-readable log-style representation."""
-        return [str(i) for i in self.issues]

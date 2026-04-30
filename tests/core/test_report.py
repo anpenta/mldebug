@@ -53,26 +53,3 @@ def test_report_to_dict_returns_dict_with_correct_structure() -> None:
             },
         ],
     }
-
-
-def test_report_to_logs_formats_output_correctly() -> None:
-    report = Report(
-        [
-            Issue(
-                name="psi_drift",
-                metric="psi",
-                severity=Severity.WARNING,
-                message="country: drift detected",
-                feature="country",
-                value=0.32,
-                threshold=0.2,
-            )
-        ]
-    )
-
-    logs = report.to_logs()
-
-    assert isinstance(logs, list)
-    assert len(logs) == 1
-
-    assert logs[0] == "[WARNING] psi_drift - country: drift detected"
