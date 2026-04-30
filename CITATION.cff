@@ -1,13 +1,14 @@
-cff-version: 1.2.0
-title: mldebug
-message: If you use mldebug in your work, please cite this software.
+cff-version: "1.2.0"
+title: "mldebug"
+message: "If you use mldebug in your work, please cite this software."
 type: software
 
 authors:
-  - given-names: Andreas
-    family-names: Pentaliotis
+  - given-names: "Andreas"
+    family-names: "Pentaliotis"
 
-year: 2026
-url: https://github.com/anpenta/mldebug
-repository-code: https://github.com/anpenta/mldebug
-license: MIT
+url: "https://github.com/anpenta/mldebug"
+repository-code: "https://github.com/anpenta/mldebug"
+license: "MIT"
+
+abstract: "mldebug is a lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
