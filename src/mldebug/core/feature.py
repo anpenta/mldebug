@@ -5,7 +5,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from mldebug.checks.ks import run_numeric_ks_test_check
-from mldebug.checks.missing_values import run_numeric_missing_value_check
+from mldebug.checks.missing_values import run_categorical_missing_value_check, run_numeric_missing_value_check
 from mldebug.checks.psi import run_categorical_psi_drift_check
 from mldebug.core.issue import Issue, Severity
 
@@ -15,6 +15,7 @@ CHECKS = {
         run_numeric_ks_test_check,
     ],
     "categorical": [
+        run_categorical_missing_value_check,
         run_categorical_psi_drift_check,
     ],
 }
