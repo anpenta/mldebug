@@ -95,15 +95,39 @@ def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
 
 
-def _normalize(
-    feature_type: Literal["numeric", "categorical"],
-    data: Sequence[Any],
-) -> NDArray[Any]:
-    if feature_type == "categorical":
-        return np.asarray(data, dtype=object)
-
+def _normalize(feature_type: Literal["numeric", "categorical"], data: Sequence[Any]) -> NDArray[Any]:
     if feature_type == "numeric":
-        return np.asarray(data, dtype=float)
+        return _normalize_numeric(data)
+
+    if feature_type == "categorical":
+        return _normalize_categorical(data)
 
     error_msg = f"Unsupported feature type: {feature_type}"
     raise ValueError(error_msg)
+
+
+def _normalize_numeric(data: Sequence[Any]) -> NDArray[np.floating]:
+    # Force numeric and coerce invalids to NaN.
+    return np.asarray(data, dtype=float)
+
+
+_MISSING_STRINGS = {"", "nan", "NaN", "none", "None"}
+
+
+def _normalize_categorical(data: Sequence[Any]) -> NDArray[np.str_]:
+    arr = np.asarray(data, dtype=object)
+
+    # Convert everything to string, map missing  to "".
+    mask = np.array(
+        [
+            v is None
+            or (isinstance(v, float) and np.isnan(v))
+            or (isinstance(v, str) and v.strip() in _MISSING_STRINGS)
+            for v in arr
+        ],
+        dtype=bool,
+    )
+    arr_str = arr.astype(str)
+    arr_str[mask] = ""
+
+    return arr_str
