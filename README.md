@@ -66,8 +66,6 @@ report = run_checks(reference=reference, current=current, schema=schema)
 
 ## Inspect detected issues
 
-### Human-readable output
-
 ```python
 for issue in report.issues:
     print(issue)
@@ -117,30 +115,30 @@ print(report.to_dict())
 }
 ```
 
-## Logs
+## Available checks
+
+mldebug provides runtime introspection of all available checks.
+
+You can view the checks available in your installed version:
 
 ```python
-for line in report.to_logs():
-    print(line)
+from mldebug import list_checks
+
+checks = list_checks()
+print(checks)
 ```
 
 ```text
-[WARNING] psi_drift - country: PSI drift detected (18.0152)
+{
+  "numeric": [
+    "run_numeric_missing_value_check",
+    "run_numeric_ks_test_check"
+  ],
+  "categorical": [
+    "run_categorical_psi_drift_check"
+  ]
+}
 ```
-
-## Supported Checks
-
-mldebug runs a combination of:
-
-### Numeric features
-
-* [Kolmogorov–Smirnov test (KS test)](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
-* missing value rate changes
-
-### Categorical features
-
-* [Population Stability Index (PSI)](https://www.geeksforgeeks.org/data-science/population-stability-index-psi/)
-* category distribution changes
 
 ## Documentation
 
