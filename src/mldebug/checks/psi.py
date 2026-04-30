@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 from mldebug.core.issue import Issue, Severity
 
 
-def run_psi_drift_check_categorical(
+def run_categorical_psi_drift_check(
     feature: str,
     reference: NDArray[np.object_],
     current: NDArray[np.object_],
@@ -34,7 +34,7 @@ def run_psi_drift_check_categorical(
         Issue if PSI exceeds threshold.
 
     """
-    psi = _compute_psi_categorical(reference, current)
+    psi = _compute_categorical_psi(reference, current)
 
     if psi > threshold:
         return Issue(
@@ -50,7 +50,7 @@ def run_psi_drift_check_categorical(
     return None
 
 
-def _compute_psi_categorical(
+def _compute_categorical_psi(
     reference: NDArray[np.object_],
     current: NDArray[np.object_],
     eps: float = 1e-8,

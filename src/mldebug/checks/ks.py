@@ -5,13 +5,13 @@ from scipy.stats import ks_2samp
 from mldebug.core.issue import Issue, Severity
 
 
-def run_ks_test_check(
+def run_numeric_ks_test_check(
     feature: str,
     reference: NDArray[np.floating],
     current: NDArray[np.floating],
     alpha: float = 0.05,
 ) -> Issue | None:
-    """Detect distribution shift using the Kolmogorov-Smirnov test.
+    """Detect numeric distribution shift using the Kolmogorov-Smirnov test.
 
     The KS test compares the empirical distributions of reference and current data for a given feature.
 

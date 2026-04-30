@@ -4,18 +4,18 @@ from typing import Any, Literal
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.checks.ks import run_ks_test_check
-from mldebug.checks.missing_values import run_missing_value_check
-from mldebug.checks.psi import run_psi_drift_check_categorical
+from mldebug.checks.ks import run_numeric_ks_test_check
+from mldebug.checks.missing_values import run_numeric_missing_value_check
+from mldebug.checks.psi import run_categorical_psi_drift_check
 from mldebug.core.issue import Issue, Severity
 
 _CHECKS = {
     "numeric": [
-        run_missing_value_check,
-        run_ks_test_check,
+        run_numeric_missing_value_check,
+        run_numeric_ks_test_check,
     ],
     "categorical": [
-        run_psi_drift_check_categorical,
+        run_categorical_psi_drift_check,
     ],
 }
 

@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from mldebug.core.issue import Issue, Severity
 
 
-def run_missing_value_check(
+def run_numeric_missing_value_check(
     feature: str,
     reference: NDArray[np.floating],
     current: NDArray[np.floating],
