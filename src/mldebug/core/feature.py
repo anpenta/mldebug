@@ -9,7 +9,7 @@ from mldebug.checks.missing_values import run_numeric_missing_value_check
 from mldebug.checks.psi import run_categorical_psi_drift_check
 from mldebug.core.issue import Issue, Severity
 
-_CHECKS = {
+CHECKS = {
     "numeric": [
         run_numeric_missing_value_check,
         run_numeric_ks_test_check,
@@ -83,7 +83,7 @@ def run_feature_checks(
     ref_arr = _normalize(ftype, ref)
     cur_arr = _normalize(ftype, cur)
 
-    for check_fn in _CHECKS[ftype]:
+    for check_fn in CHECKS[ftype]:
         issue: Issue | None = check_fn(feature=feature, reference=ref_arr, current=cur_arr)
         if issue:
             issues.append(issue)
