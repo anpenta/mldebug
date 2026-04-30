@@ -1,6 +1,6 @@
 from mldebug import list_checks, run_checks
 from mldebug.core.issue import Severity
-from tests.factories.data import generate_normal_data, inject_missing_values
+from tests.factories.data import generate_normal_data, inject_numeric_missing_values
 
 
 def test_list_checks_returns_valid_structure() -> None:
@@ -75,7 +75,7 @@ def test_run_checks_detects_categorical_drift() -> None:
 def test_run_checks_detects_missing_values() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {
-        "feature_1": inject_missing_values(generate_normal_data(mean=0), rate=0.3),
+        "feature_1": inject_numeric_missing_values(generate_normal_data(mean=0), rate=0.3),
     }
 
     schema = {"feature_1": "numeric"}

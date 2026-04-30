@@ -5,7 +5,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from mldebug.checks.ks import run_numeric_ks_test_check
-from mldebug.checks.missing_values import run_numeric_missing_value_check
+from mldebug.checks.missing_values import run_categorical_missing_value_check, run_numeric_missing_value_check
 from mldebug.checks.psi import run_categorical_psi_drift_check
 from mldebug.core.issue import Issue, Severity
 
@@ -15,6 +15,7 @@ CHECKS = {
         run_numeric_ks_test_check,
     ],
     "categorical": [
+        run_categorical_missing_value_check,
         run_categorical_psi_drift_check,
     ],
 }
@@ -80,8 +81,8 @@ def run_feature_checks(
     if is_empty_ref or is_empty_cur:
         return issues
 
-    ref_arr = _normalize(ftype, ref)
-    cur_arr = _normalize(ftype, cur)
+    ref_arr = _normalize_data(ftype, ref)
+    cur_arr = _normalize_data(ftype, cur)
 
     for check_fn in CHECKS[ftype]:
         issue: Issue | None = check_fn(feature=feature, reference=ref_arr, current=cur_arr)
@@ -95,15 +96,39 @@ def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
 
 
-def _normalize(
-    feature_type: Literal["numeric", "categorical"],
-    data: Sequence[Any],
-) -> NDArray[Any]:
-    if feature_type == "categorical":
-        return np.asarray(data, dtype=object)
-
+def _normalize_data(feature_type: Literal["numeric", "categorical"], data: Sequence[Any]) -> NDArray[Any]:
     if feature_type == "numeric":
-        return np.asarray(data, dtype=float)
+        return _normalize_numeric(data)
+
+    if feature_type == "categorical":
+        return _normalize_categorical(data)
 
     error_msg = f"Unsupported feature type: {feature_type}"
     raise ValueError(error_msg)
+
+
+def _normalize_numeric(data: Sequence[Any]) -> NDArray[np.floating]:
+    # Force numeric and coerce invalids to NaN.
+    return np.asarray(data, dtype=float)
+
+
+_MISSING_STRINGS = {"", "nan", "NaN", "none", "None"}
+
+
+def _normalize_categorical(data: Sequence[Any]) -> NDArray[np.str_]:
+    arr = np.asarray(data, dtype=object)
+
+    # Convert everything to string, map missing  to "".
+    mask = np.array(
+        [
+            v is None
+            or (isinstance(v, float) and np.isnan(v))
+            or (isinstance(v, str) and v.strip() in _MISSING_STRINGS)
+            for v in arr
+        ],
+        dtype=bool,
+    )
+    arr_str = arr.astype(str)
+    arr_str[mask] = ""
+
+    return arr_str
