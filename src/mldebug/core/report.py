@@ -53,4 +53,4 @@ class Report:
 
     def to_logs(self) -> list[str]:
         """Return human-readable log-style representation."""
-        return [f"[{i.severity.value.upper()}] {i.name} - {i.message}" for i in self.issues]
+        return [str(i) for i in self.issues]

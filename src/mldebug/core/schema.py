@@ -39,7 +39,7 @@ def analyze_schema(
                 name="empty_schema",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message="Schema cannot be empty",
+                message="schema: empty",
                 feature=None,
             )
         )
@@ -56,7 +56,7 @@ def analyze_schema(
                 name="missing_feature_reference",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message=f"'{f}' missing in reference data",
+                message=f"{f}: missing in reference data",
                 feature=f,
             )
         )
@@ -67,7 +67,7 @@ def analyze_schema(
                 name="missing_feature_current",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message=f"'{f}' missing in current data",
+                message=f"{f}: missing in current data",
                 feature=f,
             )
         )
@@ -79,7 +79,7 @@ def analyze_schema(
                 name="unexpected_feature_reference",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message=f"'{f}' present in reference but not in schema",
+                message=f"{f}: present in reference but not in schema",
                 feature=f,
             )
         )
@@ -90,7 +90,7 @@ def analyze_schema(
                 name="unexpected_feature_current",
                 metric="schema",
                 severity=Severity.CRITICAL,
-                message=f"'{f}' present in current but not in schema",
+                message=f"{f}: present in current but not in schema",
                 feature=f,
             )
         )

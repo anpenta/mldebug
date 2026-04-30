@@ -60,7 +60,7 @@ def run_feature_checks(
                 name="empty_feature_reference",
                 metric="data_quality",
                 severity=Severity.CRITICAL,
-                message=f"'{feature}' has empty data in reference",
+                message=f"{feature}: empty data in reference",
                 feature=feature,
             )
         )
@@ -72,7 +72,7 @@ def run_feature_checks(
                 name="empty_feature_current",
                 metric="data_quality",
                 severity=Severity.CRITICAL,
-                message=f"'{feature}' has empty data in current",
+                message=f"{feature}: empty data in current",
                 feature=feature,
             )
         )
