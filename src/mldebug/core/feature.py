@@ -80,8 +80,8 @@ def run_feature_checks(
     if is_empty_ref or is_empty_cur:
         return issues
 
-    ref_arr = _normalize(ftype, ref)
-    cur_arr = _normalize(ftype, cur)
+    ref_arr = _normalize_data(ftype, ref)
+    cur_arr = _normalize_data(ftype, cur)
 
     for check_fn in CHECKS[ftype]:
         issue: Issue | None = check_fn(feature=feature, reference=ref_arr, current=cur_arr)
@@ -95,7 +95,7 @@ def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
 
 
-def _normalize(feature_type: Literal["numeric", "categorical"], data: Sequence[Any]) -> NDArray[Any]:
+def _normalize_data(feature_type: Literal["numeric", "categorical"], data: Sequence[Any]) -> NDArray[Any]:
     if feature_type == "numeric":
         return _normalize_numeric(data)
 

@@ -8,8 +8,8 @@ from mldebug.core.issue import Issue, Severity
 
 def run_categorical_psi_drift_check(
     feature: str,
-    reference: NDArray[np.object_],
-    current: NDArray[np.object_],
+    reference: NDArray[np.str_],
+    current: NDArray[np.str_],
     threshold: float = 0.2,
 ) -> Issue | None:
     """Detect categorical distribution drift using PSI.
@@ -19,10 +19,10 @@ def run_categorical_psi_drift_check(
     feature : str
         Name of the feature being checked.
 
-    reference : NDArray[np.object_]
+    reference : NDArray[np.str_]
         Reference data (baseline categorical values).
 
-    current : NDArray[np.object_]
+    current : NDArray[np.str_]
         Current data to evaluate.
 
     threshold : float
@@ -51,8 +51,8 @@ def run_categorical_psi_drift_check(
 
 
 def _compute_categorical_psi(
-    reference: NDArray[np.object_],
-    current: NDArray[np.object_],
+    reference: NDArray[np.str_],
+    current: NDArray[np.str_],
     eps: float = 1e-8,
 ) -> float:
     ref_counts = Counter(reference)
