@@ -220,6 +220,19 @@ We welcome contributions.
 
 Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/dependencies/) and defined in [pyproject.toml](pyproject.toml).
 
+## Citation
+
+If you use mldebug in your work, please cite:
+
+```bibtex
+@software{mldebug,
+  author = {Pentaliotis, Andreas},
+  title = {mldebug: A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems},
+  year = {2026},
+  url = {https://github.com/anpenta/mldebug}
+}
+```
+
 ## License
 
 See [LICENSE](https://github.com/anpenta/mldebug/blob/main/LICENSE).
