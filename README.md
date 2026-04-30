@@ -222,16 +222,9 @@ Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/
 
 ## Citation
 
-If you use mldebug in your work, please cite:
+If you use mldebug in your work, please cite this software.
 
-```bibtex
-@software{mldebug,
-  author = {Pentaliotis, Andreas},
-  title = {mldebug: A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems},
-  year = {2026},
-  url = {https://github.com/anpenta/mldebug}
-}
-```
+Preferred citation format is available in [CITATION.cff](https://github.com/anpenta/mldebug/blob/main/CITATION.cff) or via GitHub's “Cite this repository” button.
 
 ## License
 
