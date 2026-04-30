@@ -64,7 +64,7 @@ schema = {
 report = run_checks(reference=reference, current=current, schema=schema)
 ```
 
-## Inspect detected issues
+## Inspect results
 
 ```python
 for issue in report.issues:
