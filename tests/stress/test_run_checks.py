@@ -11,3 +11,19 @@ def test_run_checks_stress_large_dataset() -> None:
 
     assert report is not None
     assert isinstance(report.issues, list)
+
+    valid_issue_names = {
+        "ks_test",
+        "psi_drift",
+        "missing_values",
+        "empty_schema",
+        "missing_feature_reference",
+        "missing_feature_current",
+        "unexpected_feature_reference",
+        "unexpected_feature_current",
+        "empty_feature_reference",
+        "empty_feature_current",
+    }
+
+    assert all(i.name in valid_issue_names for i in report.issues)
+    assert len(report.issues) < 10_000
