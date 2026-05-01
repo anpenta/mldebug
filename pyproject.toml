@@ -61,7 +61,7 @@ fallback-version = "0.0.0" # Fallback when git metadata is unavailable for versi
 
 [tool.poe]
 default_array_item_task_type = "cmd"
-executor.type = "simple"
+executor.type = "uv"
 
 [tool.poe.tasks]
 
