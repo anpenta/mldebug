@@ -3,7 +3,7 @@ from collections import Counter
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.core.issue import Issue, Severity
+from mldebug.core.models.issue import Issue, Severity
 
 
 def run_categorical_psi_drift_check(

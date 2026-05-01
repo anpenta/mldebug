@@ -1,6 +1,6 @@
 import numpy as np
 
-from mldebug.checks.psi import run_categorical_psi_drift_check
+from mldebug.checks.categorical.psi import run_categorical_psi_drift_check
 
 
 def test_run_categorical_psi_drift_check_detects_shift() -> None:

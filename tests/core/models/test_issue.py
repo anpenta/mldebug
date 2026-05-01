@@ -1,4 +1,4 @@
-from mldebug.core.issue import Issue, Severity
+from mldebug.core.models.issue import Issue, Severity
 
 
 def test_issue_str_format_correct() -> None:

@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.stats import ks_2samp
 
-from mldebug.core.issue import Issue, Severity
+from mldebug.core.models.issue import Issue, Severity
 
 
 def run_numeric_ks_test_check(

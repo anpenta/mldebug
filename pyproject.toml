@@ -57,7 +57,7 @@ build-backend = "hatchling.build"
 source = "uv-dynamic-versioning"
 
 [tool.uv-dynamic-versioning]
-fallback-version = "0.0.0" # Used when no git-based version can be resolved.
+fallback-version = "0.0.0" # Fallback when git metadata is unavailable for version resolution.
 
 [tool.poe]
 default_array_item_task_type = "cmd"
@@ -67,7 +67,7 @@ executor.type = "simple"
 
 test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=80"
 test-all.sequence = [
-  # We combine the coverage from all environment runs to provide a unified report.
+  # Aggregate coverage across tox environments.
   "coverage erase",
   "tox run -- poe test --cov-append"
 ]
@@ -78,7 +78,7 @@ lint-check.sequence = [
   "pyright src",
   "uv lock --check"
 ]
-lint-check.ignore_fail = "return_non_zero" # Ensures all lint checks run even if one fails.
+lint-check.ignore_fail = "return_non_zero" # Ensure all lint checks run even if one fails.
 lint-check-all = "tox run -- poe lint-check"
 
 lint = [
@@ -97,7 +97,7 @@ skip_missing_interpreters = false
 runner = "uv-venv-lock-runner"
 package = "uv"
 dependency_groups = ["dev"]
-# Allows forwarding commands through tox for reusable task execution.
+# Allow forwarding commands through tox for reusable task execution.
 commands = [[ { replace = "posargs", extend = true } ]]
 
 [tool.ruff]
@@ -110,7 +110,9 @@ lint.ignore = [
   "D105",
   "D203",
   "D213",
+  "D400",
   "D405",
+  "D415",
   "PLR2004",
   "TID252",
 ]

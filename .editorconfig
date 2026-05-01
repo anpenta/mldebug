@@ -1,7 +1,5 @@
-# Top-most EditorConfig file.
 root = true
 
-# Default settings for all files.
 [*]
 charset = utf-8
 end_of_line = lf
@@ -10,6 +8,5 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
-# Python files.
 [*.py]
 indent_size = 4
