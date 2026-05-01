@@ -188,14 +188,16 @@ poe lint
 poe lint-check
 ```
 
-### Run full CI parity checks
+### Run full test matrix (all Python versions)
 
 ```bash
 poe test-all
 ```
 
+### Run full CI checks
+
 ```bash
-poe lint-check-all
+poe lint-check && poe test-all
 ```
 
 ### CI/CD
