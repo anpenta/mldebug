@@ -1,7 +1,7 @@
 import tracemalloc
 
 from mldebug import run_checks
-from tests.datasets.tabular import generate_mixed_tabular_dataset
+from tests.fixtures.tabular_dataset import generate_mixed_tabular_dataset
 
 
 def test_run_checks_memory_usage() -> None:

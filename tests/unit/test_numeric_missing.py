@@ -1,5 +1,5 @@
 from mldebug.checks.numeric.missing_values import run_numeric_missing_value_check
-from tests.factories.data import (
+from tests.fixtures.generators import (
     generate_normal_data,
     inject_numeric_missing_values,
 )

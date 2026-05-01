@@ -1,6 +1,6 @@
 import numpy as np
 
-from .data import (
+from ..fixtures.generators import (
     generate_categorical_data,
     generate_normal_data,
     inject_categorical_missing_values,

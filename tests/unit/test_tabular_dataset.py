@@ -1,4 +1,4 @@
-from .tabular import (
+from tests.fixtures.tabular_dataset import (
     generate_mixed_tabular_dataset,
 )
 

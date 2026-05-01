@@ -1,7 +1,7 @@
 from mldebug.checks.categorical.missing_values import (
     run_categorical_missing_value_check,
 )
-from tests.factories.data import (
+from tests.fixtures.generators import (
     generate_categorical_data,
     inject_categorical_missing_values,
 )
