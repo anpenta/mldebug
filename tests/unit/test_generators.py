@@ -49,4 +49,4 @@ def test_inject_categorical_missing_values_approx_rate() -> None:
 def test_generate_categorical_data_values_as_expected() -> None:
     data = generate_categorical_data(n=1000)
 
-    assert set(data).issubset({"A", "B", "C", "D"})
+    assert set(data).issubset({"A", "B", "C", "D", "E", "F", "G", "H"})

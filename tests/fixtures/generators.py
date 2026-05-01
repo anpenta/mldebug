@@ -17,7 +17,7 @@ def inject_numeric_missing_values(data: NDArray[np.float64], rate: float = 0.1, 
 
 def generate_categorical_data(n: int = 1000, seed: int = 42) -> NDArray[np.str_]:
     rng = np.random.default_rng(seed)
-    return rng.choice(["A", "B", "C", "D"], size=n)
+    return rng.choice(["A", "B", "C", "D", "E", "F", "G", "H"], size=n)
 
 
 def inject_categorical_missing_values(data: NDArray[np.str_], rate: float = 0.1, seed: int = 42) -> NDArray[np.str_]:
