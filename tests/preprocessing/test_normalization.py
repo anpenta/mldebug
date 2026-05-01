@@ -3,7 +3,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from mldebug.core.feature import _normalize_categorical, _normalize_numeric
+from mldebug.preprocessing.normalization import _normalize_categorical, _normalize_numeric
 
 
 @pytest.mark.parametrize(

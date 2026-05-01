@@ -1,5 +1,5 @@
 from mldebug import list_checks, run_checks
-from mldebug.core.issue import Severity
+from mldebug.core.models.issue import Severity
 from tests.factories.data import generate_normal_data, inject_numeric_missing_values
 
 

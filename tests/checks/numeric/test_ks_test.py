@@ -1,4 +1,4 @@
-from mldebug.checks.ks import run_numeric_ks_test_check
+from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
 from tests.factories.data import generate_normal_data
 
 
