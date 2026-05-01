@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from tests.stress.datasets import (
+from .tabular import (
     generate_categorical_tabular_dataset,
     generate_mixed_tabular_dataset,
     generate_numeric_tabular_dataset,
