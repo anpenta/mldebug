@@ -13,7 +13,7 @@ from .tabular import (
 
 
 @pytest.mark.parametrize(
-    ("dataset_generator_function", "expected_schema_values"),
+    ("dataset_generation_function", "expected_schema_values"),
     [
         (generate_mixed_tabular_dataset, {"numeric", "categorical"}),
         (generate_numeric_tabular_dataset, {"numeric"}),
@@ -21,7 +21,7 @@ from .tabular import (
     ],
 )
 def test_dataset_structure(
-    dataset_generator_function: Callable[
+    dataset_generation_function: Callable[
         ...,
         tuple[
             dict[str, NDArray[np.floating | np.str_]],
@@ -34,7 +34,7 @@ def test_dataset_structure(
     n = 100
     n_features = 10
 
-    reference, current, schema = dataset_generator_function(n=n, n_features=n_features)
+    reference, current, schema = dataset_generation_function(n=n, n_features=n_features)
 
     assert len(reference) == n_features
     assert len(current) == n_features
