@@ -2,9 +2,10 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Literal
 
 from mldebug.core.models.report import Report
-from mldebug.core.pipeline.feature_engine import run_feature_checks
-from mldebug.core.pipeline.filtering import get_valid_features
-from mldebug.core.pipeline.schema import analyze_schema
+
+from .feature_engine import run_feature_checks
+from .filtering import get_valid_features
+from .schema import analyze_schema
 
 if TYPE_CHECKING:
     from mldebug.core.models.issue import Issue
