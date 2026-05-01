@@ -1,13 +1,11 @@
-"""
-Public API layer for mldebug.
+"""Public API layer for mldebug.
 
-Defines the stable entrypoints used to run dataset validation and inspect available checks.
+Exposes user-facing functions for running validation checks and inspecting available checks.
 """
 
-from mldebug.core.pipeline.runner import run_checks
-from mldebug.core.feature import list_checks
+from mldebug.core.pipeline.runner import list_checks, run_checks
 
 __all__ = [
-    "run_checks",
     "list_checks",
+    "run_checks",
 ]

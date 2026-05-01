@@ -1,8 +1,6 @@
-"""
-Core data models for mldebug.
+"""Core data models for mldebug.
 
-Defines the fundamental data structures used to represent issues, reports, and severity
-levels produced by validation checks.
+Defines the fundamental data structures used across the system, including issues, reports, and severity levels.
 """
 
 from .issue import Issue, Severity

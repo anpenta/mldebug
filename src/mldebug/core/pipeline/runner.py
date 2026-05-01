@@ -1,13 +1,13 @@
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Literal
 
-from mldebug.core.feature import CHECKS, run_feature_checks
-from mldebug.core.filtering import get_valid_features
-from mldebug.core.report import Report
-from mldebug.core.schema import analyze_schema
+from mldebug.core.models.report import Report
+from mldebug.core.pipeline.feature_engine import CHECKS, run_feature_checks
+from mldebug.core.pipeline.filtering import get_valid_features
+from mldebug.core.pipeline.schema import analyze_schema
 
 if TYPE_CHECKING:
-    from .core.issue import Issue
+    from mldebug.core.models.issue import Issue
 
 
 def list_checks() -> dict[str, list[str]]:

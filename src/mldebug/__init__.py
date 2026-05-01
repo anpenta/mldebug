@@ -1,11 +1,9 @@
 """mldebug
 
-A lightweight Python package for comparing datasets and detecting unexpected changes in machine
-learning systems.
+A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems.
 
-Provides tools to compare reference and current datasets, run validation checks, and return structured
-reports of detected issues.
-
+Provides tools to run validation checks on reference and current datasets and return structured reports of detected
+issues.
 """
 
 from .api import list_checks, run_checks
