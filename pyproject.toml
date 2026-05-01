@@ -44,8 +44,6 @@ dev = [
   "pytest-cov>=7.1.0",
   "ruff>=0.15.7",
   "pdoc>=16.0.0",
-  "tox>=4.50.3",
-  "tox-uv-bare>=1.35.1",
   "scipy-stubs>=1.15.3.0",
 ]
 
@@ -60,45 +58,47 @@ source = "uv-dynamic-versioning"
 fallback-version = "0.0.0" # Fallback when git metadata is unavailable for version resolution.
 
 [tool.poe]
-default_array_item_task_type = "cmd"
-executor.type = "uv"
+executor = { type = "uv" }
 
 [tool.poe.tasks]
 
-test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=80"
+test = "pytest --cov=mldebug --cov-report=term --cov-report=xml --cov-fail-under=80"
+
+test-py310 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.10", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py310" } }
+test-py311 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.11", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py311" } }
+test-py312 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.12", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py312" } }
+test-py313 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.13", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py313" } }
+test-py314 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.14", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py314" } }
+
+coverage-combine = "coverage combine"
+coverage-report = "coverage report --fail-under=80"
+coverage-xml = "coverage xml"
+
 test-all.sequence = [
-  # Aggregate coverage across tox environments.
-  "coverage erase",
-  "tox run -- poe test --cov-append"
+  "test-py310",
+  "test-py311",
+  "test-py312",
+  "test-py313",
+  "test-py314",
+  "coverage-combine",
+  "coverage-report",
+  "coverage-xml"
 ]
 
 lint-check.sequence = [
-  "ruff format --diff",
-  "ruff check --no-fix",
-  "pyright src",
-  "uv lock --check"
+  { cmd = "ruff format --diff" },
+  { cmd = "ruff check --no-fix" },
+  { cmd = "pyright src" },
+  { cmd = "uv lock --check" }
 ]
-lint-check.ignore_fail = "return_non_zero" # Ensure all lint checks run even if one fails.
-lint-check-all = "tox run -- poe lint-check"
+lint-check.ignore_fail = "return_non_zero"
 
 lint = [
-  "ruff format",
-  "ruff check --fix",
-  "pyright src",
-  "uv lock --check"
+  { cmd = "ruff format" },
+  { cmd = "ruff check --fix" },
+  { cmd = "pyright src" },
+  { cmd = "uv lock --check" }
 ]
-
-[tool.tox]
-envlist = ["py310", "py311", "py312", "py313", "py314"]
-requires = ["tox>=4.0"]
-skip_missing_interpreters = false
-
-[tool.tox.env_run_base]
-runner = "uv-venv-lock-runner"
-package = "uv"
-dependency_groups = ["dev"]
-# Allow forwarding commands through tox for reusable task execution.
-commands = [[ { replace = "posargs", extend = true } ]]
 
 [tool.ruff]
 line-length = 120
