@@ -1,17 +1,16 @@
 import numpy as np
 
 from mldebug.checks.categorical.unseen import run_categorical_unseen_category_check
-from mldebug.core.config import CheckConfig
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.config import CategoricalCheckConfig
+from mldebug.core.models.context import CategoricalFeatureContext
 
 
 def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature="color",
-        ftype="categorical",
         reference=np.array(["red", "blue"]),
         current=np.array(["red", "green"]),
-        config=CheckConfig(),
+        config=CategoricalCheckConfig(),
     )
 
     issue = run_categorical_unseen_category_check(context)
@@ -23,12 +22,11 @@ def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
 
 
 def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> None:
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature="color",
-        ftype="categorical",
         reference=np.array(["red", "blue"]),
         current=np.array(["red", "blue"]),
-        config=CheckConfig(),
+        config=CategoricalCheckConfig(),
     )
     issue = run_categorical_unseen_category_check(context)
 
@@ -36,12 +34,11 @@ def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> N
 
 
 def test_unseen_category_check_counts_multiple_new_categories_correctly() -> None:
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature="color",
-        ftype="categorical",
         reference=np.array(["red"]),
         current=np.array(["blue", "green"]),
-        config=CheckConfig(),
+        config=CategoricalCheckConfig(),
     )
 
     issue = run_categorical_unseen_category_check(context)
@@ -51,12 +48,11 @@ def test_unseen_category_check_counts_multiple_new_categories_correctly() -> Non
 
 
 def test_unseen_category_check_counts_unique_categories_not_occurrences() -> None:
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature="color",
-        ftype="categorical",
         reference=np.array(["red"]),
         current=np.array(["green", "green", "green"]),
-        config=CheckConfig(),
+        config=CategoricalCheckConfig(),
     )
 
     issue = run_categorical_unseen_category_check(context)
@@ -67,8 +63,8 @@ def test_unseen_category_check_counts_unique_categories_not_occurrences() -> Non
 
 
 def test_unseen_category_check_returns_none_for_empty_current() -> None:
-    context = FeatureContext(
-        feature="color", ftype="categorical", reference=np.array(["red"]), current=np.array([]), config=CheckConfig()
+    context = CategoricalFeatureContext(
+        feature="color", reference=np.array(["red"]), current=np.array([]), config=CategoricalCheckConfig()
     )
 
     issue = run_categorical_unseen_category_check(context)

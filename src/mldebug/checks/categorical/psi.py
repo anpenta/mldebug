@@ -1,13 +1,11 @@
-from typing import cast
-
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.models.context import CategoricalFeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
 
-def run_categorical_psi_drift_check(context: FeatureContext) -> Issue | None:
+def run_categorical_psi_drift_check(context: CategoricalFeatureContext) -> Issue | None:
     """Detect categorical distribution drift using Population Stability Index (PSI).
 
     This check compares the distribution of categorical values between reference and current data using PSI.
@@ -15,7 +13,7 @@ def run_categorical_psi_drift_check(context: FeatureContext) -> Issue | None:
 
     Parameters
     ----------
-    context : FeatureContext
+    context : CategoricalFeatureContext
         Execution context for the feature check.
 
     Returns
@@ -24,8 +22,8 @@ def run_categorical_psi_drift_check(context: FeatureContext) -> Issue | None:
         Issue if the PSI value exceeds the configured threshold, otherwise None.
 
     """
-    reference = cast("NDArray[np.str_]", context.reference)
-    current = cast("NDArray[np.str_]", context.current)
+    reference = context.reference
+    current = context.current
     feature = context.feature
     threshold = context.config.psi_threshold
 

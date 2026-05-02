@@ -1,16 +1,10 @@
-from typing import TYPE_CHECKING, cast
-
 from scipy.stats import ks_2samp
 
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.models.context import NumericFeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
-if TYPE_CHECKING:
-    import numpy as np
-    from numpy.typing import NDArray
 
-
-def run_numeric_ks_test_check(context: FeatureContext) -> Issue | None:
+def run_numeric_ks_test_check(context: NumericFeatureContext) -> Issue | None:
     """Detect numeric distribution shift using the Kolmogorov-Smirnov (KS) test.
 
     This check compares the empirical distributions of reference and current data for a numeric feature using
@@ -20,7 +14,7 @@ def run_numeric_ks_test_check(context: FeatureContext) -> Issue | None:
 
     Parameters
     ----------
-    context : FeatureContext
+    context : NumericFeatureContext
         Execution context for the feature check.
 
     Returns
@@ -29,8 +23,8 @@ def run_numeric_ks_test_check(context: FeatureContext) -> Issue | None:
         Issue if a statistically significant distribution shift is detected, otherwise None.
 
     """
-    reference = cast("NDArray[np.floating]", context.reference)
-    current = cast("NDArray[np.floating]", context.current)
+    reference = context.reference
+    current = context.current
     feature = context.feature
     alpha = context.config.ks_alpha
 

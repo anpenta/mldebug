@@ -1,15 +1,10 @@
-from typing import TYPE_CHECKING, cast
-
 import numpy as np
 
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.models.context import NumericFeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
-if TYPE_CHECKING:
-    from numpy.typing import NDArray
 
-
-def run_numeric_missing_value_check(context: FeatureContext) -> Issue | None:
+def run_numeric_missing_value_check(context: NumericFeatureContext) -> Issue | None:
     """Detect increase in missing values for a numeric feature.
 
     This check compares the proportion of missing values (NaNs) between the reference and current
@@ -17,7 +12,7 @@ def run_numeric_missing_value_check(context: FeatureContext) -> Issue | None:
 
     Parameters
     ----------
-    context : FeatureContext
+    context : NumericFeatureContext
         Execution context for the feature check.
 
     Returns
@@ -26,8 +21,8 @@ def run_numeric_missing_value_check(context: FeatureContext) -> Issue | None:
         Issue if the increase in missing rate exceeds the configured threshold, otherwise None.
 
     """
-    reference = cast("NDArray[np.floating]", context.reference)
-    current = cast("NDArray[np.floating]", context.current)
+    reference = context.reference
+    current = context.current
     feature = context.feature
     threshold = context.config.missing_threshold
 

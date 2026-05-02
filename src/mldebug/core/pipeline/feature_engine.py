@@ -1,11 +1,8 @@
 from collections.abc import Mapping, Sequence
 from typing import Any, Literal
 
-from mldebug.core.config import CheckConfig
-from mldebug.core.models.context import FeatureContext
 from mldebug.core.models.issue import Issue, Severity
 from mldebug.core.registry.checks import CHECKS
-from mldebug.preprocessing.normalization import normalize_data
 
 
 def run_feature_checks(
@@ -68,19 +65,11 @@ def run_feature_checks(
     if is_empty_ref or is_empty_cur:
         return issues
 
-    ref_arr = normalize_data(ftype, ref)
-    cur_arr = normalize_data(ftype, cur)
+    entry = CHECKS[ftype]
+    context = entry.context.from_raw(feature=feature, ref=ref, cur=cur)
 
-    context = FeatureContext(
-        feature=feature,
-        ftype=ftype,
-        reference=ref_arr,
-        current=cur_arr,
-        config=CheckConfig(),
-    )
-
-    for check_fn in CHECKS[ftype]:
-        issue: Issue | None = check_fn(context)
+    for check_fn in entry.checks:
+        issue = check_fn(context)
         if issue:
             issues.append(issue)
 

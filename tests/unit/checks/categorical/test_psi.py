@@ -3,8 +3,8 @@ import pytest
 from numpy.typing import NDArray
 
 from mldebug.checks.categorical.psi import _compute_categorical_psi, run_categorical_psi_drift_check
-from mldebug.core.config import CheckConfig
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.config import CategoricalCheckConfig
+from mldebug.core.models.context import CategoricalFeatureContext
 
 
 def test_categorical_psi_check_triggers_on_distribution_shift() -> None:
@@ -13,12 +13,11 @@ def test_categorical_psi_check_triggers_on_distribution_shift() -> None:
     reference = np.array(["A"] * 80 + ["B"] * 20, dtype="object")
     current = np.array(["A"] * 40 + ["B"] * 40 + ["C"] * 20, dtype="object")
 
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature=feature,
-        ftype="categorical",
         reference=reference,
         current=current,
-        config=CheckConfig(psi_threshold=0.1),
+        config=CategoricalCheckConfig(psi_threshold=0.1),
     )
 
     issue = run_categorical_psi_drift_check(context)
@@ -33,12 +32,11 @@ def test_categorical_psi_check_does_not_trigger_for_stable_distribution() -> Non
     reference = np.array(["A"] * 50 + ["B"] * 50, dtype="object")
     current = np.array(["A"] * 52 + ["B"] * 48, dtype="object")
 
-    context = FeatureContext(
+    context = CategoricalFeatureContext(
         feature="feature_1",
-        ftype="categorical",
         reference=reference,
         current=current,
-        config=CheckConfig(psi_threshold=0.1),
+        config=CategoricalCheckConfig(psi_threshold=0.1),
     )
 
     issue = run_categorical_psi_drift_check(context)
