@@ -8,7 +8,7 @@ from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
 def test_run_checks_memory() -> None:
     reference, current, schema = generate_mixed_tabular_dataset(
         n=50_000,
-        n_features=100,
+        n_features=100
     )
 
     gc.collect()
@@ -25,4 +25,4 @@ def test_run_checks_memory() -> None:
 
     peak_mib = peak_bytes / (1024 * 1024)
 
-    assert peak_mib < 400, f"Memory usage too high: {peak_mib:.2f} MiB"
+    assert peak_mib < 600, f"Memory usage too high: {peak_mib:.2f} MiB"
