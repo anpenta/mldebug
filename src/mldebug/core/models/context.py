@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from mldebug.core.config import CategoricalCheckConfig, NumericCheckConfig
-from mldebug.preprocessing.normalization import normalize_data
+from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -33,8 +33,8 @@ class NumericFeatureContext:
         """
         return cls(
             feature=feature,
-            reference=normalize_data(feature_type="numeric", data=ref),
-            current=normalize_data(feature_type="numeric", data=cur),
+            reference=normalize_numeric(ref),
+            current=normalize_numeric(cur),
             config=NumericCheckConfig(),
         )
 
@@ -59,7 +59,7 @@ class CategoricalFeatureContext:
         """
         return cls(
             feature=feature,
-            reference=normalize_data(feature_type="categorical", data=ref),
-            current=normalize_data(feature_type="categorical", data=cur),
+            reference=normalize_categorical(ref),
+            current=normalize_categorical(cur),
             config=CategoricalCheckConfig(),
         )

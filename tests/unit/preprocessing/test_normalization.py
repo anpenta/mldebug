@@ -3,7 +3,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from mldebug.preprocessing.normalization import _normalize_categorical, _normalize_numeric
+from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
 
 
 @pytest.mark.parametrize(
@@ -20,7 +20,7 @@ from mldebug.preprocessing.normalization import _normalize_categorical, _normali
     ],
 )
 def test_numeric_values_are_normalized_to_floats(data: list[Any], expected: list[str]) -> None:
-    out = _normalize_numeric(data)
+    out = normalize_numeric(data)
 
     assert np.allclose(out, expected, equal_nan=True)
     assert np.issubdtype(out.dtype, np.floating)
@@ -44,7 +44,7 @@ def test_numeric_values_are_normalized_to_floats(data: list[Any], expected: list
     ],
 )
 def test_categorical_values_are_normalized_and_missing_values_are_filled(data: list[Any], expected: list[str]) -> None:
-    out = _normalize_categorical(data)
+    out = normalize_categorical(data)
 
     assert np.array_equal(out, np.array(expected))
     assert out.dtype.type is np.str_
