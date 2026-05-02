@@ -1,5 +1,5 @@
 from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
-from tests.fixtures.generators import generate_normal_data
+from tests.fixtures.data.generators import generate_normal_data
 
 
 def test_run_numeric_ks_test_check_detects_shift() -> None:

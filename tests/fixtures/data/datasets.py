@@ -3,7 +3,7 @@ from typing import Literal
 import numpy as np
 from numpy.typing import NDArray
 
-from tests.fixtures.generators import (
+from tests.fixtures.data.generators import (
     generate_categorical_data,
     generate_normal_data,
 )

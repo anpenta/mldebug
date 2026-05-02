@@ -1,11 +1,7 @@
 import numpy as np
 
-from ..fixtures.generators import (
-    generate_categorical_data,
-    generate_normal_data,
-    inject_categorical_missing_values,
-    inject_numeric_missing_values,
-)
+from tests.fixtures.data.generators import generate_categorical_data, generate_normal_data
+from tests.fixtures.data.missing_values import inject_categorical_missing_values, inject_numeric_missing_values
 
 
 def test_inject_numeric_missing_values_preserves_shape_and_copy() -> None:

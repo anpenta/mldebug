@@ -1,10 +1,8 @@
 from mldebug.checks.categorical.missing_values import (
     run_categorical_missing_value_check,
 )
-from tests.fixtures.generators import (
-    generate_categorical_data,
-    inject_categorical_missing_values,
-)
+from tests.fixtures.data.generators import generate_categorical_data
+from tests.fixtures.data.missing_values import inject_categorical_missing_values
 
 
 def test_run_categorical_missing_value_check_detects_increase() -> None:
