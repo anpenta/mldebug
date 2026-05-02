@@ -5,7 +5,7 @@ from mldebug.core.config import CheckConfig
 from mldebug.core.models.context import FeatureContext
 
 
-def test_unseen_categories_detected() -> None:
+def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
     context = FeatureContext(
         feature="color",
         ftype="categorical",
@@ -22,7 +22,7 @@ def test_unseen_categories_detected() -> None:
     assert issue.value == 1
 
 
-def test_unseen_categories_none() -> None:
+def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> None:
     context = FeatureContext(
         feature="color",
         ftype="categorical",
@@ -35,7 +35,7 @@ def test_unseen_categories_none() -> None:
     assert issue is None
 
 
-def test_multiple_unseen_categories() -> None:
+def test_unseen_category_check_counts_multiple_new_categories_correctly() -> None:
     context = FeatureContext(
         feature="color",
         ftype="categorical",
@@ -50,7 +50,7 @@ def test_multiple_unseen_categories() -> None:
     assert issue.value == 2
 
 
-def test_unseen_categories_with_duplicates() -> None:
+def test_unseen_category_check_counts_unique_categories_not_occurrences() -> None:
     context = FeatureContext(
         feature="color",
         ftype="categorical",
@@ -66,7 +66,7 @@ def test_unseen_categories_with_duplicates() -> None:
     assert issue.value == 1
 
 
-def test_unseen_categories_empty_current() -> None:
+def test_unseen_category_check_returns_none_for_empty_current() -> None:
     context = FeatureContext(
         feature="color", ftype="categorical", reference=np.array(["red"]), current=np.array([]), config=CheckConfig()
     )
