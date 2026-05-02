@@ -1,6 +1,6 @@
 from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
-from mldebug.core.config import CheckConfig
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.config import NumericCheckConfig
+from mldebug.core.models.context import NumericFeatureContext
 from tests.fixtures.data.generators import generate_normal_data
 
 
@@ -10,8 +10,8 @@ def test_numeric_ks_test_detects_distribution_shift() -> None:
     reference = generate_normal_data()
     current = generate_normal_data(mean=1, std=1)
 
-    context = FeatureContext(
-        feature=feature, ftype="numeric", reference=reference, current=current, config=CheckConfig(ks_alpha=0.05)
+    context = NumericFeatureContext(
+        feature=feature, reference=reference, current=current, config=NumericCheckConfig(ks_alpha=0.05)
     )
 
     issue = run_numeric_ks_test_check(context)
@@ -27,8 +27,8 @@ def test_numeric_ks_test_does_not_trigger_when_distribution_is_stable() -> None:
     reference = generate_normal_data()
     current = generate_normal_data(mean=0.05)
 
-    context = FeatureContext(
-        feature=feature, ftype="numeric", reference=reference, current=current, config=CheckConfig(ks_alpha=0.05)
+    context = NumericFeatureContext(
+        feature=feature, reference=reference, current=current, config=NumericCheckConfig(ks_alpha=0.05)
     )
 
     issue = run_numeric_ks_test_check(context)

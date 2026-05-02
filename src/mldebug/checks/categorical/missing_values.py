@@ -1,14 +1,8 @@
-from typing import TYPE_CHECKING, cast
-
-from mldebug.core.models.context import FeatureContext
+from mldebug.core.models.context import CategoricalFeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
-if TYPE_CHECKING:
-    import numpy as np
-    from numpy.typing import NDArray
 
-
-def run_categorical_missing_value_check(context: FeatureContext) -> Issue | None:
+def run_categorical_missing_value_check(context: CategoricalFeatureContext) -> Issue | None:
     """Detect increase in missing values for a categorical feature.
 
     This check compares the proportion of missing values between reference and current data.
@@ -16,7 +10,7 @@ def run_categorical_missing_value_check(context: FeatureContext) -> Issue | None
 
     Parameters
     ----------
-    context : FeatureContext
+    context : CategoricalFeatureContext
         Execution context for the feature check.
 
     Returns
@@ -25,8 +19,8 @@ def run_categorical_missing_value_check(context: FeatureContext) -> Issue | None
         Issue if the increase in missing rate exceeds the configured threshold, otherwise None.
 
     """
-    reference = cast("NDArray[np.str_]", context.reference)
-    current = cast("NDArray[np.str_]", context.current)
+    reference = context.reference
+    current = context.current
     feature = context.feature
     threshold = context.config.missing_threshold
 
