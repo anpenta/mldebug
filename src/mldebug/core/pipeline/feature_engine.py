@@ -66,10 +66,10 @@ def run_feature_checks(
         return issues
 
     entry = CHECKS[ftype]
-    context = entry["builder"](feature, ref, cur)
+    context = entry.context.from_raw(feature=feature, ref=ref, cur=cur)
 
-    for check_fn in entry["checks"]:
-        issue: Issue | None = check_fn(context)
+    for check_fn in entry.checks:
+        issue = check_fn(context)
         if issue:
             issues.append(issue)
 
