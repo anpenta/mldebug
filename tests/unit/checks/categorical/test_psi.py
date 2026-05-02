@@ -3,22 +3,29 @@ import pytest
 from numpy.typing import NDArray
 
 from mldebug.checks.categorical.psi import _compute_categorical_psi, run_categorical_psi_drift_check
+from mldebug.core.config import CheckConfig
+from mldebug.core.models.context import FeatureContext
 
 
 def test_run_categorical_psi_drift_check_detects_shift() -> None:
+    feature = "feature_1"
+
     reference = np.array(["A"] * 80 + ["B"] * 20, dtype="object")
     current = np.array(["A"] * 40 + ["B"] * 40 + ["C"] * 20, dtype="object")
 
-    issue = run_categorical_psi_drift_check(
-        feature="feature_1",
+    context = FeatureContext(
+        feature=feature,
+        ftype="categorical",
         reference=reference,
         current=current,
-        threshold=0.1,
+        config=CheckConfig(psi_threshold=0.1),
     )
+
+    issue = run_categorical_psi_drift_check(context)
 
     assert issue is not None
     assert issue.metric == "psi"
-    assert issue.feature == "feature_1"
+    assert issue.feature == feature
     assert issue.value > 0.1
 
 
@@ -26,12 +33,15 @@ def test_run_categorical_psi_drift_check_no_detection_when_stable() -> None:
     reference = np.array(["A"] * 50 + ["B"] * 50, dtype="object")
     current = np.array(["A"] * 52 + ["B"] * 48, dtype="object")
 
-    issue = run_categorical_psi_drift_check(
+    context = FeatureContext(
         feature="feature_1",
+        ftype="categorical",
         reference=reference,
         current=current,
-        threshold=0.1,
+        config=CheckConfig(psi_threshold=0.1),
     )
+
+    issue = run_categorical_psi_drift_check(context)
 
     assert issue is None
 
