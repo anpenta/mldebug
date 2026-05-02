@@ -1,5 +1,3 @@
-from collections import Counter
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -55,23 +53,30 @@ def _compute_categorical_psi(
     current: NDArray[np.str_],
     eps: float = 1e-8,
 ) -> float:
-    ref_counts = Counter(reference)
-    cur_counts = Counter(current)
+    # Build shared category space (union of all categories).
+    all_values = np.concatenate([reference, current])
+    _, encoded = np.unique(all_values, return_inverse=True)
 
-    all_categories = set(ref_counts) | set(cur_counts)
+    ref_encoded = encoded[: len(reference)]
+    cur_encoded = encoded[len(reference) :]
 
-    ref_total = sum(ref_counts.values())
-    cur_total = sum(cur_counts.values())
+    # Histogram counts aligned to the same category space.
+    n_categories = encoded.max() + 1
+    ref_counts = np.bincount(ref_encoded, minlength=n_categories)
+    cur_counts = np.bincount(cur_encoded, minlength=n_categories)
 
-    psi = 0.0
+    # Convert to probabilities.
+    ref_total = ref_counts.sum()
+    cur_total = cur_counts.sum()
 
-    for cat in all_categories:
-        p = ref_counts.get(cat, 0) / ref_total
-        q = cur_counts.get(cat, 0) / cur_total
+    p = ref_counts / ref_total
+    q = cur_counts / cur_total
 
-        p = max(p, eps)
-        q = max(q, eps)
+    # Numerical stability.
+    p = np.clip(p, eps, None)
+    q = np.clip(q, eps, None)
 
-        psi += (p - q) * np.log(p / q)
+    # PSI computation (vectorized).
+    psi = np.sum((p - q) * np.log(p / q))
 
     return float(psi)
