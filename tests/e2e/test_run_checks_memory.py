@@ -6,23 +6,18 @@ from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
 
 
 def test_run_checks_memory() -> None:
-    reference, current, schema = generate_mixed_tabular_dataset(
-        n=50_000,
-        n_features=100
-    )
+    reference, current, schema = generate_mixed_tabular_dataset(n=10_000, n_features=50)
 
     gc.collect()
 
-    # Warmup run to reduce cold-start noise.
-    run_checks(reference=reference, current=current, schema=schema)
-
     tracemalloc.start()
     try:
-        run_checks(reference=reference, current=current, schema=schema)
+        for _ in range(2):
+            run_checks(reference=reference, current=current, schema=schema)
         _, peak_bytes = tracemalloc.get_traced_memory()
     finally:
         tracemalloc.stop()
 
     peak_mib = peak_bytes / (1024 * 1024)
 
-    assert peak_mib < 600, f"Memory usage too high: {peak_mib:.2f} MiB"
+    assert peak_mib < 150, f"Memory usage too high: {peak_mib:.2f} MiB"
