@@ -1,40 +1,39 @@
-import numpy as np
-from numpy.typing import NDArray
+from typing import TYPE_CHECKING, cast
+
 from scipy.stats import ks_2samp
 
+from mldebug.core.models.context import FeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
+if TYPE_CHECKING:
+    import numpy as np
+    from numpy.typing import NDArray
 
-def run_numeric_ks_test_check(
-    feature: str,
-    reference: NDArray[np.floating],
-    current: NDArray[np.floating],
-    alpha: float = 0.05,
-) -> Issue | None:
-    """Detect numeric distribution shift using the Kolmogorov-Smirnov test.
 
-    The KS test compares the empirical distributions of reference and current data for a given feature.
+def run_numeric_ks_test_check(context: FeatureContext) -> Issue | None:
+    """Detect numeric distribution shift using the Kolmogorov-Smirnov (KS) test.
+
+    This check compares the empirical distributions of reference and current data for a numeric feature using
+    the two-sample KS test. An issue is reported when the p-value falls below the configured significance level.
+
+    The significance level (alpha) is obtained from the check configuration.
 
     Parameters
     ----------
-    feature : str
-        Name of the feature being checked.
-
-    reference : NDArray[np.floating]
-        Reference (baseline) data.
-
-    current : NDArray[np.floating]
-        Current data to evaluate.
-
-    alpha : float = 0.05, optional
-        Significance level for rejecting the null hypothesis.
+    context : FeatureContext
+        Execution context for the feature check.
 
     Returns
     -------
     Issue | None
-        Issue if distribution shift is detected, otherwise None.
+        Issue if a statistically significant distribution shift is detected, otherwise None.
 
     """
+    reference = cast("NDArray[np.floating]", context.reference)
+    current = cast("NDArray[np.floating]", context.current)
+    feature = context.feature
+    alpha = context.config.ks_alpha
+
     p_value = ks_2samp(reference, current).pvalue
 
     if p_value < alpha:
