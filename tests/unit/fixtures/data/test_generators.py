@@ -1,4 +1,3 @@
-
 from tests.fixtures.data.generators import generate_categorical_data
 
 
