@@ -5,7 +5,7 @@ from tests.fixtures.data.generators import generate_categorical_data
 from tests.fixtures.data.missing_values import inject_categorical_missing_values
 
 
-def test_run_categorical_missing_value_check_detects_increase() -> None:
+def test_categorical_missing_value_check_triggers_when_missing_rate_increases() -> None:
     feature = "feature_1"
 
     ref = inject_categorical_missing_values(generate_categorical_data(), rate=0.01)
@@ -25,7 +25,7 @@ def test_run_categorical_missing_value_check_detects_increase() -> None:
     assert issue.value > 0
 
 
-def test_run_categorical_missing_value_check_no_detection_when_stable() -> None:
+def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> None:
     feature = "feature_1"
 
     ref = inject_categorical_missing_values(
@@ -47,7 +47,7 @@ def test_run_categorical_missing_value_check_no_detection_when_stable() -> None:
     assert issue is None
 
 
-def test_run_categorical_missing_value_check_no_detection_when_decrease() -> None:
+def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
     feature = "feature_1"
 
     ref = inject_categorical_missing_values(

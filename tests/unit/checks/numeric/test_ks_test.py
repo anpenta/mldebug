@@ -4,7 +4,7 @@ from mldebug.core.models.context import FeatureContext
 from tests.fixtures.data.generators import generate_normal_data
 
 
-def test_run_numeric_ks_test_check_detects_shift() -> None:
+def test_numeric_ks_test_detects_distribution_shift() -> None:
     feature = "feature_1"
 
     reference = generate_normal_data()
@@ -21,7 +21,7 @@ def test_run_numeric_ks_test_check_detects_shift() -> None:
     assert issue.feature == feature
 
 
-def test_run_numeric_ks_test_check_no_detection_when_stable() -> None:
+def test_numeric_ks_test_does_not_trigger_when_distribution_is_stable() -> None:
     feature = "feature_1"
 
     reference = generate_normal_data()

@@ -19,7 +19,7 @@ from mldebug.preprocessing.normalization import _normalize_categorical, _normali
         ([], []),
     ],
 )
-def test_normalize_numeric(data: list[Any], expected: list[str]) -> None:
+def test_numeric_values_are_normalized_to_floats(data: list[Any], expected: list[str]) -> None:
     out = _normalize_numeric(data)
 
     assert np.allclose(out, expected, equal_nan=True)
@@ -43,7 +43,7 @@ def test_normalize_numeric(data: list[Any], expected: list[str]) -> None:
         ([], []),
     ],
 )
-def test_normalize_categorical(data: list[Any], expected: list[str]) -> None:
+def test_categorical_values_are_normalized_and_missing_values_are_filled(data: list[Any], expected: list[str]) -> None:
     out = _normalize_categorical(data)
 
     assert np.array_equal(out, np.array(expected))

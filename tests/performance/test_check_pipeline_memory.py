@@ -5,7 +5,7 @@ from mldebug import run_checks
 from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
 
 
-def test_run_checks_memory() -> None:
+def test_check_pipeline_memory_is_bounded() -> None:
     reference, current, schema = generate_mixed_tabular_dataset(n=10_000, n_features=50)
 
     gc.collect()

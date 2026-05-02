@@ -1,9 +1,7 @@
-from tests.fixtures.data.datasets import (
-    generate_mixed_tabular_dataset,
-)
+from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
 
 
-def test_mixed_tabular_dataset_structure() -> None:
+def test_generated_mixed_tabular_dataset_has_consistent_structure() -> None:
     n = 100
     n_features = 10
 

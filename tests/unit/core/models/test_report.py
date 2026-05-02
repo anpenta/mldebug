@@ -2,7 +2,7 @@ from mldebug.core.models.issue import Issue, Severity
 from mldebug.core.models.report import Report
 
 
-def test_report_summary_counts_issues_by_severity() -> None:
+def test_report_summary_groups_issues_by_severity() -> None:
     report = Report(
         [
             Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),
@@ -21,7 +21,7 @@ def test_report_summary_counts_issues_by_severity() -> None:
     assert summary["status"] == "issues_detected"
 
 
-def test_report_to_dict_returns_dict_with_correct_structure() -> None:
+def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
     report = Report(
         [
             Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),

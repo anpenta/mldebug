@@ -1,10 +1,40 @@
-from mldebug import run_checks
+from mldebug import list_checks, run_checks
 from mldebug.core.models.issue import Severity
 from tests.fixtures.data.generators import generate_normal_data
 from tests.fixtures.data.missing_values import inject_numeric_missing_values
 
 
-def test_run_checks_detects_numeric_drift() -> None:
+def test_checks_are_grouped_by_type() -> None:
+    result = list_checks()
+
+    assert isinstance(result, dict)
+    assert len(result) > 0
+
+    for group, checks in result.items():
+        assert isinstance(group, str)
+        assert isinstance(checks, list)
+        assert all(isinstance(name, str) for name in checks)
+
+
+def test_core_check_groups_exist() -> None:
+    result = list_checks()
+
+    assert "numeric" in result
+    assert "categorical" in result
+
+
+def test_expected_checks_are_registered() -> None:
+    result = list_checks()
+
+    numeric_checks = result["numeric"]
+    categorical_checks = result["categorical"]
+
+    assert any("missing" in name for name in numeric_checks)
+    assert any("ks" in name for name in numeric_checks)
+    assert any("psi" in name for name in categorical_checks)
+
+
+def test_numeric_drift_is_detected_by_ks_test() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {"feature_1": generate_normal_data(mean=5)}
 
@@ -21,7 +51,7 @@ def test_run_checks_detects_numeric_drift() -> None:
     assert all(i.severity == Severity.WARNING for i in ks_issues)
 
 
-def test_run_checks_detects_categorical_drift() -> None:
+def test_categorical_drift_is_detected_by_psi() -> None:
     ref = {
         "feature_1": ["A"] * 80 + ["B"] * 20,
     }
@@ -43,7 +73,7 @@ def test_run_checks_detects_categorical_drift() -> None:
     assert all(i.severity == Severity.WARNING for i in psi_issues)
 
 
-def test_run_checks_detects_missing_values() -> None:
+def test_missing_values_are_flagged() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {
         "feature_1": inject_numeric_missing_values(generate_normal_data(mean=0), rate=0.3),
@@ -62,7 +92,7 @@ def test_run_checks_detects_missing_values() -> None:
     assert all(i.severity == Severity.WARNING for i in missing_issues)
 
 
-def test_run_checks_handles_empty_schema() -> None:
+def test_empty_schema_is_reported() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [1, 2, 3]}
     schema = {}
@@ -72,7 +102,7 @@ def test_run_checks_handles_empty_schema() -> None:
     assert any(i.name == "empty_schema" for i in report.issues)
 
 
-def test_run_checks_detects_missing_reference_feature() -> None:
+def test_missing_features_in_reference_are_detected() -> None:
     ref = {}
     cur = {"a": [1, 2, 3]}
     schema = {"a": "numeric"}
@@ -82,7 +112,7 @@ def test_run_checks_detects_missing_reference_feature() -> None:
     assert any(i.name == "missing_feature_reference" for i in report.issues)
 
 
-def test_run_checks_detects_missing_current_feature() -> None:
+def test_missing_features_in_current_are_detected() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {}
     schema = {"a": "numeric"}
@@ -92,7 +122,7 @@ def test_run_checks_detects_missing_current_feature() -> None:
     assert any(i.name == "missing_feature_current" for i in report.issues)
 
 
-def test_run_checks_detects_unexpected_reference_feature() -> None:
+def test_unexpected_features_in_reference_are_detected() -> None:
     ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
     cur = {"a": [1, 2, 3]}
     schema = {"a": "numeric"}
@@ -102,7 +132,7 @@ def test_run_checks_detects_unexpected_reference_feature() -> None:
     assert any(i.name == "unexpected_feature_reference" for i in report.issues)
 
 
-def test_run_checks_detects_unexpected_current_feature() -> None:
+def test_unexpected_features_in_current_are_detected() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [1, 2, 3], "b": [1, 2, 3]}
     schema = {"a": "numeric"}
@@ -112,7 +142,7 @@ def test_run_checks_detects_unexpected_current_feature() -> None:
     assert any(i.name == "unexpected_feature_current" for i in report.issues)
 
 
-def test_run_checks_detects_empty_reference_feature() -> None:
+def test_empty_reference_features_are_detected() -> None:
     ref = {"feature_1": []}
     cur = {"feature_1": [1, 2, 3]}
 
@@ -123,7 +153,7 @@ def test_run_checks_detects_empty_reference_feature() -> None:
     assert any(i.name == "empty_feature_reference" for i in report.issues)
 
 
-def test_run_checks_detects_empty_current_feature() -> None:
+def test_empty_current_features_are_detected() -> None:
     ref = {"feature_1": [1, 2, 3]}
     cur = {"feature_1": []}
 
@@ -134,7 +164,7 @@ def test_run_checks_detects_empty_current_feature() -> None:
     assert any(i.name == "empty_feature_current" for i in report.issues)
 
 
-def test_run_checks_returns_no_issues_for_clean_data() -> None:
+def test_clean_data_produces_no_issues() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [1, 2, 3]}
     schema = {"a": "numeric"}
@@ -146,7 +176,7 @@ def test_run_checks_returns_no_issues_for_clean_data() -> None:
     assert len(report.issues) == 0
 
 
-def test_run_checks_handles_empty_inputs() -> None:
+def test_empty_inputs_are_handled() -> None:
     ref = {}
     cur = {}
     schema = {}
