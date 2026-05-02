@@ -1,7 +1,7 @@
 from mldebug.core.models.issue import Issue, Severity
 
 
-def test_issue_str_format_correct() -> None:
+def test_issue_str_returns_compact_warning_format() -> None:
     issue = Issue(
         name="psi_drift",
         metric="psi",
@@ -15,7 +15,7 @@ def test_issue_str_format_correct() -> None:
     assert str(issue) == "[WARNING] psi_drift - country: drift detected"
 
 
-def test_issue_repr_contains_all_fields() -> None:
+def test_issue_repr_includes_all_debug_fields() -> None:
     issue = Issue(
         name="psi_drift",
         metric="psi",

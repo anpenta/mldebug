@@ -5,7 +5,7 @@ from tests.fixtures.data.generators import generate_normal_data
 from tests.fixtures.data.missing_values import inject_numeric_missing_values
 
 
-def test_run_numeric_missing_value_check_detects_increase() -> None:
+def test_numeric_missing_value_check_detects_increase_in_missing_rate() -> None:
     feature = "feature_1"
 
     ref = inject_numeric_missing_values(generate_normal_data(), rate=0.01)
@@ -24,7 +24,7 @@ def test_run_numeric_missing_value_check_detects_increase() -> None:
     assert issue.value > 0
 
 
-def test_run_numeric_missing_value_check_no_detection_when_stable() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> None:
     feature = "feature_1"
 
     ref = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
@@ -39,7 +39,7 @@ def test_run_numeric_missing_value_check_no_detection_when_stable() -> None:
     assert issue is None
 
 
-def test_run_numeric_missing_value_check_no_detection_when_decrease() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
     feature = "feature_1"
 
     ref = inject_numeric_missing_values(generate_normal_data(), rate=0.25)

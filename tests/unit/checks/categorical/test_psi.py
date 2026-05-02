@@ -7,7 +7,7 @@ from mldebug.core.config import CheckConfig
 from mldebug.core.models.context import FeatureContext
 
 
-def test_run_categorical_psi_drift_check_detects_shift() -> None:
+def test_categorical_psi_check_triggers_on_distribution_shift() -> None:
     feature = "feature_1"
 
     reference = np.array(["A"] * 80 + ["B"] * 20, dtype="object")
@@ -29,7 +29,7 @@ def test_run_categorical_psi_drift_check_detects_shift() -> None:
     assert issue.value > 0.1
 
 
-def test_run_categorical_psi_drift_check_no_detection_when_stable() -> None:
+def test_categorical_psi_check_does_not_trigger_for_stable_distribution() -> None:
     reference = np.array(["A"] * 50 + ["B"] * 50, dtype="object")
     current = np.array(["A"] * 52 + ["B"] * 48, dtype="object")
 
@@ -66,14 +66,16 @@ def test_run_categorical_psi_drift_check_no_detection_when_stable() -> None:
         ),
     ],
 )
-def test_psi_detects_distribution_shift(reference: NDArray[np.str_], current: NDArray[np.str_]) -> None:
+def test_categorical_psi_returns_positive_values_for_distribution_shift(
+    reference: NDArray[np.str_], current: NDArray[np.str_]
+) -> None:
     psi = _compute_categorical_psi(reference=reference, current=current)
 
     assert np.isfinite(psi)
     assert psi > 0
 
 
-def test_psi_is_zero_for_identical_distributions() -> None:
+def test_categorical_psi_is_zero_for_identical_distributions() -> None:
     data = np.array(["A", "A", "B", "C", "C"], dtype=str)
 
     psi = _compute_categorical_psi(reference=data, current=data)
@@ -81,7 +83,7 @@ def test_psi_is_zero_for_identical_distributions() -> None:
     assert np.isclose(psi, 0.0)
 
 
-def test_psi_is_order_invariant() -> None:
+def test_categorical_psi_is_invariant_to_category_order() -> None:
     ref1 = np.array(["A", "B", "B", "C"], dtype=str)
     ref2 = np.array(["C", "B", "A", "B"], dtype=str)
 
