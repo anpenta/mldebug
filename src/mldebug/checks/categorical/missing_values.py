@@ -1,40 +1,35 @@
-import numpy as np
-from numpy.typing import NDArray
+from typing import TYPE_CHECKING, cast
 
+from mldebug.core.models.context import FeatureContext
 from mldebug.core.models.issue import Issue, Severity
 
+if TYPE_CHECKING:
+    import numpy as np
+    from numpy.typing import NDArray
 
-def run_categorical_missing_value_check(
-    feature: str,
-    reference: NDArray[np.str_],
-    current: NDArray[np.str_],
-    threshold: float = 0.1,
-) -> Issue | None:
+
+def run_categorical_missing_value_check(context: FeatureContext) -> Issue | None:
     """Detect increase in missing values for a categorical feature.
 
-    Missing values are assumed to have been normalized during preprocessing
-    and are represented as the empty string "".
+    This check compares the proportion of missing values between reference and current data.
+    An issue is reported when the increase in missing rate exceeds the configured threshold.
 
     Parameters
     ----------
-    feature : str
-        Name of the feature being checked.
-
-    reference : NDArray[np.str_]
-        Reference data (baseline categorical values).
-
-    current : NDArray[np.str_]
-        Current data to evaluate.
-
-    threshold : float
-        Maximum allowed increase in missing rate.
+    context : FeatureContext
+        Execution context for the feature check.
 
     Returns
     -------
     Issue | None
-        Issue if missing rate increase exceeds threshold.
+        Issue if the increase in missing rate exceeds the configured threshold, otherwise None.
 
     """
+    reference = cast("NDArray[np.str_]", context.reference)
+    current = cast("NDArray[np.str_]", context.current)
+    feature = context.feature
+    threshold = context.config.missing_threshold
+
     ref_missing = (reference == "").mean()
     cur_missing = (current == "").mean()
 
