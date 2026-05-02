@@ -4,8 +4,6 @@ from typing import Any, Literal
 import numpy as np
 from numpy.typing import NDArray
 
-_MISSING_STRINGS = {"", "nan", "NaN", "none", "None"}
-
 
 def normalize_data(feature_type: Literal["numeric", "categorical"], data: Sequence[Any]) -> NDArray[Any]:
     """Normalize raw feature data into a NumPy array suitable for downstream checks.
@@ -51,19 +49,8 @@ def _normalize_numeric(data: Sequence[Any]) -> NDArray[np.floating]:
 
 def _normalize_categorical(data: Sequence[Any]) -> NDArray[np.str_]:
     """Normalize categorical input into string array with empty string as missing."""
-    arr = np.asarray(data, dtype=object)
-
-    # Convert everything to string, map missing  to "".
-    mask = np.array(
-        [
-            v is None
-            or (isinstance(v, float) and np.isnan(v))
-            or (isinstance(v, str) and v.strip() in _MISSING_STRINGS)
-            for v in arr
-        ],
-        dtype=bool,
-    )
-    arr_str = arr.astype(str)
-    arr_str[mask] = ""
-
-    return arr_str
+    arr = np.asarray(data, dtype=str)
+    missing_set = np.array(["", "nan", "none"], dtype=object)
+    mask = np.isin(np.char.lower(arr), missing_set)
+    arr[mask] = ""
+    return arr
