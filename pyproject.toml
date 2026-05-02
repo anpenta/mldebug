@@ -45,6 +45,7 @@ dev = [
   "ruff>=0.15.7",
   "pdoc>=16.0.0",
   "scipy-stubs>=1.15.3.0",
+  "pytest-benchmark>=5.2.3",
 ]
 
 [build-system]

@@ -1,0 +1,13 @@
+from pytest_benchmark.fixture import BenchmarkFixture
+
+from mldebug import run_checks
+from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
+
+
+def test_run_checks_benchmark(benchmark: BenchmarkFixture) -> None:
+    reference, current, schema = generate_mixed_tabular_dataset(n=10_000, n_features=50)
+
+    benchmark(run_checks, reference, current, schema)
+
+    assert benchmark.stats.stats.median < 1.0
+    assert benchmark.stats.stats.max < 2.5
