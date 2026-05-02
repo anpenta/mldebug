@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.3.0] - 2026-05-02
+
+### Added
+- Variance drift check for numeric features
+- Unseen value check for categorical features
+- Small scale performance testing (memory and time)
+
 ## [0.2.0] - 2026-04-30
 
 ### Added
