@@ -1,21 +1,32 @@
 from dataclasses import dataclass
-from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.core.config import CheckConfig
+from mldebug.core.config import CategoricalCheckConfig, NumericCheckConfig
 
 
 @dataclass(frozen=True, slots=True)
-class FeatureContext:
-    """Execution context for a single feature check.
+class NumericFeatureContext:
+    """Execution context for a single numeric feature check.
 
     Encapsulates all data and configuration required to run feature-level validation checks.
     """
 
     feature: str
-    ftype: Literal["numeric", "categorical"]
-    reference: NDArray[np.generic]
-    current: NDArray[np.generic]
-    config: CheckConfig
+    reference: NDArray[np.floating]
+    current: NDArray[np.floating]
+    config: NumericCheckConfig
+
+
+@dataclass(frozen=True, slots=True)
+class CategoricalFeatureContext:
+    """Execution context for a single categorical feature check.
+
+    Encapsulates all data and configuration required to run feature-level validation checks.
+    """
+
+    feature: str
+    reference: NDArray[np.str_]
+    current: NDArray[np.str_]
+    config: CategoricalCheckConfig
