@@ -1,10 +1,10 @@
 from collections.abc import Mapping, Sequence
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
-from numpy.typing import NDArray
 
 from mldebug.core.models.issue import Issue, Severity
+from mldebug.preprocessing.normalization import compute_numeric_ratio
 
 
 def analyze_schema(
@@ -103,10 +103,10 @@ def _detect_type_mismatches(
         if ref is None or cur is None:
             continue
 
-        values = np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)])
+        values = cast("Sequence[Any]", np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]))
 
         if declared_type == "numeric":
-            num_ratio = _compute_numeric_ratio(values)
+            num_ratio = compute_numeric_ratio(values)
             if num_ratio < 0.9:
                 issues.append(
                     Issue(
@@ -119,7 +119,7 @@ def _detect_type_mismatches(
                 )
 
         elif declared_type == "categorical":
-            num_ratio = _compute_numeric_ratio(values)
+            num_ratio = compute_numeric_ratio(values)
             if num_ratio > 0.9:
                 issues.append(
                     Issue(
@@ -132,37 +132,6 @@ def _detect_type_mismatches(
                 )
 
     return issues
-
-
-def _compute_numeric_ratio(values: NDArray[np.object_]) -> float:
-    if values.size == 0:
-        return 0.0
-
-    stripped = np.char.strip(values.astype(str))
-
-    valid = stripped != ""
-
-    if not valid.any():
-        return 0.0
-
-    candidates = stripped[valid]
-
-    numeric = np.fromiter(
-        (_is_floatable_scalar(x) for x in candidates),
-        dtype=bool,
-        count=len(candidates),
-    )
-
-    return float(numeric.mean())
-
-
-def _is_floatable_scalar(x: Any) -> bool:
-    try:
-        float(x)
-    except (TypeError, ValueError):
-        return False
-    else:
-        return True
 
 
 def _create_empty_schema_issue() -> Issue:
