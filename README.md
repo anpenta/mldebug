@@ -202,7 +202,7 @@ poe lint-check && poe test-all
 
 ### CI/CD
 
-CI runs multi-Python version testing and linting. All pull requests must pass the checks before merging.
+CI runs linting and multi-Python version testing. All pull requests must pass the checks before merging.
 
 See [CI workflow](https://github.com/anpenta/mldebug/blob/main/.github/workflows/ci.yml) for details.
 
