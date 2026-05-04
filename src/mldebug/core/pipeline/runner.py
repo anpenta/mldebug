@@ -43,7 +43,7 @@ def run_checks(
     # Schema analysis (validation and mismatch detection).
     issues.extend(analyze_schema(schema=schema, reference=reference, current=current))
 
-    valid_features = get_valid_features(reference=reference, current=current, schema=schema)
+    valid_features = get_valid_features(reference=reference, current=current, schema=schema, schema_issues=issues)
 
     # Feature execution (schema-driven).
     for feature in valid_features:
