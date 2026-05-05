@@ -3,31 +3,31 @@ name = "mldebug"
 description = "A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
 authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.noreply.github.com"}]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.15"
 license = "MIT"
 keywords = ["machine-learning", "debugging", "production", "ml", "monitoring"]
 dynamic = ["version"]
 
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Typing :: Typed",
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
 ]
 
 dependencies = [
-    "numpy>=2.2.6",
-    "scipy>=1.15.3",
+  "numpy>=2.2.6",
+  "scipy>=1.15.3",
 ]
 
 [project.urls]
@@ -56,35 +56,16 @@ build-backend = "hatchling.build"
 source = "uv-dynamic-versioning"
 
 [tool.uv-dynamic-versioning]
-fallback-version = "0.0.0" # Fallback when git metadata is unavailable for version resolution.
+fallback-version = "0.0.0"
 
 [tool.poe]
 executor = { type = "uv" }
 
 [tool.poe.tasks]
 
-test = "pytest --cov=mldebug --cov-report=term --cov-report=xml:coverage.xml --durations=0 --durations-min=0.5 --cov-fail-under=80"
+test = "pytest --durations=0 --durations-min=0.5"
 
-test-py310 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.10", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py310" } }
-test-py311 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.11", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py311" } }
-test-py312 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.12", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py312" } }
-test-py313 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.13", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py313" } }
-test-py314 = { cmd = "pytest --cov=mldebug --cov-report=xml", executor = { python = "3.14", isolated = true, group = ["dev"] }, env = { COVERAGE_FILE = ".coverage.py314" } }
-
-coverage-combine = "coverage combine"
-coverage-report = "coverage report --fail-under=80"
-coverage-xml = "coverage xml"
-
-test-all.sequence = [
-  "test-py310",
-  "test-py311",
-  "test-py312",
-  "test-py313",
-  "test-py314",
-  "coverage-combine",
-  "coverage-report",
-  "coverage-xml"
-]
+test-cov = "pytest --cov=mldebug --cov-report=xml:coverage.xml --cov-fail-under=80"
 
 lint-check.sequence = [
   { cmd = "ruff format --diff" },
@@ -103,26 +84,20 @@ lint = [
 
 [tool.ruff]
 line-length = 120
-lint.select = ["ALL"]
+lint.select = [
+  "E",
+  "F",
+  "I",
+  "UP",
+  "B",
+  "SIM",
+  "ANN"
+]
 lint.ignore = [
-  "COM812",
-  "D100",
-  "D104",
-  "D105",
-  "D203",
-  "D213",
-  "D400",
-  "D405",
-  "D415",
-  "PLR2004",
-  "TID252",
-  "ANN401",
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
-  "D103",
-  "S101",
 ]
 
 [tool.pyright]
