@@ -25,6 +25,7 @@ jobs:
               run: uv run poe lint-check
 
     test:
+        name: test
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
