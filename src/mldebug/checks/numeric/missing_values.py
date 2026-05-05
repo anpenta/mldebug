@@ -1,7 +1,7 @@
 import numpy as np
 
-from mldebug.core.models.context import NumericFeatureContext
-from mldebug.core.models.issue import Issue, Severity
+from mldebug.models.context import NumericFeatureContext
+from mldebug.models.issue import Issue, Severity
 
 
 def run_numeric_missing_value_check(context: NumericFeatureContext) -> Issue | None:

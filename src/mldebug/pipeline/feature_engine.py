@@ -1,8 +1,8 @@
 from collections.abc import Mapping, Sequence
 from typing import Any, Literal
 
-from mldebug.core.models.issue import Issue, Severity
-from mldebug.core.registry.checks import CHECKS
+from mldebug.models.issue import Issue, Severity
+from mldebug.registry.checks import CHECKS
 
 
 def run_feature_checks(

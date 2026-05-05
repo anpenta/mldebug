@@ -1,8 +1,8 @@
 import numpy as np
 
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
-from mldebug.core.config import NumericCheckConfig
-from mldebug.core.models.context import NumericFeatureContext
+from mldebug.config import NumericCheckConfig
+from mldebug.models.context import NumericFeatureContext
 from tests.fixtures.data.generators import generate_normal_data
 
 

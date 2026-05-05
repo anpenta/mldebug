@@ -7,7 +7,7 @@ issues.
 """
 
 from .api import list_checks, run_checks
-from .core.models import Issue, Report, Severity
+from .models import Issue, Report, Severity
 
 __all__ = [
     "Issue",

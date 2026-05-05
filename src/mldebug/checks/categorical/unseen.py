@@ -1,5 +1,5 @@
-from mldebug.core.models.context import CategoricalFeatureContext
-from mldebug.core.models.issue import Issue, Severity
+from mldebug.models.context import CategoricalFeatureContext
+from mldebug.models.issue import Issue, Severity
 
 
 def run_categorical_unseen_category_check(context: CategoricalFeatureContext) -> Issue | None:

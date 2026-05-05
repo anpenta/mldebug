@@ -1,8 +1,8 @@
 import numpy as np
 
 from mldebug.checks.categorical.unseen import run_categorical_unseen_category_check
-from mldebug.core.config import CategoricalCheckConfig
-from mldebug.core.models.context import CategoricalFeatureContext
+from mldebug.config import CategoricalCheckConfig
+from mldebug.models.context import CategoricalFeatureContext
 
 
 def test_unseen_category_check_triggers_when_new_categories_appear() -> None:

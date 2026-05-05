@@ -3,7 +3,7 @@ from typing import Any, cast
 
 import numpy as np
 
-from mldebug.core.models.issue import Issue, Severity
+from mldebug.models.issue import Issue, Severity
 from mldebug.preprocessing.normalization import compute_numeric_ratio
 
 

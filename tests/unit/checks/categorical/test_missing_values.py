@@ -1,6 +1,6 @@
 from mldebug.checks.categorical.missing_values import run_categorical_missing_value_check
-from mldebug.core.config import CategoricalCheckConfig
-from mldebug.core.models.context import CategoricalFeatureContext
+from mldebug.config import CategoricalCheckConfig
+from mldebug.models.context import CategoricalFeatureContext
 from tests.fixtures.data.generators import generate_categorical_data
 from tests.fixtures.data.missing_values import inject_categorical_missing_values
 

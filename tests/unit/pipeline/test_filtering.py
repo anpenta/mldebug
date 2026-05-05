@@ -1,5 +1,5 @@
-from mldebug.core.models import Issue, Severity
-from mldebug.core.pipeline.filtering import get_valid_features
+from mldebug.models import Issue, Severity
+from mldebug.pipeline.filtering import get_valid_features
 
 
 def test_filtering_returns_all_valid_features_when_no_issues() -> None:
