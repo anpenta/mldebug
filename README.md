@@ -22,7 +22,7 @@ These issues are typically caused by changes in input data such as:
 
 mldebug makes these issues visible early by comparing datasets in a lightweight, schema-driven way and detecting unexpected changes before they impact model performance.
 
-## When to Use mldebug
+## When To Use mldebug
 
 Use mldebug for fast validation of ML datasets, especially in CI or pre-deployment checks.
 
