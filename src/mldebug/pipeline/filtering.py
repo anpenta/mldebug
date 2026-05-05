@@ -1,7 +1,7 @@
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from mldebug.core.models import Issue, Severity
+from mldebug.models import Issue, Severity
 
 
 def get_valid_features(

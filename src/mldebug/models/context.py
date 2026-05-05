@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from mldebug.core.config import CategoricalCheckConfig, NumericCheckConfig
+from mldebug.config import CategoricalCheckConfig, NumericCheckConfig
 from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
 
 if TYPE_CHECKING:

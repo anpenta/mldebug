@@ -1,5 +1,5 @@
-from mldebug.core.models.issue import Issue, Severity
-from mldebug.core.models.report import Report
+from mldebug.models.issue import Issue, Severity
+from mldebug.models.report import Report
 
 
 def test_report_summary_groups_issues_by_severity() -> None:

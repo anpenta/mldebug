@@ -3,8 +3,8 @@ import pytest
 from numpy.typing import NDArray
 
 from mldebug.checks.categorical.psi import _compute_categorical_psi, run_categorical_psi_drift_check
-from mldebug.core.config import CategoricalCheckConfig
-from mldebug.core.models.context import CategoricalFeatureContext
+from mldebug.config import CategoricalCheckConfig
+from mldebug.models.context import CategoricalFeatureContext
 
 
 def test_categorical_psi_check_triggers_on_distribution_shift() -> None:

@@ -1,6 +1,6 @@
 from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
-from mldebug.core.config import NumericCheckConfig
-from mldebug.core.models.context import NumericFeatureContext
+from mldebug.config import NumericCheckConfig
+from mldebug.models.context import NumericFeatureContext
 from tests.fixtures.data.generators import generate_normal_data
 
 

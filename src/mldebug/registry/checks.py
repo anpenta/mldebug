@@ -7,8 +7,8 @@ from mldebug.checks.categorical.unseen import run_categorical_unseen_category_ch
 from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
 from mldebug.checks.numeric.missing_values import run_numeric_missing_value_check
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
-from mldebug.core.models.context import CategoricalFeatureContext, NumericFeatureContext
-from mldebug.core.models.issue import Issue
+from mldebug.models.context import CategoricalFeatureContext, NumericFeatureContext
+from mldebug.models.issue import Issue
 
 
 @dataclass(frozen=True, slots=True)

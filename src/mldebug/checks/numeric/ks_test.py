@@ -1,7 +1,7 @@
 from scipy.stats import ks_2samp
 
-from mldebug.core.models.context import NumericFeatureContext
-from mldebug.core.models.issue import Issue, Severity
+from mldebug.models.context import NumericFeatureContext
+from mldebug.models.issue import Issue, Severity
 
 
 def run_numeric_ks_test_check(context: NumericFeatureContext) -> Issue | None:
