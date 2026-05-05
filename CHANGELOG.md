@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.4.0] - 2026-05-05
+
+### Added
+- Type checks based on schema and actual values found
+
 ## [0.3.0] - 2026-05-02
 
 ### Added
