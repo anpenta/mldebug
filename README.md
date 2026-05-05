@@ -22,7 +22,7 @@ Common production issues include:
 
 **mldebug provides a unified way to detect these issues before they become model failures.**
 
-## What it does
+## What It Does
 
 mldebug compares:
 
@@ -38,6 +38,8 @@ pip install mldebug
 ```
 
 ## Quick Start
+
+### Example Usage
 
 ```python
 from mldebug import run_checks
@@ -64,7 +66,9 @@ schema = {
 report = run_checks(reference=reference, current=current, schema=schema)
 ```
 
-## Inspect results
+### Output Inspection
+
+#### Inspect Results
 
 ```python
 for issue in report.issues:
@@ -75,7 +79,7 @@ for issue in report.issues:
 [WARNING] psi_drift - country: PSI drift detected (18.0152)
 ```
 
-## Summary
+#### Summary
 
 ```python
 print(report.summary())
@@ -93,7 +97,7 @@ print(report.summary())
 }
 ```
 
-## Structured output
+#### Structured Output
 
 ```python
 print(report.to_dict())
@@ -115,7 +119,7 @@ print(report.to_dict())
 }
 ```
 
-## Available checks
+### Available Checks
 
 ```python
 from mldebug import list_checks
@@ -146,14 +150,14 @@ Active development (v0.x). APIs may evolve before v1.0.0.
 
 See [CHANGELOG.md](https://github.com/anpenta/mldebug/blob/main/CHANGELOG.md) for version history.
 
-## Development Setup
+## Development
 
 ### Requirements
 
 - [git](https://git-scm.com/)
 - [uv](https://docs.astral.sh/uv/)
 
-### Environment Setup
+### Setup
 
 ```bash
 git clone https://github.com/anpenta/mldebug
@@ -161,27 +165,47 @@ cd mldebug
 uv sync
 ```
 
-## Development Workflow
+### Workflow
 
 All tasks are managed via [poe](https://poethepoet.natn.io/index.html).
 
-### Run tests
+#### Run Tests
 
 ```bash
 uv run poe test
 ```
 
-### Run linting
+#### Run Linting
 
 ```bash
 uv run poe lint
 ```
 
-### Check linting
+#### Check Linting
 
 ```bash
 uv run poe lint-check
 ```
+
+### Dependency Management
+
+Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/dependencies/) and defined in [pyproject.toml](pyproject.toml).
+
+For local development:
+
+```bash
+uv sync
+```
+
+This installs dependencies and updates the environment as needed.
+
+For CI and reproducible environments:
+
+```bash
+uv sync --frozen
+```
+
+This ensures the environment exactly matches the lock file without modifying it.
 
 ### CI
 
@@ -206,26 +230,6 @@ We welcome contributions.
 3. Make your changes
 4. Ensure all CI checks pass
 5. Open a pull request
-
-## Dependency Management
-
-Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/dependencies/) and defined in [pyproject.toml](pyproject.toml).
-
-For local development:
-
-```bash
-uv sync
-```
-
-This installs dependencies and updates the environment as needed.
-
-For CI and reproducible environments:
-
-```bash
-uv sync --frozen
-```
-
-This ensures the environment exactly matches the lock file without modifying it.
 
 ## Citation
 
