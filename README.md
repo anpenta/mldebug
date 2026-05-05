@@ -22,7 +22,7 @@ Common production issues include:
 
 **mldebug provides a unified way to detect these issues before they become model failures.**
 
-## What it does
+## What It Does
 
 mldebug compares:
 
@@ -68,7 +68,7 @@ report = run_checks(reference=reference, current=current, schema=schema)
 
 ### Output Inspection
 
-#### Inspect results
+#### Inspect Results
 
 ```python
 for issue in report.issues:
@@ -97,7 +97,7 @@ print(report.summary())
 }
 ```
 
-#### Structured output
+#### Structured Output
 
 ```python
 print(report.to_dict())
@@ -169,19 +169,19 @@ uv sync
 
 All tasks are managed via [poe](https://poethepoet.natn.io/index.html).
 
-#### Run tests
+#### Run Tests
 
 ```bash
 uv run poe test
 ```
 
-#### Run linting
+#### Run Linting
 
 ```bash
 uv run poe lint
 ```
 
-#### Check linting
+#### Check Linting
 
 ```bash
 uv run poe lint-check
