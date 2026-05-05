@@ -9,25 +9,25 @@ keywords = ["machine-learning", "debugging", "production", "ml", "monitoring"]
 dynamic = ["version"]
 
 classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Intended Audience :: Developers",
-  "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "Typing :: Typed",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 
 dependencies = [
-  "numpy>=2.2.6",
-  "scipy>=1.15.3",
+    "numpy>=2.2.6",
+    "scipy>=1.15.3",
 ]
 
 [project.urls]
@@ -38,14 +38,14 @@ Issues = "https://github.com/anpenta/mldebug/issues"
 
 [dependency-groups]
 dev = [
-  "pyright[nodejs]>=1.1.408",
-  "poethepoet>=0.42.1",
-  "pytest>=9.0.2",
-  "pytest-cov>=7.1.0",
-  "ruff>=0.15.7",
-  "pdoc>=16.0.0",
-  "scipy-stubs>=1.15.3.0",
-  "pytest-benchmark>=5.2.3",
+    "pyright[nodejs]>=1.1.408",
+    "poethepoet>=0.42.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.7",
+    "pdoc>=16.0.0",
+    "scipy-stubs>=1.15.3.0",
+    "pytest-benchmark>=5.2.3",
 ]
 
 [build-system]
@@ -68,37 +68,35 @@ test = "pytest --durations=0 --durations-min=0.5"
 test-cov = "pytest --cov=mldebug --cov-report=xml:coverage.xml --cov-fail-under=80"
 
 lint-check.sequence = [
-  { cmd = "ruff format --diff" },
-  { cmd = "ruff check --no-fix" },
-  { cmd = "pyright src" },
-  { cmd = "uv lock --check" }
+    { cmd = "ruff format --diff" },
+    { cmd = "ruff check --no-fix" },
+    { cmd = "pyright src" },
+    { cmd = "uv lock --check" }
 ]
 lint-check.ignore_fail = "return_non_zero"
 
 lint = [
-  { cmd = "ruff format" },
-  { cmd = "ruff check --fix" },
-  { cmd = "pyright src" },
-  { cmd = "uv lock --check" }
+    { cmd = "ruff format" },
+    { cmd = "ruff check --fix" },
+    { cmd = "pyright src" },
+    { cmd = "uv lock --check" }
 ]
 
 [tool.ruff]
 line-length = 120
 lint.select = [
-  "E",
-  "F",
-  "I",
-  "UP",
-  "B",
-  "SIM",
-  "ANN"
+    "E",
+    "F",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "ANN"
 ]
-lint.ignore = [
-]
+lint.ignore = []
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = [
-]
+"tests/**/*.py" = []
 
 [tool.pyright]
 typeCheckingMode = "strict"
