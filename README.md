@@ -11,16 +11,32 @@
 
 ## Why mldebug
 
-Machine learning systems fail silently when data changes.
+Machine learning systems often fail silently when data changes, even when models and code remain unchanged.
 
-Common production issues include:
-
-- feature distribution drift
-- increasing missing values
+These failures are typically caused by:
+- shifting feature distributions (data drift)
+- increasing missing values in production
 - unseen categorical values
-- training vs production mismatch
+- mismatch between training and production data
 
-**mldebug provides a unified way to detect these issues before they become model failures.**
+mldebug makes these issues visible early by providing a lightweight, schema-driven way to compare datasets and detect unexpected changes before they impact model performance.
+
+## When to Use mldebug
+
+Use mldebug when you need fast, lightweight validation of ML datasets, especially in CI or pre-deployment checks.
+
+It is a good fit for:
+
+- CI/CD validation pipelines
+- pre-deployment data checks
+- schema-based comparison between training and production data
+- lightweight integration into existing ML workflows
+
+Not intended for:
+
+- full ML observability platforms
+- real-time production monitoring systems
+- long-term dashboards or alerting infrastructure
 
 ## What It Does
 
