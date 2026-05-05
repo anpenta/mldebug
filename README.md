@@ -14,6 +14,7 @@
 Machine learning systems often fail silently when data changes, even when models and code remain unchanged.
 
 These failures are typically caused by:
+
 - shifting feature distributions (data drift)
 - increasing missing values in production
 - unseen categorical values
