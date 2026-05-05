@@ -1,53 +1,42 @@
-# Local virtual environments and tool-managed environments.
+# venv
 .venv/
 venv/
-env/
-.local/
-local/
 
-# Python bytecode and runtime cache artifacts.
+# python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
 
-# Build artifacts from packaging tools.
+# build
 build/
 dist/
-.eggs/
 *.egg-info/
-*.egg
+.eggs/
 
-# Test and coverage outputs (generated during CI or local runs).
+# test
 .pytest_cache/
 .coverage*
 coverage.xml
 htmlcov/
 
-# Linting / type-checking tool caches.
+# tooling
 .ruff_cache/
 .mypy_cache/
-.pyright/
-.pytype/
 .tox/
 
-# IDE and editor configuration directories.
+# ide
 .idea/
 .vscode/
 
-# Jupyter notebook checkpoints.
+# notebooks
 .ipynb_checkpoints/
 
-# Documentation build outputs.
-docs/
+# docs
 site/
 
-# Environment configuration files (keep example/override exceptions).
+# env
 .env
-.env.*
-!.env.example
-!.envrc
+.env.local
 
-# Operating system metadata files.
+# os
 .DS_Store
 Thumbs.db

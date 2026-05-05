@@ -15,10 +15,10 @@ Machine learning systems fail silently when data changes.
 
 Common production issues include:
 
-* feature distribution drift
-* increasing missing values
-* unseen categorical values
-* training vs production mismatch
+- feature distribution drift
+- increasing missing values
+- unseen categorical values
+- training vs production mismatch
 
 **mldebug provides a unified way to detect these issues before they become model failures.**
 
@@ -26,8 +26,8 @@ Common production issues include:
 
 mldebug compares:
 
-* a **reference dataset** (e.g. training data)
-* a **current dataset** (e.g. production data)
+- a **reference dataset** (e.g. training data)
+- a **current dataset** (e.g. production data)
 
 It runs a suite of checks and returns a structured report of detected issues.
 
@@ -117,10 +117,6 @@ print(report.to_dict())
 
 ## Available checks
 
-mldebug provides runtime introspection of all available checks.
-
-You can view the checks available in your installed version:
-
 ```python
 from mldebug import list_checks
 
@@ -148,61 +144,56 @@ See [documentation pages](https://anpenta.github.io/mldebug).
 
 Active development (v0.x). APIs may evolve before v1.0.0.
 
-See [CHANGELOG.md](https://github.com/anpenta/mldebug/blob/main/CHANGELOG.md) for version history and updates.
+See [CHANGELOG.md](https://github.com/anpenta/mldebug/blob/main/CHANGELOG.md) for version history.
 
 ## Development Setup
 
 ### Requirements
 
-- [Ubuntu 24.04.4](https://releases.ubuntu.com/noble/) (recommended) or [WSL](https://ubuntu.com/desktop/wsl)
 - [git](https://git-scm.com/)
-- [direnv](https://direnv.net/)
+- [uv](https://docs.astral.sh/uv/)
 
 ### Environment Setup
 
 ```bash
 git clone https://github.com/anpenta/mldebug
 cd mldebug
-direnv allow
+uv sync
 ```
 
 ## Development Workflow
 
-Tasks are managed via [poe](https://poethepoet.natn.io/index.html) (available in the project environment via direnv).
+All tasks are managed via [poe](https://poethepoet.natn.io/index.html).
 
 ### Run tests
 
 ```bash
-poe test
+uv run poe test
 ```
 
 ### Run linting
 
 ```bash
-poe lint
+uv run poe lint
 ```
 
 ### Check linting
 
 ```bash
-poe lint-check
+uv run poe lint-check
 ```
 
-### Run full test matrix (all Python versions)
+### CI
 
-```bash
-poe test-all
-```
+This project uses CI to ensure:
 
-### Run full CI checks
+- code quality (linting and type checking)
+- correctness across supported Python versions
+- test coverage thresholds
+- reproducible builds
+- automated publishing on release tags
 
-```bash
-poe lint-check && poe test-all
-```
-
-### CI/CD
-
-CI runs linting and multi-Python version testing. All pull requests must pass the checks before merging.
+Local development runs against the active Python environment only.
 
 See [CI workflow](https://github.com/anpenta/mldebug/blob/main/.github/workflows/ci.yml) for details.
 
@@ -219,6 +210,22 @@ We welcome contributions.
 ## Dependency Management
 
 Dependencies are [managed using uv](https://docs.astral.sh/uv/concepts/projects/dependencies/) and defined in [pyproject.toml](pyproject.toml).
+
+For local development:
+
+```bash
+uv sync
+```
+
+This installs dependencies and updates the environment as needed.
+
+For CI and reproducible environments:
+
+```bash
+uv sync --frozen
+```
+
+This ensures the environment exactly matches the lock file without modifying it.
 
 ## Citation
 

@@ -74,7 +74,7 @@ def _is_numeric_vector(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
         )
 
 
-def _is_floatable_scalar(x: Any) -> bool:
+def _is_floatable_scalar(x: Any) -> bool:  # noqa: ANN401 # Need to keep this broad to catch everything.
     try:
         float(x)
     except (TypeError, ValueError):
