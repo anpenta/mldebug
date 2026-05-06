@@ -136,27 +136,6 @@ print(report.to_dict())
 }
 ```
 
-### Available Checks
-
-```python
-from mldebug import list_checks
-
-checks = list_checks()
-print(checks)
-```
-
-```text
-{
-  "numeric": [
-    "run_numeric_missing_value_check",
-    "run_numeric_ks_test_check"
-  ],
-  "categorical": [
-    "run_categorical_psi_drift_check"
-  ]
-}
-```
-
 ## Documentation
 
 See [documentation pages](https://anpenta.github.io/mldebug).

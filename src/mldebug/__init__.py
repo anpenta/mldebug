@@ -6,13 +6,12 @@ Provides tools to run validation checks on reference and current datasets and re
 issues.
 """
 
-from .api import list_checks, run_checks
+from .api import run_checks
 from .models import Issue, Report, Severity
 
 __all__ = [
     "Issue",
     "Report",
     "Severity",
-    "list_checks",
     "run_checks",
 ]

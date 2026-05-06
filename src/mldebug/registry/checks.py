@@ -49,16 +49,3 @@ CHECKS: dict[str, CheckGroup] = {
         ],
     ),
 }
-
-
-def list_checks() -> dict[str, list[str]]:
-    """List all available checks grouped by feature type.
-
-    Returns
-    -------
-    dict[str, list[str]]
-        A dictionary mapping each feature type (e.g. "numeric", "categorical")
-        to a list of available check function names for that type.
-
-    """
-    return {k: [fn.__name__ for fn in v.checks] for k, v in CHECKS.items()}
