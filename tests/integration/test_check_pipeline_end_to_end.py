@@ -1,7 +1,7 @@
 from mldebug import run_checks
 from mldebug.models.issue import Severity
-from tests.fixtures.data.generators import generate_normal_data
-from tests.fixtures.data.missing_values import inject_numeric_missing_values
+from tests.fixtures.generators import generate_normal_data
+from tests.fixtures.missing_values import inject_numeric_missing_values
 
 
 def test_numeric_drift_is_detected_by_ks_test() -> None:

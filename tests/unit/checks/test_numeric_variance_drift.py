@@ -3,7 +3,7 @@ import numpy as np
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
 from mldebug.config import NumericCheckConfig
 from mldebug.models.context import NumericFeatureContext
-from tests.fixtures.data.generators import generate_normal_data
+from tests.fixtures.generators import generate_normal_data
 
 
 def test_numeric_variance_drift_check_detects_increase_in_variance_ratio() -> None:

@@ -6,8 +6,8 @@ Provides tools to run validation checks on reference and current datasets and re
 issues.
 """
 
-from .api import run_checks
 from .models import Issue, Report, Severity
+from .pipeline.runner import run_checks
 
 __all__ = [
     "Issue",

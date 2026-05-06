@@ -1,4 +1,4 @@
-from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
+from tests.fixtures.datasets import generate_mixed_tabular_dataset
 
 
 def test_generated_mixed_tabular_dataset_has_consistent_structure() -> None:

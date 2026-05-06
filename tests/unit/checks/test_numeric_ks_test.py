@@ -1,7 +1,7 @@
 from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
 from mldebug.config import NumericCheckConfig
 from mldebug.models.context import NumericFeatureContext
-from tests.fixtures.data.generators import generate_normal_data
+from tests.fixtures.generators import generate_normal_data
 
 
 def test_numeric_ks_test_detects_distribution_shift() -> None:
