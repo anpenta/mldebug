@@ -1,7 +1,7 @@
 from pytest_benchmark.fixture import BenchmarkFixture
 
 from mldebug import run_checks
-from tests.fixtures.data.datasets import generate_mixed_tabular_dataset
+from tests.fixtures.datasets import generate_mixed_tabular_dataset
 
 
 def test_check_pipeline_latency_is_bounded(benchmark: BenchmarkFixture) -> None:
