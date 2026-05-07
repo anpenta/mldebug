@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.5.0] - 2026-05-07
+
+### Added
+- FeatureType enum exposed to the user to replace Literal
+- Drop support for python 3.10
+- Range value check for numeric features
+
 ## [0.4.0] - 2026-05-05
 
 ### Added
