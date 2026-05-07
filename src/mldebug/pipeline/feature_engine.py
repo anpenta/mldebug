@@ -4,9 +4,9 @@ from typing import Any, Literal
 from mldebug.models.issue import Issue, Severity
 from mldebug.registry.checks import CHECKS
 
-from .checks import run_check_group
-from .context import build_feature_context
-from .normalization import normalize_feature
+from .check_execution import run_check_group
+from .context_factory import build_feature_context
+from .normalization_service import normalize_feature
 
 
 def run_feature_checks(
