@@ -2,11 +2,11 @@ import numpy as np
 
 from mldebug.checks.categorical.unseen_values import run_categorical_unseen_category_check
 from mldebug.config import CategoricalCheckConfig
-from mldebug.models.context import CategoricalFeatureContext
+from mldebug.models.context import FeatureContext
 
 
 def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
-    context = CategoricalFeatureContext(
+    context = FeatureContext(
         feature="color",
         reference=np.array(["red", "blue"]),
         current=np.array(["red", "green"]),
@@ -22,7 +22,7 @@ def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
 
 
 def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> None:
-    context = CategoricalFeatureContext(
+    context = FeatureContext(
         feature="color",
         reference=np.array(["red", "blue"]),
         current=np.array(["red", "blue"]),
@@ -34,7 +34,7 @@ def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> N
 
 
 def test_unseen_category_check_counts_multiple_new_categories_correctly() -> None:
-    context = CategoricalFeatureContext(
+    context = FeatureContext(
         feature="color",
         reference=np.array(["red"]),
         current=np.array(["blue", "green"]),
@@ -48,7 +48,7 @@ def test_unseen_category_check_counts_multiple_new_categories_correctly() -> Non
 
 
 def test_unseen_category_check_counts_unique_categories_not_occurrences() -> None:
-    context = CategoricalFeatureContext(
+    context = FeatureContext(
         feature="color",
         reference=np.array(["red"]),
         current=np.array(["green", "green", "green"]),
@@ -63,7 +63,7 @@ def test_unseen_category_check_counts_unique_categories_not_occurrences() -> Non
 
 
 def test_unseen_category_check_returns_none_for_empty_current() -> None:
-    context = CategoricalFeatureContext(
+    context = FeatureContext(
         feature="color", reference=np.array(["red"]), current=np.array([]), config=CategoricalCheckConfig()
     )
 

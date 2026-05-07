@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 
 from mldebug.checks.numeric.range_anomaly import run_numeric_range_anomaly_check
 from mldebug.config import NumericCheckConfig
-from mldebug.models.context import NumericFeatureContext
+from mldebug.models.context import FeatureContext
 
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_numeric_range_anomaly_check_detects_out_of_range_values(
     current: NDArray[np.floating],
     expected_outliers: int,
 ) -> None:
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature="feature_1",
         reference=reference,
         current=current,
@@ -91,7 +91,7 @@ def test_numeric_range_anomaly_check_does_not_trigger_when_within_range(
     reference: NDArray[np.floating],
     current: NDArray[np.floating],
 ) -> None:
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature="feature_1",
         reference=reference,
         current=current,

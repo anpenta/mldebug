@@ -1,5 +1,6 @@
 from mldebug import run_checks
 from mldebug.models.issue import Severity
+from mldebug.models.types import FeatureType
 from tests.fixtures.generators import generate_normal_data
 from tests.fixtures.missing_values import inject_numeric_missing_values
 
@@ -8,7 +9,7 @@ def test_numeric_drift_is_detected_by_ks_test() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {"feature_1": generate_normal_data(mean=5)}
 
-    schema = {"feature_1": "numeric"}
+    schema = {"feature_1": FeatureType.NUMERIC}
 
     report = run_checks(reference=ref, current=cur, schema=schema)
 
@@ -30,7 +31,7 @@ def test_categorical_drift_is_detected_by_psi() -> None:
         "feature_1": ["A"] * 40 + ["B"] * 40 + ["C"] * 20,
     }
 
-    schema = {"feature_1": "categorical"}
+    schema = {"feature_1": FeatureType.CATEGORICAL}
 
     report = run_checks(reference=ref, current=cur, schema=schema)
 
@@ -49,7 +50,7 @@ def test_missing_values_are_flagged() -> None:
         "feature_1": inject_numeric_missing_values(generate_normal_data(mean=0), rate=0.3),
     }
 
-    schema = {"feature_1": "numeric"}
+    schema = {"feature_1": FeatureType.NUMERIC}
 
     report = run_checks(reference=ref, current=cur, schema=schema)
 
@@ -75,7 +76,7 @@ def test_empty_schema_is_reported() -> None:
 def test_missing_features_in_reference_are_detected() -> None:
     ref = {}
     cur = {"a": [1, 2, 3]}
-    schema = {"a": "numeric"}
+    schema = {"a": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -85,7 +86,7 @@ def test_missing_features_in_reference_are_detected() -> None:
 def test_missing_features_in_current_are_detected() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {}
-    schema = {"a": "numeric"}
+    schema = {"a": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -95,7 +96,7 @@ def test_missing_features_in_current_are_detected() -> None:
 def test_unexpected_features_in_reference_are_detected() -> None:
     ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
     cur = {"a": [1, 2, 3]}
-    schema = {"a": "numeric"}
+    schema = {"a": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -105,7 +106,7 @@ def test_unexpected_features_in_reference_are_detected() -> None:
 def test_unexpected_features_in_current_are_detected() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [1, 2, 3], "b": [1, 2, 3]}
-    schema = {"a": "numeric"}
+    schema = {"a": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -116,7 +117,7 @@ def test_empty_reference_features_are_detected() -> None:
     ref = {"feature_1": []}
     cur = {"feature_1": [1, 2, 3]}
 
-    schema = {"feature_1": "numeric"}
+    schema = {"feature_1": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -127,7 +128,7 @@ def test_empty_current_features_are_detected() -> None:
     ref = {"feature_1": [1, 2, 3]}
     cur = {"feature_1": []}
 
-    schema = {"feature_1": "numeric"}
+    schema = {"feature_1": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
@@ -137,7 +138,7 @@ def test_empty_current_features_are_detected() -> None:
 def test_clean_data_produces_no_issues() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [1, 2, 3]}
-    schema = {"a": "numeric"}
+    schema = {"a": FeatureType.NUMERIC}
 
     report = run_checks(ref, cur, schema)
 
