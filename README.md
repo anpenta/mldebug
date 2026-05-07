@@ -93,7 +93,12 @@ for issue in report.issues:
 ```
 
 ```text
+[WARNING] variance_drift - age: variance drift detected (ratio=25.0000, threshold=2.0)
+[WARNING] range_anomaly - age: 3 values outside [20.0000, 22.0000]
+[WARNING] variance_drift - income: variance drift detected (ratio=0.2500, threshold=2.0)
+[WARNING] range_anomaly - income: 3 values outside [1000.0000, 1200.0000]
 [WARNING] psi_drift - country: PSI drift detected (18.0152)
+[WARNING] unseen_categories - country: 1 unseen categories detected (e.g. ['DE'])
 ```
 
 #### Summary
@@ -102,12 +107,12 @@ for issue in report.issues:
 print(report.summary())
 ```
 
-```python
+```json
 {
-  "total": 1,
+  "total": 6,
   "by_severity": {
     "info": 0,
-    "warning": 1,
+    "warning": 6,
     "critical": 0
   },
   "status": "issues_detected"
@@ -124,6 +129,42 @@ print(report.to_dict())
 {
   "issues": [
     {
+      "name": "variance_drift",
+      "metric": "variance_ratio",
+      "severity": "warning",
+      "message": "age: variance drift detected (ratio=25.0000, threshold=2.0)",
+      "feature": "age",
+      "value": 25.000000000000004,
+      "threshold": 2.0
+    },
+    {
+      "name": "range_anomaly",
+      "metric": "out_of_range_count",
+      "severity": "warning",
+      "message": "age: 3 values outside [20.0000, 22.0000]",
+      "feature": "age",
+      "value": 3.0,
+      "threshold": 0.0
+    },
+    {
+      "name": "variance_drift",
+      "metric": "variance_ratio",
+      "severity": "warning",
+      "message": "income: variance drift detected (ratio=0.2500, threshold=2.0)",
+      "feature": "income",
+      "value": 0.25,
+      "threshold": 2.0
+    },
+    {
+      "name": "range_anomaly",
+      "metric": "out_of_range_count",
+      "severity": "warning",
+      "message": "income: 3 values outside [1000.0000, 1200.0000]",
+      "feature": "income",
+      "value": 3.0,
+      "threshold": 0.0
+    },
+    {
       "name": "psi_drift",
       "metric": "psi",
       "severity": "warning",
@@ -131,6 +172,15 @@ print(report.to_dict())
       "feature": "country",
       "value": 18.01521528247136,
       "threshold": 0.2
+    },
+    {
+      "name": "unseen_categories",
+      "metric": "unseen_category_count",
+      "severity": "warning",
+      "message": "country: 1 unseen categories detected (e.g. ['DE'])",
+      "feature": "country",
+      "value": 1.0,
+      "threshold": 0.0
     }
   ]
 }
