@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.models.types import FeatureType
+from mldebug.models.feature_type import FeatureType
 from tests.fixtures.generators import generate_categorical_data, generate_normal_data
 
 

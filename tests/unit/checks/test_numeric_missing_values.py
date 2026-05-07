@@ -2,7 +2,7 @@ import numpy as np
 
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
 from mldebug.config import NumericCheckConfig
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 
 
 def test_numeric_variance_drift_check_detects_increase_in_variance_ratio() -> None:

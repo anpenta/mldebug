@@ -4,7 +4,7 @@ from typing import Any, cast
 import numpy as np
 
 from mldebug.models.issue import Issue, Severity
-from mldebug.models.types import FeatureType
+from mldebug.models.feature_type import FeatureType
 from mldebug.registry.specs import FEATURE_SPECS
 
 

@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 
 from mldebug.checks.categorical.psi import _compute_categorical_psi, run_categorical_psi_drift_check
 from mldebug.config import CategoricalCheckConfig
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 
 
 def test_categorical_psi_check_triggers_on_distribution_shift() -> None:

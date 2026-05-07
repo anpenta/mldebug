@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 
 from mldebug.checks.numeric.range_anomaly import run_numeric_range_anomaly_check
 from mldebug.config import NumericCheckConfig
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 
 
 @pytest.mark.parametrize(

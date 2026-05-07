@@ -13,9 +13,9 @@ from mldebug.checks.numeric.missing_values import run_numeric_missing_value_chec
 from mldebug.checks.numeric.range_anomaly import run_numeric_range_anomaly_check
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
 from mldebug.config import CategoricalCheckConfig, NumericCheckConfig
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue
-from mldebug.models.types import FeatureType
+from mldebug.models.feature_type import FeatureType
 from mldebug.preprocessing.normalization import compute_numeric_ratio, normalize_categorical, normalize_numeric
 
 

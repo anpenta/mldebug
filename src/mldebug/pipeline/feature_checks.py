@@ -1,9 +1,9 @@
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue, Severity
-from mldebug.models.types import FeatureType
+from mldebug.models.feature_type import FeatureType
 from mldebug.registry.specs import FEATURE_SPECS
 
 

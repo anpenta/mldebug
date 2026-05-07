@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.stats import ks_2samp
 
-from mldebug.models.context import FeatureContext
+from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
