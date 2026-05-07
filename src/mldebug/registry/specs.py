@@ -13,21 +13,21 @@ from mldebug.checks.numeric.missing_values import run_numeric_missing_value_chec
 from mldebug.checks.numeric.range_anomaly import run_numeric_range_anomaly_check
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
 from mldebug.config import CategoricalCheckConfig, NumericCheckConfig
-from mldebug.models.context import FeatureContext
-from mldebug.models.issue import Issue
-from mldebug.models.types import FeatureType
-from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
+from mldebug.models.types import CheckType, FeatureType
+from mldebug.preprocessing.normalization import compute_numeric_ratio, normalize_categorical, normalize_numeric
 
 
 @dataclass(frozen=True, slots=True)
 class FeatureSpec:
+    type_checker: Callable[[Sequence[Any]], bool]
     normalizer: Callable[[Sequence[Any]], NDArray[np.generic]]
-    checks: list[Callable[[FeatureContext], Issue | None]]
+    checks: list[CheckType]
     config: NumericCheckConfig | CategoricalCheckConfig
 
 
 FEATURE_SPECS: dict[FeatureType, FeatureSpec] = {
-    "numeric": FeatureSpec(
+    FeatureType.NUMERIC: FeatureSpec(
+        type_checker=lambda values: compute_numeric_ratio(values) < 0.9,
         normalizer=normalize_numeric,
         checks=[
             run_numeric_missing_value_check,
@@ -37,7 +37,8 @@ FEATURE_SPECS: dict[FeatureType, FeatureSpec] = {
         ],
         config=NumericCheckConfig(),
     ),
-    "categorical": FeatureSpec(
+    FeatureType.CATEGORICAL: FeatureSpec(
+        type_checker=lambda values: compute_numeric_ratio(values) > 0.9,
         normalizer=normalize_categorical,
         checks=[
             run_categorical_missing_value_check,
