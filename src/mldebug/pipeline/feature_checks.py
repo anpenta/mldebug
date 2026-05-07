@@ -85,7 +85,7 @@ def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
 
 
-def _run_check_group(checks: list[CheckType], context: FeatureContext | FeatureContext) -> list[Issue]:
+def _run_check_group(checks: list[CheckType], context: FeatureContext) -> list[Issue]:
     issues: list[Issue] = []
 
     for check_fn in checks:
