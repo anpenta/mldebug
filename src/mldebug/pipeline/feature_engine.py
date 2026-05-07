@@ -4,6 +4,10 @@ from typing import Any, Literal
 from mldebug.models.issue import Issue, Severity
 from mldebug.registry.checks import CHECKS
 
+from .checks import run_check_group
+from .context import build_feature_context
+from .normalization import normalize_feature
+
 
 def run_feature_checks(
     feature: str,
@@ -33,13 +37,30 @@ def run_feature_checks(
         Detected issues for the feature.
 
     """
-    issues: list[Issue] = []
-
     ref = reference[feature]
     cur = current[feature]
 
-    is_empty_ref = _is_empty(ref)
-    if is_empty_ref:
+    empty_issues = _collect_empty_feature_issues(feature, ref, cur)
+    if empty_issues:
+        return empty_issues
+
+    normalized_ref, normalized_cur = normalize_feature(reference=ref, current=cur, ftype=ftype)
+
+    context = build_feature_context(
+        feature=feature, ftype=ftype, normalized_reference=normalized_ref, normalized_current=normalized_cur
+    )
+
+    return run_check_group(checks=CHECKS[ftype].checks, context=context)
+
+
+def _collect_empty_feature_issues(
+    feature: str,
+    reference: Sequence[Any],
+    current: Sequence[Any],
+) -> list[Issue]:
+    issues: list[Issue] = []
+
+    if _is_empty(reference):
         issues.append(
             Issue(
                 name="empty_feature_reference",
@@ -50,8 +71,7 @@ def run_feature_checks(
             )
         )
 
-    is_empty_cur = _is_empty(cur)
-    if is_empty_cur:
+    if _is_empty(current):
         issues.append(
             Issue(
                 name="empty_feature_current",
@@ -61,17 +81,6 @@ def run_feature_checks(
                 feature=feature,
             )
         )
-
-    if is_empty_ref or is_empty_cur:
-        return issues
-
-    entry = CHECKS[ftype]
-    context = entry.context.from_raw(feature=feature, ref=ref, cur=cur)
-
-    for check_fn in entry.checks:
-        issue = check_fn(context)
-        if issue:
-            issues.append(issue)
 
     return issues
 
