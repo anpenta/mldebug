@@ -1,9 +1,9 @@
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any
 
+from mldebug.models.feature_type import FeatureType
 from mldebug.models.issue import Severity
 from mldebug.models.report import Report
-from mldebug.models.feature_type import FeatureType
 
 from .feature_checks import run_feature_checks
 from .schema_analysis import analyze_schema

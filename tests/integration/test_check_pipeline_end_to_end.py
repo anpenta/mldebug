@@ -1,6 +1,6 @@
 from mldebug import run_checks
-from mldebug.models.issue import Severity
 from mldebug.models.feature_type import FeatureType
+from mldebug.models.issue import Severity
 from tests.fixtures.generators import generate_normal_data
 from tests.fixtures.missing_values import inject_numeric_missing_values
 

@@ -1,8 +1,11 @@
+import numpy as np
+
+from mldebug.config import CategoricalCheckConfig
 from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_categorical_unseen_category_check(context: FeatureContext) -> Issue | None:
+def run_categorical_unseen_category_check(context: FeatureContext[CategoricalCheckConfig, np.str_]) -> Issue | None:
     """Detect unseen categories in a categorical feature.
 
     This check identifies values that appear in the current data but were not observed in the reference data.
@@ -10,7 +13,7 @@ def run_categorical_unseen_category_check(context: FeatureContext) -> Issue | No
 
     Parameters
     ----------
-    context : FeatureContext
+    context : FeatureContext[CategoricalCheckConfig, np.str_]
         Execution context for the feature check.
 
     Returns
