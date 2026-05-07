@@ -2,7 +2,7 @@ import numpy as np
 
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
 from mldebug.config import NumericCheckConfig
-from mldebug.models.context import NumericFeatureContext
+from mldebug.models.feature_context import FeatureContext
 from tests.fixtures.generators import generate_normal_data
 
 
@@ -12,7 +12,7 @@ def test_numeric_variance_drift_check_detects_increase_in_variance_ratio() -> No
     ref = generate_normal_data(mean=0, std=1)
     cur = generate_normal_data(mean=0, std=3)
 
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature=feature,
         reference=ref,
         current=cur,
@@ -33,7 +33,7 @@ def test_numeric_variance_drift_check_detects_decrease_in_variance_ratio() -> No
     ref = generate_normal_data(mean=0, std=3)
     cur = generate_normal_data(mean=0, std=1)
 
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature=feature,
         reference=ref,
         current=cur,
@@ -54,7 +54,7 @@ def test_numeric_variance_drift_check_does_not_trigger_when_variance_is_stable()
     ref = generate_normal_data(mean=0, std=1)
     cur = generate_normal_data(mean=0, std=1)
 
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature=feature,
         reference=ref,
         current=cur,
@@ -72,7 +72,7 @@ def test_numeric_variance_drift_check_returns_none_when_reference_variance_is_ze
     ref = np.array([5, 5, 5], dtype=float)
     cur = generate_normal_data()
 
-    context = NumericFeatureContext(
+    context = FeatureContext(
         feature=feature,
         reference=ref,
         current=cur,

@@ -1,17 +1,15 @@
-from collections.abc import Mapping, Sequence
-from typing import Any, Literal
+from collections.abc import Callable, Mapping, Sequence
+from typing import Any
 
+from mldebug.models.feature_context import FeatureContext
+from mldebug.models.feature_type import FeatureType
 from mldebug.models.issue import Issue, Severity
-from mldebug.registry.checks import CHECKS
-
-from .check_execution import run_check_group
-from .context_factory import build_feature_context
-from .normalization_service import normalize_feature
+from mldebug.registry.specs import FEATURE_SPECS
 
 
 def run_feature_checks(
     feature: str,
-    ftype: Literal["numeric", "categorical"],
+    ftype: FeatureType,
     reference: Mapping[str, Sequence[Any]],
     current: Mapping[str, Sequence[Any]],
 ) -> list[Issue]:
@@ -22,7 +20,7 @@ def run_feature_checks(
     feature : str
         Feature name to evaluate.
 
-    ftype : Literal["numeric", "categorical"]
+    ftype : FeatureType
         Type of the feature determining which checks are executed.
 
     reference : Mapping[str, Sequence[Any]]
@@ -37,6 +35,7 @@ def run_feature_checks(
         Detected issues for the feature.
 
     """
+
     ref = reference[feature]
     cur = current[feature]
 
@@ -44,20 +43,17 @@ def run_feature_checks(
     if empty_issues:
         return empty_issues
 
-    normalized_ref, normalized_cur = normalize_feature(reference=ref, current=cur, ftype=ftype)
+    spec = FEATURE_SPECS[ftype]
 
-    context = build_feature_context(
-        feature=feature, ftype=ftype, normalized_reference=normalized_ref, normalized_current=normalized_cur
-    )
+    normalized_ref = spec.normalizer(ref)
+    normalized_cur = spec.normalizer(cur)
 
-    return run_check_group(checks=CHECKS[ftype].checks, context=context)
+    context = FeatureContext(feature=feature, reference=normalized_ref, current=normalized_cur, config=spec.config)
+
+    return _run_check_group(checks=spec.checks, context=context)
 
 
-def _collect_empty_feature_issues(
-    feature: str,
-    reference: Sequence[Any],
-    current: Sequence[Any],
-) -> list[Issue]:
+def _collect_empty_feature_issues(feature: str, reference: Sequence[Any], current: Sequence[Any]) -> list[Issue]:
     issues: list[Issue] = []
 
     if _is_empty(reference):
@@ -87,3 +83,17 @@ def _collect_empty_feature_issues(
 
 def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
+
+
+def _run_check_group(
+    checks: list[Callable[[FeatureContext[Any, Any]], Issue | None]], context: FeatureContext[Any, Any]
+) -> list[Issue]:
+    issues: list[Issue] = []
+
+    for check_fn in checks:
+        issue = check_fn(context)
+
+        if issue:
+            issues.append(issue)
+
+    return issues

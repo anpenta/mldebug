@@ -1,10 +1,12 @@
+import numpy as np
 from scipy.stats import ks_2samp
 
-from mldebug.models.context import NumericFeatureContext
+from mldebug.config import NumericCheckConfig
+from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_numeric_ks_test_check(context: NumericFeatureContext) -> Issue | None:
+def run_numeric_ks_test_check(context: FeatureContext[NumericCheckConfig, np.floating]) -> Issue | None:
     """Detect numeric distribution shift using the Kolmogorov-Smirnov (KS) test.
 
     This check compares the empirical distributions of reference and current data for a numeric feature using
@@ -14,7 +16,7 @@ def run_numeric_ks_test_check(context: NumericFeatureContext) -> Issue | None:
 
     Parameters
     ----------
-    context : NumericFeatureContext
+    context : FeatureContext[NumericCheckConfig, np.floating]
         Execution context for the feature check.
 
     Returns

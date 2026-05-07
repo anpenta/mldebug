@@ -10,7 +10,7 @@ class Report:
 
     Parameters
     ----------
-    issues : list of Issue
+    issues : list[Issue]
         Collection of detected issues.
 
     """

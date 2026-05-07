@@ -1,12 +1,11 @@
 import numpy as np
 
-from mldebug.models.context import NumericFeatureContext
+from mldebug.config import NumericCheckConfig
+from mldebug.models.feature_context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_numeric_variance_drift_check(
-    context: NumericFeatureContext,
-) -> Issue | None:
+def run_numeric_variance_drift_check(context: FeatureContext[NumericCheckConfig, np.floating]) -> Issue | None:
     """Detect variance drift for a numeric feature.
 
     This check compares the variance of the reference and current data and flags an issue when the relative change
@@ -14,7 +13,7 @@ def run_numeric_variance_drift_check(
 
     Parameters
     ----------
-    context : NumericFeatureContext
+    context : FeatureContext[NumericCheckConfig, np.floating]
         Execution context for the feature check.
 
     Returns
@@ -27,8 +26,8 @@ def run_numeric_variance_drift_check(
     cur = context.current
     threshold = context.config.variance_drift_threshold
 
-    ref_var = np.var(ref)
-    cur_var = np.var(cur)
+    ref_var = ref.var()
+    cur_var = cur.var()
 
     # Edge case: no variance in reference.
     if ref_var == 0:

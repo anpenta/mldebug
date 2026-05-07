@@ -1,3 +1,4 @@
+from mldebug.models.feature_type import FeatureType
 from tests.fixtures.datasets import generate_mixed_tabular_dataset
 
 
@@ -13,7 +14,7 @@ def test_generated_mixed_tabular_dataset_has_consistent_structure() -> None:
 
     assert reference.keys() == current.keys() == schema.keys()
 
-    assert set(schema.values()) == {"numeric", "categorical"}
+    assert set(schema.values()) == {FeatureType.NUMERIC, FeatureType.CATEGORICAL}
 
     for k in reference:
         assert len(reference[k]) == n

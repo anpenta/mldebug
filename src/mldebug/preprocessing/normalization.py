@@ -34,11 +34,9 @@ def normalize_categorical(data: Sequence[Any]) -> NDArray[np.str_]:
     arr = np.char.strip(arr)
 
     lower = np.char.lower(arr)
-
-    missing = (arr == "") | np.isin(lower, _MISSING_VALUES)
+    missing = np.isin(lower, _MISSING_VALUES)
 
     arr[missing] = ""
-
     return arr
 
 
@@ -50,14 +48,13 @@ def compute_numeric_ratio(values: Sequence[Any]) -> float:
     arr = np.asarray(values, dtype=str)
     arr = np.char.strip(arr)
 
-    valid = ~np.isin(np.char.lower(arr), _MISSING_VALUES)
+    lower = np.char.lower(arr)
+    valid = ~np.isin(lower, _MISSING_VALUES)
 
     if not valid.any():
         return 0.0
 
-    candidates = arr[valid]
-
-    numeric_mask = _is_numeric_vector(candidates)
+    numeric_mask = _is_numeric_vector(arr[valid])
 
     return float(numeric_mask.mean())
 

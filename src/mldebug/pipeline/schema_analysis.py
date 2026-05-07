@@ -3,24 +3,22 @@ from typing import Any, cast
 
 import numpy as np
 
+from mldebug.models.feature_type import FeatureType
 from mldebug.models.issue import Issue, Severity
-from mldebug.preprocessing.normalization import compute_numeric_ratio
+from mldebug.registry.specs import FEATURE_SPECS
 
 
 def analyze_schema(
-    schema: Mapping[str, str],
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
+    schema: Mapping[str, FeatureType], reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]]
 ) -> list[Issue]:
     """Analyze schema consistency against reference and current datasets.
 
-    Performs schema validation and detects mismatches between the provided schema and
-    observed features in the datasets, including missing or unexpected features and
-    feature type inconsistencies (numeric vs categorical).
+    Performs schema validation and detects mismatches between the provided schema and observed features in the
+    datasets, including missing or unexpected features and feature type inconsistencies.
 
     Parameters
     ----------
-    schema : Mapping[str, str]
+    schema : Mapping[str, FeatureType]
         Feature-to-type mapping defining expected dataset structure.
 
     reference : Mapping[str, Sequence[Any]]
@@ -55,11 +53,16 @@ def analyze_schema(
     return issues
 
 
-def _detect_missing_features(
-    schema_keys: set[str],
-    data_keys: set[str],
-    side: str,
-) -> list[Issue]:
+def _create_empty_schema_issue() -> Issue:
+    return Issue(
+        name="empty_schema",
+        metric="schema",
+        severity=Severity.CRITICAL,
+        message="schema is empty",
+    )
+
+
+def _detect_missing_features(schema_keys: set[str], data_keys: set[str], side: str) -> list[Issue]:
     return [
         Issue(
             name=f"missing_feature_{side}",
@@ -72,11 +75,7 @@ def _detect_missing_features(
     ]
 
 
-def _detect_unexpected_features(
-    schema_keys: set[str],
-    data_keys: set[str],
-    side: str,
-) -> list[Issue]:
+def _detect_unexpected_features(schema_keys: set[str], data_keys: set[str], side: str) -> list[Issue]:
     return [
         Issue(
             name=f"unexpected_feature_{side}",
@@ -90,9 +89,7 @@ def _detect_unexpected_features(
 
 
 def _detect_type_mismatches(
-    schema: Mapping[str, str],
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
+    schema: Mapping[str, FeatureType], reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]]
 ) -> list[Issue]:
     issues: list[Issue] = []
 
@@ -105,39 +102,18 @@ def _detect_type_mismatches(
 
         values = cast("Sequence[Any]", np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]))
 
-        if declared_type == "numeric":
-            num_ratio = compute_numeric_ratio(values)
-            if num_ratio < 0.9:
-                issues.append(
-                    Issue(
-                        name="numeric_type_mismatch",
-                        metric="schema",
-                        severity=Severity.CRITICAL,
-                        message=f"{feature}: declared numeric but non-numeric values dominate",
-                        feature=feature,
-                    )
+        if FEATURE_SPECS[declared_type].type_checker(values):
+            issues.append(
+                Issue(
+                    name="feature_type_mismatch",
+                    metric="schema",
+                    severity=Severity.WARNING,
+                    message=(
+                        f"{feature}: declared {declared_type.value.lower()} "
+                        f"but observed values do not conform to this type"
+                    ),
+                    feature=feature,
                 )
-
-        elif declared_type == "categorical":
-            num_ratio = compute_numeric_ratio(values)
-            if num_ratio > 0.9:
-                issues.append(
-                    Issue(
-                        name="categorical_type_mismatch",
-                        metric="schema",
-                        severity=Severity.WARNING,
-                        message=f"{feature}: declared categorical but values appear numeric (ratio={num_ratio:.2f})",
-                        feature=feature,
-                    )
-                )
+            )
 
     return issues
-
-
-def _create_empty_schema_issue() -> Issue:
-    return Issue(
-        name="empty_schema",
-        metric="schema",
-        severity=Severity.CRITICAL,
-        message="schema is empty",
-    )
