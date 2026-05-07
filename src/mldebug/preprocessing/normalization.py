@@ -60,7 +60,15 @@ def compute_numeric_ratio(values: Sequence[Any]) -> float:
 
 
 def _is_numeric_vector(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
-    return np.vectorize(_is_floatable_scalar)(arr)
+    try:
+        arr.astype(float)
+        return np.ones(arr.shape, dtype=bool)
+    except ValueError:
+        return np.fromiter(
+            (_is_floatable_scalar(x) for x in arr),
+            dtype=bool,
+            count=len(arr),
+        )
 
 
 def _is_floatable_scalar(x: Any) -> bool:  # noqa: ANN401 # Need to keep this broad to catch everything.
