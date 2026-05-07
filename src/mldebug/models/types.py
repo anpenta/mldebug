@@ -1,8 +1,4 @@
-from collections.abc import Callable
 from enum import Enum
-
-from .context import FeatureContext
-from .issue import Issue
 
 
 class FeatureType(Enum):
@@ -20,6 +16,3 @@ class FeatureType(Enum):
 
     NUMERIC = "numeric"
     CATEGORICAL = "categorical"
-
-
-CheckType = Callable[[FeatureContext], Issue | None]

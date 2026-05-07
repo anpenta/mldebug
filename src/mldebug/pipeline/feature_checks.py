@@ -1,9 +1,9 @@
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
 from mldebug.models.context import FeatureContext
 from mldebug.models.issue import Issue, Severity
-from mldebug.models.types import CheckType, FeatureType
+from mldebug.models.types import FeatureType
 from mldebug.registry.specs import FEATURE_SPECS
 
 
@@ -85,7 +85,7 @@ def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
 
 
-def _run_check_group(checks: list[CheckType], context: FeatureContext) -> list[Issue]:
+def _run_check_group(checks: list[Callable[[FeatureContext], Issue | None]], context: FeatureContext) -> list[Issue]:
     issues: list[Issue] = []
 
     for check_fn in checks:
