@@ -41,13 +41,9 @@ def run_checks(
     """
     schema_issues = analyze_schema(schema=schema, reference=reference, current=current)
 
-    critical_features = {i.feature for i in schema_issues if i.feature and i.severity == Severity.CRITICAL}
-
-    valid_features = [
-        feature
-        for feature in schema
-        if feature in reference and feature in current and feature not in critical_features
-    ]
+    valid_features = _get_valid_features(
+        reference=reference, current=current, schema=schema, schema_issues=schema_issues
+    )
 
     feature_issues: list[Issue] = []
     for feature in valid_features:
@@ -56,3 +52,17 @@ def run_checks(
         )
 
     return Report(issues=schema_issues + feature_issues)
+
+
+def _get_valid_features(
+    reference: Mapping[str, Sequence[Any]],
+    current: Mapping[str, Sequence[Any]],
+    schema: Mapping[str, FeatureType],
+    schema_issues: list[Issue],
+) -> list[str]:
+    critical_features = {i.feature for i in schema_issues if i.feature and i.severity == Severity.CRITICAL}
+    return [
+        feature
+        for feature in schema
+        if feature in reference and feature in current and feature not in critical_features
+    ]
