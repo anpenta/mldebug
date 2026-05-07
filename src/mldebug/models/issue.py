@@ -31,10 +31,10 @@ class Issue:
     Parameters
     ----------
     name : str
-        Identifier of the issue type (e.g., "feature_drift", "missing_values").
+        Identifier of the issue type (e.g., "ks_test", "missing_values").
 
     metric : str
-        Name of the metric used to detect the issue (e.g., "ks", "psi").
+        Name of the metric used to detect the issue (e.g., "distribution_shift_score", "missing_rate_increase").
 
     severity : Severity
         Importance level of the issue.
@@ -42,13 +42,13 @@ class Issue:
     message : str
         Human-readable explanation of the issue.
 
-    feature : str | None, optional
+    feature : str | None
         Feature associated with the issue. None for global issues.
 
-    value : float | None, optional
-        Observed metric value that triggered the issue.
+    value : float | None
+        Observed metric value that triggered the issue (if applicable).
 
-    threshold : float | None, optional
+    threshold : float | None
         Threshold used for comparison. Interpretation depends on the metric.
 
     """
