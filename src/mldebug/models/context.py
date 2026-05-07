@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from mldebug.config import CategoricalCheckConfig, NumericCheckConfig
-from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
     import numpy as np
     from numpy.typing import NDArray
 
@@ -25,19 +22,6 @@ class NumericFeatureContext:
     current: NDArray[np.floating]
     config: NumericCheckConfig
 
-    @classmethod
-    def from_raw(cls, feature: str, ref: Sequence[Any], cur: Sequence[Any]) -> NumericFeatureContext:
-        """Create a numeric context from raw feature data.
-
-        Applies numeric normalization and attaches default config.
-        """
-        return cls(
-            feature=feature,
-            reference=normalize_numeric(ref),
-            current=normalize_numeric(cur),
-            config=NumericCheckConfig(),
-        )
-
 
 @dataclass(frozen=True, slots=True)
 class CategoricalFeatureContext:
@@ -50,16 +34,3 @@ class CategoricalFeatureContext:
     reference: NDArray[np.str_]
     current: NDArray[np.str_]
     config: CategoricalCheckConfig
-
-    @classmethod
-    def from_raw(cls, feature: str, ref: Sequence[Any], cur: Sequence[Any]) -> CategoricalFeatureContext:
-        """Create a categorical context from raw feature data.
-
-        Applies categorical normalization and attaches default config.
-        """
-        return cls(
-            feature=feature,
-            reference=normalize_categorical(ref),
-            current=normalize_categorical(cur),
-            config=CategoricalCheckConfig(),
-        )

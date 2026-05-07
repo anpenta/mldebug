@@ -5,7 +5,7 @@ from mldebug.models.report import Report
 
 from .feature_engine import run_feature_checks
 from .filtering import get_valid_features
-from .schema import analyze_schema
+from .schema_analysis import analyze_schema
 
 if TYPE_CHECKING:
     from mldebug.models.issue import Issue
@@ -38,23 +38,16 @@ def run_checks(
         Aggregated report containing all detected issues.
 
     """
-    issues: list[Issue] = []
+    schema_issues = analyze_schema(schema=schema, reference=reference, current=current)
 
-    # Schema analysis (validation and mismatch detection).
-    issues.extend(analyze_schema(schema=schema, reference=reference, current=current))
+    valid_features = get_valid_features(
+        reference=reference, current=current, schema=schema, schema_issues=schema_issues
+    )
 
-    valid_features = get_valid_features(reference=reference, current=current, schema=schema, schema_issues=issues)
-
-    # Feature execution (schema-driven).
+    feature_issues: list[Issue] = []
     for feature in valid_features:
-        ftype = schema[feature]
-        issues.extend(
-            run_feature_checks(
-                feature=feature,
-                ftype=ftype,
-                reference=reference,
-                current=current,
-            )
+        feature_issues.extend(
+            run_feature_checks(feature=feature, ftype=schema[feature], reference=reference, current=current)
         )
 
-    return Report(issues=issues)
+    return Report(issues=schema_issues + feature_issues)

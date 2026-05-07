@@ -8,7 +8,6 @@ from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
 from mldebug.checks.numeric.missing_values import run_numeric_missing_value_check
 from mldebug.checks.numeric.range_anomaly import run_numeric_range_anomaly_check
 from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
-from mldebug.models.context import CategoricalFeatureContext, NumericFeatureContext
 from mldebug.models.issue import Issue
 
 
@@ -18,21 +17,16 @@ class CheckGroup:
 
     Attributes
     ----------
-    context : type
-        Context class used to build feature data.
-
     checks : list[Callable[..., Issue | None]]
         Validation checks for this feature type.
 
     """
 
-    context: type[NumericFeatureContext | CategoricalFeatureContext]
     checks: list[Callable[..., Issue | None]]
 
 
 CHECKS: dict[str, CheckGroup] = {
     "numeric": CheckGroup(
-        context=NumericFeatureContext,
         checks=[
             run_numeric_missing_value_check,
             run_numeric_ks_test_check,
@@ -41,7 +35,6 @@ CHECKS: dict[str, CheckGroup] = {
         ],
     ),
     "categorical": CheckGroup(
-        context=CategoricalFeatureContext,
         checks=[
             run_categorical_missing_value_check,
             run_categorical_psi_drift_check,
