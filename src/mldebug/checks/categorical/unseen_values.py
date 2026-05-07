@@ -1,8 +1,8 @@
-from mldebug.models.context import CategoricalFeatureContext
+from mldebug.models.context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_categorical_unseen_category_check(context: CategoricalFeatureContext) -> Issue | None:
+def run_categorical_unseen_category_check(context: FeatureContext) -> Issue | None:
     """Detect unseen categories in a categorical feature.
 
     This check identifies values that appear in the current data but were not observed in the reference data.
@@ -10,7 +10,7 @@ def run_categorical_unseen_category_check(context: CategoricalFeatureContext) ->
 
     Parameters
     ----------
-    context : CategoricalFeatureContext
+    context : FeatureContext
         Execution context for the feature check.
 
     Returns

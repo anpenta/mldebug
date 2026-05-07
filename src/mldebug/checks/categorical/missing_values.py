@@ -1,8 +1,8 @@
-from mldebug.models.context import CategoricalFeatureContext
+from mldebug.models.context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_categorical_missing_value_check(context: CategoricalFeatureContext) -> Issue | None:
+def run_categorical_missing_value_check(context: FeatureContext) -> Issue | None:
     """Detect increase in missing values for a categorical feature.
 
     This check compares the proportion of missing values between reference and current data.
@@ -10,7 +10,7 @@ def run_categorical_missing_value_check(context: CategoricalFeatureContext) -> I
 
     Parameters
     ----------
-    context : CategoricalFeatureContext
+    context : FeatureContext
         Execution context for the feature check.
 
     Returns

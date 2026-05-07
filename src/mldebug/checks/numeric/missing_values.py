@@ -1,10 +1,10 @@
 import numpy as np
 
-from mldebug.models.context import NumericFeatureContext
+from mldebug.models.context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_numeric_missing_value_check(context: NumericFeatureContext) -> Issue | None:
+def run_numeric_missing_value_check(context: FeatureContext) -> Issue | None:
     """Detect increase in missing values for a numeric feature.
 
     This check compares the proportion of missing values (NaNs) between the reference and current
@@ -12,7 +12,7 @@ def run_numeric_missing_value_check(context: NumericFeatureContext) -> Issue | N
 
     Parameters
     ----------
-    context : NumericFeatureContext
+    context : FeatureContext
         Execution context for the feature check.
 
     Returns

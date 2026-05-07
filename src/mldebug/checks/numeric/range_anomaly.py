@@ -1,10 +1,10 @@
 import numpy as np
 
-from mldebug.models.context import NumericFeatureContext
+from mldebug.models.context import FeatureContext
 from mldebug.models.issue import Issue, Severity
 
 
-def run_numeric_range_anomaly_check(context: NumericFeatureContext) -> Issue | None:
+def run_numeric_range_anomaly_check(context: FeatureContext) -> Issue | None:
     """Detect values outside the observed reference range for a numeric feature.
 
     This check compares current data against the minimum and maximum values observed in the reference
@@ -12,7 +12,7 @@ def run_numeric_range_anomaly_check(context: NumericFeatureContext) -> Issue | N
 
     Parameters
     ----------
-    context : NumericFeatureContext
+    context : FeatureContext
         Execution context for the feature check.
 
     Returns
@@ -23,8 +23,8 @@ def run_numeric_range_anomaly_check(context: NumericFeatureContext) -> Issue | N
     ref = context.reference
     cur = context.current
 
-    ref_min = np.min(ref)
-    ref_max = np.max(ref)
+    ref_min = ref.min()
+    ref_max = ref.max()
 
     out_of_range = (cur < ref_min) | (cur > ref_max)
     count = int(np.sum(out_of_range))
