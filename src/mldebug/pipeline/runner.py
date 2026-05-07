@@ -1,21 +1,16 @@
 from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from mldebug.models.feature_type import FeatureType
-from mldebug.models.issue import Severity
+from mldebug.models.issue import Issue, Severity
 from mldebug.models.report import Report
 
 from .feature_checks import run_feature_checks
 from .schema_analysis import analyze_schema
 
-if TYPE_CHECKING:
-    from mldebug.models.issue import Issue
-
 
 def run_checks(
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
-    schema: Mapping[str, FeatureType],
+    reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]], schema: Mapping[str, FeatureType]
 ) -> Report:
     """Run checks on reference and current datasets.
 
