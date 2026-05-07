@@ -7,11 +7,13 @@ Provides tools to run validation checks on reference and current datasets and re
 
 from .models.issue import Issue, Severity
 from .models.report import Report
+from .models.types import FeatureType
 from .pipeline.runner import run_checks
 
 __all__ = [
     "Issue",
     "Report",
     "Severity",
+    "FeatureType",
     "run_checks",
 ]

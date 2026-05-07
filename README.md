@@ -59,7 +59,7 @@ pip install mldebug
 ### Example Usage
 
 ```python
-from mldebug import run_checks
+from mldebug import run_checks, FeatureType
 import numpy as np
 
 reference = {
@@ -75,9 +75,9 @@ current = {
 }
 
 schema = {
-    "age": "numeric",
-    "income": "numeric",
-    "country": "categorical",
+    "age": FeatureType.NUMERIC,
+    "income": FeatureType.NUMERIC,
+    "country": FeatureType.CATEGORICAL,
 }
 
 report = run_checks(reference=reference, current=current, schema=schema)
