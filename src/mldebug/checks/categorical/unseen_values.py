@@ -36,7 +36,7 @@ def run_categorical_unseen_category_check(context: FeatureContext) -> Issue | No
         name="unseen_categories",
         metric="unseen_category_count",
         severity=Severity.WARNING,
-        message=(f"{feature}: {unseen_count} unseen categories detected (e.g. {list(unseen)[:3]})"),
+        message=(f"{feature}: {unseen_count} unseen categories detected (e.g. {list(map(str, list(unseen)[:3]))})"),
         feature=feature,
         value=float(unseen_count),
         threshold=0.0,
