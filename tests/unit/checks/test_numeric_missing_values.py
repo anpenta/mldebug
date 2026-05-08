@@ -1,70 +1,62 @@
-import numpy as np
 
-from mldebug.checks.numeric.variance_drift import run_numeric_variance_drift_check
-from mldebug.config import NumericCheckConfig
-from mldebug.models.feature_context import FeatureContext
+from mldebug.checks.numeric.missing_values import NumericMissingValueCheck
+from mldebug.runtime.feature_context import FeatureContext
+from tests.fixtures.generators import generate_normal_data
+from tests.fixtures.missing_values import inject_numeric_missing_values
 
 
-def test_numeric_variance_drift_check_detects_increase_in_variance_ratio() -> None:
+def test_numeric_missing_value_check_triggers_when_missing_rate_increases() -> None:
     feature = "feature_1"
 
-    context = FeatureContext(
-        feature=feature,
-        reference=np.array([1, 2, 3], dtype=float),
-        current=np.array([1, 2, 10], dtype=float),
-        config=NumericCheckConfig(variance_drift_threshold=2.0),
-    )
+    ref = inject_numeric_missing_values(generate_normal_data(), rate=0.01)
 
-    issue = run_numeric_variance_drift_check(context)
+    cur = inject_numeric_missing_values(generate_normal_data(), rate=0.2)
+
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
+
+    issue = NumericMissingValueCheck(threshold=0.05)(context)
 
     assert issue is not None
-    assert issue.name == "variance_drift"
-    assert issue.metric == "variance_ratio"
+    assert issue.metric == "missing_rate_increase"
     assert issue.feature == feature
     assert issue.value is not None
+    assert issue.value > 0
 
 
-def test_numeric_variance_drift_check_detects_decrease_in_variance_ratio() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> None:
     feature = "feature_1"
+
+    ref = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
+
+    cur = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
 
     context = FeatureContext(
         feature=feature,
-        reference=np.array([1, 10, 100], dtype=float),
-        current=np.array([5, 5, 5], dtype=float),
-        config=NumericCheckConfig(variance_drift_threshold=2.0),
+        reference=ref,
+        current=cur,
     )
 
-    issue = run_numeric_variance_drift_check(context)
-
-    assert issue is not None
-    assert issue.name == "variance_drift"
-
-
-def test_numeric_variance_drift_check_does_not_trigger_when_variance_is_stable() -> None:
-    feature = "feature_1"
-
-    context = FeatureContext(
-        feature=feature,
-        reference=np.array([1, 2, 3], dtype=float),
-        current=np.array([1, 2, 3], dtype=float),
-        config=NumericCheckConfig(variance_drift_threshold=2.0),
-    )
-
-    issue = run_numeric_variance_drift_check(context)
+    issue = NumericMissingValueCheck(threshold=0.05)(context)
 
     assert issue is None
 
 
-def test_numeric_variance_drift_check_returns_none_when_reference_variance_is_zero() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
     feature = "feature_1"
+
+    ref = inject_numeric_missing_values(
+        generate_normal_data(),
+        rate=0.25,
+    )
+
+    cur = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
 
     context = FeatureContext(
         feature=feature,
-        reference=np.array([5, 5, 5], dtype=float),
-        current=np.array([1, 2, 3], dtype=float),
-        config=NumericCheckConfig(variance_drift_threshold=2.0),
+        reference=ref,
+        current=cur,
     )
 
-    issue = run_numeric_variance_drift_check(context)
+    issue = NumericMissingValueCheck(threshold=0.05)(context)
 
     assert issue is None

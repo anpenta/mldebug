@@ -1,13 +1,11 @@
-import numpy as np
-from numpy.typing import NDArray
-
-from mldebug.models.feature_type import FeatureType
+from mldebug.domain.feature_type import FeatureType
+from mldebug.types import Array
 from tests.fixtures.generators import generate_categorical_data, generate_normal_data
 
 
 def generate_mixed_tabular_dataset(
     n: int = 100_000, n_features: int = 100, seed: int = 42
-) -> tuple[dict[str, NDArray[np.generic]], dict[str, NDArray[np.generic]], dict[str, FeatureType]]:
+) -> tuple[dict[str, Array], dict[str, Array], dict[str, FeatureType]]:
     n_numeric = n_features // 2
     n_categorical = n_features - n_numeric
 

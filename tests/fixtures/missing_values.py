@@ -2,7 +2,9 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-def inject_numeric_missing_values(data: NDArray[np.float64], rate: float = 0.1, seed: int = 42) -> NDArray[np.floating]:
+def inject_numeric_missing_values(
+    data: NDArray[np.floating], rate: float = 0.1, seed: int = 42
+) -> NDArray[np.floating]:
     data = data.copy()
     rng = np.random.default_rng(seed)
     mask = rng.random(len(data)) < rate

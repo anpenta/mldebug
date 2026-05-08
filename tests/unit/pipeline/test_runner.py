@@ -1,5 +1,5 @@
-from mldebug.models.feature_type import FeatureType
-from mldebug.models.issue import Issue, Severity
+from mldebug.domain.feature_type import FeatureType
+from mldebug.domain.issue import Issue, Severity
 from mldebug.pipeline.runner import _get_valid_features
 
 

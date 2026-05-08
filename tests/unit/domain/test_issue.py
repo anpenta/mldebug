@@ -1,4 +1,4 @@
-from mldebug.models.issue import Issue, Severity
+from mldebug.domain.issue import Issue, Severity
 
 
 def test_issue_str_returns_compact_warning_format() -> None:
