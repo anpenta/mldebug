@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 
 from mldebug.protocols.check import Check
-from mldebug.protocols.feature_detector import (
-    FeatureDetector,
-)
+from mldebug.protocols.feature_detector import FeatureDetector
 from mldebug.protocols.normalizer import Normalizer
 
 
