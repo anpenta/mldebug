@@ -7,7 +7,7 @@ from mldebug.runtime.feature_context import FeatureContext
 
 
 @dataclass(frozen=True, slots=True)
-class NumericKSCheck:
+class NumericKSTestCheck:
     """Detect numeric distribution shift using the Kolmogorov-Smirnov (KS) test.
 
     This check compares the empirical distributions of reference and

@@ -1,6 +1,6 @@
 import numpy as np
 
-from mldebug.checks.categorical.unseen_values import CategoricalUnseenCategoryCheck
+from mldebug.checks.categorical.unseen_categories import CategoricalUnseenCategoryCheck
 from mldebug.runtime.feature_context import FeatureContext
 
 

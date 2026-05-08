@@ -4,11 +4,11 @@ from mldebug.checks.categorical.missing_values import (
 from mldebug.checks.categorical.psi import (
     CategoricalPSICheck,
 )
-from mldebug.checks.categorical.unseen_values import (
+from mldebug.checks.categorical.unseen_categories import (
     CategoricalUnseenCategoryCheck,
 )
 from mldebug.checks.numeric.ks_test import (
-    NumericKSCheck,
+    NumericKSTestCheck,
 )
 from mldebug.checks.numeric.missing_values import (
     NumericMissingValueCheck,
@@ -40,7 +40,7 @@ FEATURE_SPECS: dict[FeatureType, FeatureSpec] = {
         normalizer=NumericNormalizer(),
         checks=[
             NumericMissingValueCheck(),
-            NumericKSCheck(),
+            NumericKSTestCheck(),
             NumericVarianceDriftCheck(),
             NumericRangeAnomalyCheck(),
         ],
