@@ -29,11 +29,7 @@ def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stabl
 
     cur = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
 
-    context = FeatureContext(
-        feature=feature,
-        reference=ref,
-        current=cur,
-    )
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
     issue = NumericMissingValueCheck(threshold=0.05)(context)
 
@@ -43,18 +39,11 @@ def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stabl
 def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
     feature = "feature_1"
 
-    ref = inject_numeric_missing_values(
-        generate_normal_data(),
-        rate=0.25,
-    )
+    ref = inject_numeric_missing_values(generate_normal_data(), rate=0.25)
 
     cur = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
 
-    context = FeatureContext(
-        feature=feature,
-        reference=ref,
-        current=cur,
-    )
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
     issue = NumericMissingValueCheck(threshold=0.05)(context)
 
