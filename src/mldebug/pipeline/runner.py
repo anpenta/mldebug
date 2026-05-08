@@ -1,5 +1,6 @@
-from collections.abc import Mapping, Sequence
-from typing import Any
+from collections.abc import Mapping
+
+from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Issue, Severity
@@ -10,7 +11,7 @@ from .schema_analysis import analyze_schema
 
 
 def run_checks(
-    reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]], schema: Mapping[str, FeatureType]
+    reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike], schema: Mapping[str, FeatureType]
 ) -> Report:
     """Run checks on reference and current datasets.
 
@@ -19,10 +20,10 @@ def run_checks(
 
     Parameters
     ----------
-    reference : Mapping[str, Sequence[Any]]
+    reference : Mapping[str, ArrayLike]
         Reference dataset keyed by feature name (e.g. training data).
 
-    current : Mapping[str, Sequence[Any]]
+    current : Mapping[str, ArrayLike]
         Current dataset keyed by feature name (e.g. production data).
 
     schema : Mapping[str, FeatureType]
@@ -50,8 +51,8 @@ def run_checks(
 
 
 def _get_valid_features(
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
     schema: Mapping[str, FeatureType],
     schema_issues: list[Issue],
 ) -> list[str]:

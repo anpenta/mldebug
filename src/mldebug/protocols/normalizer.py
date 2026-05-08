@@ -1,8 +1,9 @@
-from collections.abc import Sequence
-from typing import Any, Protocol
+from typing import Protocol
+
+from numpy.typing import ArrayLike
 
 from mldebug.types import Array
 
 
 class Normalizer(Protocol):
-    def __call__(self, values: Sequence[Any]) -> Array: ...
+    def __call__(self, values: ArrayLike) -> Array: ...
