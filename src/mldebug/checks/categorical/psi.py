@@ -11,9 +11,8 @@ from mldebug.runtime.feature_context import FeatureContext
 class CategoricalPSICheck:
     """Detect categorical distribution drift using Population Stability Index (PSI).
 
-    This check compares the distribution of categorical values between
-    reference and current data using PSI. An issue is reported when
-    the PSI value exceeds the configured threshold.
+    This check compares the distribution of categorical values between reference and current data using PSI.
+    An issue is reported when the PSI value exceeds the configured threshold.
 
     Parameters
     ----------
@@ -61,31 +60,31 @@ class CategoricalPSICheck:
 
         return None
 
-    def _compute_psi(
-        self,
-        reference: NDArray[np.str_],
-        current: NDArray[np.str_],
-    ) -> float:
-        """Compute Population Stability Index between two categorical arrays."""
+    def _compute_psi(self, reference: NDArray[np.str_], current: NDArray[np.str_]) -> float:
+        # Build shared category space (union of all categories).
         all_values = np.concatenate([reference, current])
         _, encoded = np.unique(all_values, return_inverse=True)
 
         ref_encoded = encoded[: len(reference)]
         cur_encoded = encoded[len(reference) :]
 
+        # Histogram counts aligned to the same category space.
         n_categories = encoded.max() + 1
         ref_counts = np.bincount(ref_encoded, minlength=n_categories)
         cur_counts = np.bincount(cur_encoded, minlength=n_categories)
 
+        # Convert to probabilities.
         ref_total = ref_counts.sum()
         cur_total = cur_counts.sum()
 
         p = ref_counts / ref_total
         q = cur_counts / cur_total
 
+        # Numerical stability.
         p = np.clip(p, self.eps, None)
         q = np.clip(q, self.eps, None)
 
+        # PSI computation (vectorized).
         psi = np.sum((p - q) * np.log(p / q))
 
         return float(psi)
