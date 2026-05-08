@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Any
 
-from .issue import Issue, Severity
+from .issue import Issue
+from .severity import Severity
 
 
 @dataclass(frozen=True, slots=True)

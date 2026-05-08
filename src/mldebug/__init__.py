@@ -5,9 +5,9 @@ A lightweight Python package for comparing datasets and detecting unexpected cha
 Provides tools to run validation checks on reference and current datasets and return reports of detected issues.
 """
 
-from .models.feature_type import FeatureType
-from .models.issue import Issue, Severity
-from .models.report import Report
+from .domain.feature_type import FeatureType
+from .domain.issue import Issue, Severity
+from .domain.report import Report
 from .pipeline.runner import run_checks
 
 __all__ = [

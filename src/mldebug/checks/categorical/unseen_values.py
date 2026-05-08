@@ -1,46 +1,61 @@
-import numpy as np
+from dataclasses import dataclass
 
-from mldebug.config import CategoricalCheckConfig
-from mldebug.models.feature_context import FeatureContext
-from mldebug.models.issue import Issue, Severity
+from mldebug.domain.issue import Issue, Severity
+from mldebug.runtime.feature_context import FeatureContext
 
 
-def run_categorical_unseen_category_check(context: FeatureContext[CategoricalCheckConfig, np.str_]) -> Issue | None:
+@dataclass(frozen=True, slots=True)
+class CategoricalUnseenCategoryCheck:
     """Detect unseen categories in a categorical feature.
 
-    This check identifies values that appear in the current data but were not observed in the reference data.
-    An issue is reported when at least one unseen category is detected.
+    This check identifies values that appear in the current data
+    but were not observed in the reference data. An issue is
+    reported when at least one unseen category is detected.
 
     Parameters
     ----------
-    context : FeatureContext[CategoricalCheckConfig, np.str_]
-        Execution context for the feature check.
-
-    Returns
-    -------
-    Issue | None
-        Issue if unseen categories are detected, otherwise None.
+    max_examples : int, default=3
+        Number of unseen categories to show in the message.
 
     """
-    reference = context.reference
-    current = context.current
-    feature = context.feature
 
-    ref_set = set(reference)
-    cur_set = set(current)
+    max_examples: int = 3
 
-    unseen = cur_set - ref_set
-    unseen_count = len(unseen)
+    def __call__(self, context: FeatureContext) -> Issue | None:
+        """Run unseen category detection.
 
-    if unseen_count == 0:
-        return None
+        Parameters
+        ----------
+        context : FeatureContext
+            Execution context for the feature check.
 
-    return Issue(
-        name="unseen_categories",
-        metric="unseen_category_count",
-        severity=Severity.WARNING,
-        message=(f"{feature}: {unseen_count} unseen categories detected (e.g. {list(map(str, list(unseen)[:3]))})"),
-        feature=feature,
-        value=float(unseen_count),
-        threshold=0.0,
-    )
+        Returns
+        -------
+        Issue | None
+            Issue if unseen categories are detected, otherwise None.
+
+        """
+        reference = context.reference
+        current = context.current
+        feature = context.feature
+
+        ref_set = set(reference)
+        cur_set = set(current)
+
+        unseen = cur_set - ref_set
+        unseen_count = len(unseen)
+
+        if unseen_count == 0:
+            return None
+
+        examples = list(map(str, list(unseen)[: self.max_examples]))
+
+        return Issue(
+            name="unseen_categories",
+            metric="unseen_category_count",
+            severity=Severity.WARNING,
+            message=(f"{feature}: {unseen_count} unseen categories detected (e.g. {examples})"),
+            feature=feature,
+            value=float(unseen_count),
+            threshold=0.0,
+        )

@@ -3,9 +3,9 @@ from typing import Any, cast
 
 import numpy as np
 
-from mldebug.models.feature_type import FeatureType
-from mldebug.models.issue import Issue, Severity
-from mldebug.registry.specs import FEATURE_SPECS
+from mldebug.domain.feature_type import FeatureType
+from mldebug.domain.issue import Issue, Severity
+from mldebug.registry import FEATURE_SPECS
 
 
 def analyze_schema(
@@ -102,7 +102,7 @@ def _detect_type_mismatches(
 
         values = cast("Sequence[Any]", np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]))
 
-        if FEATURE_SPECS[declared_type].type_checker(values):
+        if not FEATURE_SPECS[declared_type].detector(values):
             issues.append(
                 Issue(
                     name="feature_type_mismatch",
