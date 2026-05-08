@@ -8,9 +8,8 @@ from mldebug.runtime.feature_context import FeatureContext
 class CategoricalUnseenCategoryCheck:
     """Detect unseen categories in a categorical feature.
 
-    This check identifies values that appear in the current data
-    but were not observed in the reference data. An issue is
-    reported when at least one unseen category is detected.
+    This check identifies categories that appear in the current data but were not observed in the reference data.
+    An issue is reported when at least one unseen category is detected.
 
     Parameters
     ----------
