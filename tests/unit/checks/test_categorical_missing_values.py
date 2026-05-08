@@ -1,6 +1,5 @@
-from mldebug.checks.categorical.missing_values import run_categorical_missing_value_check
-from mldebug.config import CategoricalCheckConfig
-from mldebug.models.feature_context import FeatureContext
+from mldebug.checks.categorical.missing_values import CategoricalMissingValueCheck
+from mldebug.runtime.feature_context import FeatureContext
 from tests.fixtures.generators import generate_categorical_data
 from tests.fixtures.missing_values import inject_categorical_missing_values
 
@@ -12,11 +11,9 @@ def test_categorical_missing_value_check_triggers_when_missing_rate_increases() 
 
     cur = inject_categorical_missing_values(generate_categorical_data(), rate=0.2)
 
-    context = FeatureContext(
-        feature=feature, reference=ref, current=cur, config=CategoricalCheckConfig(missing_threshold=0.05)
-    )
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
-    issue = run_categorical_missing_value_check(context)
+    issue = CategoricalMissingValueCheck(threshold=0.05)(context)
 
     assert issue is not None
     assert issue.metric == "missing_rate_increase"
@@ -38,11 +35,9 @@ def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_is_s
         rate=0.05,
     )
 
-    context = FeatureContext(
-        feature=feature, reference=ref, current=cur, config=CategoricalCheckConfig(missing_threshold=0.05)
-    )
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
-    issue = run_categorical_missing_value_check(context)
+    issue = CategoricalMissingValueCheck(threshold=0.05)(context)
 
     assert issue is None
 
@@ -60,10 +55,8 @@ def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_decr
         rate=0.05,
     )
 
-    context = FeatureContext(
-        feature=feature, reference=ref, current=cur, config=CategoricalCheckConfig(missing_threshold=0.05)
-    )
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
-    issue = run_categorical_missing_value_check(context)
+    issue = CategoricalMissingValueCheck(threshold=0.05)(context)
 
     assert issue is None

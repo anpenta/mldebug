@@ -7,12 +7,12 @@ from numpy.typing import NDArray
 _MISSING_VALUES = ("", "nan", "none", "null")
 
 
-def normalize_numeric(data: Sequence[Any]) -> NDArray[np.floating]:
+def normalize_numeric(values: Sequence[Any]) -> NDArray[np.floating]:
     """Normalize a sequence into a numeric NumPy array.
 
     Non-numeric values are converted to NaN.
     """
-    arr = np.asarray(data, dtype=str)
+    arr = np.asarray(values, dtype=str)
     arr = np.char.strip(arr)
 
     out = np.full(arr.shape, np.nan, dtype=float)
@@ -25,12 +25,12 @@ def normalize_numeric(data: Sequence[Any]) -> NDArray[np.floating]:
     return out
 
 
-def normalize_categorical(data: Sequence[Any]) -> NDArray[np.str_]:
+def normalize_categorical(values: Sequence[Any]) -> NDArray[np.str_]:
     """Normalize a sequence into a categorical NumPy array.
 
     Numeric and missing-like values are converted to empty strings.
     """
-    arr = np.asarray(data, dtype=str)
+    arr = np.asarray(values, dtype=str)
     arr = np.char.strip(arr)
 
     lower = np.char.lower(arr)

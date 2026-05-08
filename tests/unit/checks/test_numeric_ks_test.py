@@ -1,6 +1,5 @@
-from mldebug.checks.numeric.ks_test import run_numeric_ks_test_check
-from mldebug.config import NumericCheckConfig
-from mldebug.models.feature_context import FeatureContext
+from mldebug.checks.numeric.ks_test import NumericKSTestCheck
+from mldebug.runtime.feature_context import FeatureContext
 from tests.fixtures.generators import generate_normal_data
 
 
@@ -10,11 +9,9 @@ def test_numeric_ks_test_detects_distribution_shift() -> None:
     reference = generate_normal_data()
     current = generate_normal_data(mean=1, std=1)
 
-    context = FeatureContext(
-        feature=feature, reference=reference, current=current, config=NumericCheckConfig(ks_alpha=0.05)
-    )
+    context = FeatureContext(feature=feature, reference=reference, current=current)
 
-    issue = run_numeric_ks_test_check(context)
+    issue = NumericKSTestCheck(alpha=0.05)(context)
 
     assert issue is not None
     assert issue.metric == "distribution_shift_score"
@@ -27,10 +24,8 @@ def test_numeric_ks_test_does_not_trigger_when_distribution_is_stable() -> None:
     reference = generate_normal_data()
     current = generate_normal_data(mean=0.05)
 
-    context = FeatureContext(
-        feature=feature, reference=reference, current=current, config=NumericCheckConfig(ks_alpha=0.05)
-    )
+    context = FeatureContext(feature=feature, reference=reference, current=current)
 
-    issue = run_numeric_ks_test_check(context)
+    issue = NumericKSTestCheck(alpha=0.05)(context)
 
     assert issue is None

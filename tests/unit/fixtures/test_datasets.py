@@ -1,4 +1,4 @@
-from mldebug.models.feature_type import FeatureType
+from mldebug.domain.feature_type import FeatureType
 from tests.fixtures.datasets import generate_mixed_tabular_dataset
 
 

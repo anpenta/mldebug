@@ -1,12 +1,14 @@
+from dataclasses import dataclass
+
 import numpy as np
 from numpy.typing import NDArray
 
-from mldebug.config import CategoricalCheckConfig
-from mldebug.models.feature_context import FeatureContext
-from mldebug.models.issue import Issue, Severity
+from mldebug.domain.issue import Issue, Severity
+from mldebug.runtime.feature_context import FeatureContext
 
 
-def run_categorical_psi_drift_check(context: FeatureContext[CategoricalCheckConfig, np.str_]) -> Issue | None:
+@dataclass(frozen=True, slots=True)
+class CategoricalPSICheck:
     """Detect categorical distribution drift using Population Stability Index (PSI).
 
     This check compares the distribution of categorical values between reference and current data using PSI.
@@ -14,65 +16,75 @@ def run_categorical_psi_drift_check(context: FeatureContext[CategoricalCheckConf
 
     Parameters
     ----------
-    context : FeatureContext[CategoricalCheckConfig, np.str_]
-        Execution context for the feature check.
+    threshold : float, default=0.2
+        Maximum allowed PSI value before reporting drift.
 
-    Returns
-    -------
-    Issue | None
-        Issue if the PSI value exceeds the configured threshold, otherwise None.
+    eps : float, default=1e-8
+        Small value added for numerical stability in probability computation.
 
     """
-    reference = context.reference
-    current = context.current
-    feature = context.feature
-    threshold = context.config.psi_threshold
 
-    psi = _compute_categorical_psi(reference, current)
+    threshold: float = 0.2
+    eps: float = 1e-8
 
-    if psi > threshold:
-        return Issue(
-            name="psi_drift",
-            metric="psi",
-            severity=Severity.WARNING,
-            message=f"{feature}: PSI drift detected ({psi:.4f})",
-            feature=feature,
-            value=psi,
-            threshold=threshold,
-        )
+    def __call__(self, context: FeatureContext) -> Issue | None:
+        """Run PSI drift detection for categorical features.
 
-    return None
+        Parameters
+        ----------
+        context : FeatureContext
+            Execution context for the feature check.
 
+        Returns
+        -------
+        Issue | None
+            Issue if PSI exceeds threshold, otherwise None.
 
-def _compute_categorical_psi(
-    reference: NDArray[np.str_],
-    current: NDArray[np.str_],
-    eps: float = 1e-8,
-) -> float:
-    # Build shared category space (union of all categories).
-    all_values = np.concatenate([reference, current])
-    _, encoded = np.unique(all_values, return_inverse=True)
+        """
+        reference = context.reference
+        current = context.current
+        feature = context.feature
 
-    ref_encoded = encoded[: len(reference)]
-    cur_encoded = encoded[len(reference) :]
+        psi = self._compute_psi(reference, current)
 
-    # Histogram counts aligned to the same category space.
-    n_categories = encoded.max() + 1
-    ref_counts = np.bincount(ref_encoded, minlength=n_categories)
-    cur_counts = np.bincount(cur_encoded, minlength=n_categories)
+        if psi > self.threshold:
+            return Issue(
+                name="psi_drift",
+                metric="psi",
+                severity=Severity.WARNING,
+                message=f"{feature}: PSI drift detected ({psi:.4f})",
+                feature=feature,
+                value=psi,
+                threshold=self.threshold,
+            )
 
-    # Convert to probabilities.
-    ref_total = ref_counts.sum()
-    cur_total = cur_counts.sum()
+        return None
 
-    p = ref_counts / ref_total
-    q = cur_counts / cur_total
+    def _compute_psi(self, reference: NDArray[np.str_], current: NDArray[np.str_]) -> float:
+        # Build shared category space (union of all categories).
+        all_values = np.concatenate([reference, current])
+        _, encoded = np.unique(all_values, return_inverse=True)
 
-    # Numerical stability.
-    p = np.clip(p, eps, None)
-    q = np.clip(q, eps, None)
+        ref_encoded = encoded[: len(reference)]
+        cur_encoded = encoded[len(reference) :]
 
-    # PSI computation (vectorized).
-    psi = np.sum((p - q) * np.log(p / q))
+        # Histogram counts aligned to the same category space.
+        n_categories = encoded.max() + 1
+        ref_counts = np.bincount(ref_encoded, minlength=n_categories)
+        cur_counts = np.bincount(cur_encoded, minlength=n_categories)
 
-    return float(psi)
+        # Convert to probabilities.
+        ref_total = ref_counts.sum()
+        cur_total = cur_counts.sum()
+
+        p = ref_counts / ref_total
+        q = cur_counts / cur_total
+
+        # Numerical stability.
+        p = np.clip(p, self.eps, None)
+        q = np.clip(q, self.eps, None)
+
+        # PSI computation (vectorized).
+        psi = np.sum((p - q) * np.log(p / q))
+
+        return float(psi)

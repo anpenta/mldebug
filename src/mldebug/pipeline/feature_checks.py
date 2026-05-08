@@ -1,10 +1,10 @@
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any
 
-from mldebug.models.feature_context import FeatureContext
-from mldebug.models.feature_type import FeatureType
-from mldebug.models.issue import Issue, Severity
-from mldebug.registry.specs import FEATURE_SPECS
+from mldebug.domain.feature_type import FeatureType
+from mldebug.domain.issue import Issue, Severity
+from mldebug.registry import FEATURE_SPECS
+from mldebug.runtime.feature_context import FeatureContext
 
 
 def run_feature_checks(
@@ -45,12 +45,12 @@ def run_feature_checks(
 
     spec = FEATURE_SPECS[ftype]
 
-    normalized_ref = spec.normalizer(ref)
-    normalized_cur = spec.normalizer(cur)
+    ref = spec.normalizer(ref)
+    cur = spec.normalizer(cur)
 
-    context = FeatureContext(feature=feature, reference=normalized_ref, current=normalized_cur, config=spec.config)
+    context = FeatureContext(feature=feature, reference=ref, current=cur)
 
-    return _run_check_group(checks=spec.checks, context=context)
+    return [issue for check in spec.checks if (issue := check(context)) is not None]
 
 
 def _collect_empty_feature_issues(feature: str, reference: Sequence[Any], current: Sequence[Any]) -> list[Issue]:
@@ -83,17 +83,3 @@ def _collect_empty_feature_issues(feature: str, reference: Sequence[Any], curren
 
 def _is_empty(data: Sequence[Any]) -> bool:
     return len(data) == 0
-
-
-def _run_check_group(
-    checks: list[Callable[[FeatureContext[Any, Any]], Issue | None]], context: FeatureContext[Any, Any]
-) -> list[Issue]:
-    issues: list[Issue] = []
-
-    for check_fn in checks:
-        issue = check_fn(context)
-
-        if issue:
-            issues.append(issue)
-
-    return issues
