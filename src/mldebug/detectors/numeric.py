@@ -2,9 +2,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from mldebug.preprocessing.normalization import (
-    compute_numeric_ratio,
-)
+from mldebug.preprocessing.normalization import compute_numeric_ratio
 
 
 @dataclass(frozen=True, slots=True)
