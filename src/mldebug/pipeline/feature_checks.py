@@ -51,7 +51,9 @@ def run_feature_checks(
     return [issue for check in spec.checks if (issue := check(context)) is not None]
 
 
-def _collect_empty_feature_issues(feature: str, reference: Array, current: Array) -> list[Issue]:
+def _collect_empty_feature_issues(
+    feature: str, reference: Array, current: Array
+) -> list[Issue]:
     issues: list[Issue] = []
 
     if _is_empty(reference):

@@ -12,7 +12,9 @@ from .schema_analysis import analyze_schema
 
 
 def run_checks(
-    reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike], schema: Mapping[str, FeatureType]
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
+    schema: Mapping[str, FeatureType],
 ) -> Report:
     """Run checks on reference and current datasets.
 

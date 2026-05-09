@@ -9,7 +9,9 @@ from mldebug.registry import FEATURE_SPECS
 
 
 def analyze_schema(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
+    schema: Mapping[str, FeatureType],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
 ) -> list[Issue]:
     """Analyze schema consistency against reference and current datasets.
 
@@ -112,7 +114,9 @@ def _detect_unexpected_features(
 
 
 def _detect_type_mismatches(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
+    schema: Mapping[str, FeatureType],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
 ) -> list[Issue]:
     issues: list[Issue] = []
 
@@ -123,7 +127,9 @@ def _detect_type_mismatches(
         if ref is None or cur is None:
             continue
 
-        values = np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)])
+        values = np.concatenate(
+            [np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]
+        )
 
         if not FEATURE_SPECS[declared_type].detector(values):
             issues.append(
