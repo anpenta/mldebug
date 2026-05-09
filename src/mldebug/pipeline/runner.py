@@ -7,6 +7,7 @@ from mldebug.domain.issue import Issue, Severity
 from mldebug.domain.report import Report
 
 from .feature_checks import run_feature_checks
+from .input_validation import validate_inputs
 from .schema_analysis import analyze_schema
 
 
@@ -36,6 +37,8 @@ def run_checks(
         Aggregated report containing all detected issues.
 
     """
+    validate_inputs(reference=reference, current=current, schema=schema)
+
     schema_issues = analyze_schema(schema=schema, reference=reference, current=current)
 
     valid_features = _get_valid_features(
