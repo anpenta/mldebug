@@ -24,7 +24,7 @@ def normalize_numeric(values: ArrayLike) -> NDArray[np.floating]:
 def normalize_categorical(values: ArrayLike) -> NDArray[np.str_]:
     """Normalize values into a categorical NumPy array.
 
-    Numeric and missing-like values are converted to empty strings.
+    Missing-like values are converted to empty strings.
     """
     arr = normalize_str_array(values)
 
