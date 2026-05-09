@@ -12,6 +12,38 @@ def validate_inputs(
     current: Mapping[str, Sequence[Any]],
     schema: Mapping[str, FeatureType],
 ) -> None:
+    """Validate input datasets and schema before running feature checks.
+
+    This function ensures that the inputs to the pipeline are structurally valid and
+    type-consistent. It acts as a strict precondition guard before schema analysis and
+    feature-level checks are executed.
+
+    It validates that:
+    - reference and current are mappings of feature names to sequence-like values
+    - schema is a mapping of feature names to FeatureType enums
+    - feature names are non-empty strings
+    - dataset values are non-null and sequence-like
+
+    Parameters
+    ----------
+    reference : Mapping[str, Sequence[Any]]
+        Reference dataset keyed by feature name (e.g. training data).
+
+    current : Mapping[str, Sequence[Any]]
+        Current dataset keyed by feature name (e.g. production data).
+
+    schema : Mapping[str, FeatureType]
+        Mapping of feature names to their expected feature types.
+
+    Raises
+    ------
+    TypeError
+        If inputs are not mappings, contain invalid feature types, or invalid dataset
+        values.
+
+    ValueError
+        If feature names are empty strings.
+    """
     _validate_mapping(
         name="reference", value=reference, expected_desc="array-like sequences"
     )
