@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from numpy.typing import ArrayLike
 
-from mldebug.preprocessing.normalization import compute_numeric_ratio
+from mldebug.preprocessing.heuristics import compute_numeric_ratio
 
 
 @dataclass(frozen=True, slots=True)
