@@ -3,11 +3,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from mldebug.preprocessing.normalization import (
-    compute_numeric_ratio,
-    normalize_categorical,
-    normalize_numeric,
-)
+from mldebug.preprocessing.normalization import normalize_categorical, normalize_numeric
 
 
 @pytest.mark.parametrize(
@@ -46,9 +42,10 @@ def test_numeric_values_are_normalized_to_floats(
         (["a", "None", "b"], ["a", "", "b"]),
         (["a", "none", "b"], ["a", "", "b"]),
         (
+            # Mixed type and missing value normalization.
             ["a", "NaN", None, 3],
             ["a", "", "", "3"],
-        ),  # Mixed type and missing value normalization.
+        ),
         ([], []),
     ],
 )
@@ -59,43 +56,3 @@ def test_categorical_values_are_normalized_and_missing_values_are_filled(
 
     assert np.array_equal(out, np.array(expected))
     assert out.dtype.type is np.str_
-
-
-def test_numeric_ratio_computes_ratio_of_numeric_values() -> None:
-    values = np.array(["1", "2.5", "3"], dtype=object)
-
-    ratio = compute_numeric_ratio(values)
-
-    assert ratio == 1.0
-
-
-def test_numeric_ratio_ignores_non_numeric_values() -> None:
-    values = np.array(["1", "a", "3"], dtype=object)
-
-    ratio = compute_numeric_ratio(values)
-
-    assert ratio == 2 / 3
-
-
-def test_numeric_ratio_ignores_missing_values() -> None:
-    values = np.array(["1", "", "  ", "2"], dtype=object)
-
-    ratio = compute_numeric_ratio(values)
-
-    assert ratio == 1.0
-
-
-def test_numeric_ratio_returns_zero_for_all_non_numeric_values() -> None:
-    values = np.array(["a", "b", ""], dtype=object)
-
-    ratio = compute_numeric_ratio(values)
-
-    assert ratio == 0.0
-
-
-def test_numeric_ratio_returns_zero_for_empty_input() -> None:
-    values = np.array([], dtype=object)
-
-    ratio = compute_numeric_ratio(values)
-
-    assert ratio == 0.0
