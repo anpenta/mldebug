@@ -3,7 +3,7 @@ from typing import Any
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
-MISSING_VALUES = ("", "nan", "none", "null")
+_MISSING_VALUES = ("", "nan", "none", "null")
 
 
 def normalize_str_array(values: ArrayLike) -> NDArray[np.str_]:
@@ -13,7 +13,7 @@ def normalize_str_array(values: ArrayLike) -> NDArray[np.str_]:
 
 def compute_present_mask(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
     lower = np.char.lower(arr)
-    return ~np.isin(lower, MISSING_VALUES)
+    return ~np.isin(lower, _MISSING_VALUES)
 
 
 def is_numeric_vector(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
