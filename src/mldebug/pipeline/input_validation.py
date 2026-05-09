@@ -61,6 +61,11 @@ def _validate_dataset(name: str, dataset: Mapping[str, Sequence[Any]]) -> None:
         if not isinstance(feature, str):
             raise TypeError(f"Invalid '{name}' dataset. Feature names must be strings.")
 
+        if not feature.strip():
+            raise ValueError(
+                f"Invalid '{name}' dataset. Feature names cannot be empty."
+            )
+
         if values is None:
             raise TypeError(
                 f"Invalid values for feature '{feature}' in '{name}'. "
