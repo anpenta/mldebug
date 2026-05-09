@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
-from .shared import compute_valid_mask, is_numeric_vector, normalize_str_array
+from .shared import compute_present_mask, is_numeric_vector, normalize_str_array
 
 _MISSING_VALUES = ("", "nan", "none", "null")
 
@@ -30,7 +30,7 @@ def normalize_categorical(values: ArrayLike) -> NDArray[np.str_]:
     """
     arr = normalize_str_array(values)
 
-    valid = compute_valid_mask(arr)
+    present = compute_present_mask(arr)
 
-    arr[~valid] = ""
+    arr[~present] = ""
     return arr

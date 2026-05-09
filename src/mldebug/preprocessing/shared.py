@@ -11,7 +11,7 @@ def normalize_str_array(values: ArrayLike) -> NDArray[np.str_]:
     return np.char.strip(arr)
 
 
-def compute_valid_mask(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
+def compute_present_mask(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
     lower = np.char.lower(arr)
     return ~np.isin(lower, MISSING_VALUES)
 
