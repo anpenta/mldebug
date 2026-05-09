@@ -8,13 +8,15 @@ from mldebug.runtime.feature_context import FeatureContext
 class NumericVarianceDriftCheck:
     """Detect variance drift for a numeric feature.
 
-    This check compares the variance of the reference and current data and flags an issue when the relative change
-    exceeds a configured threshold. The ratio is computed as current variance divided by reference variance.
+    This check compares the variance of the reference and current data and flags an
+    issue when the relative change exceeds a configured threshold. The ratio is computed
+    as current variance divided by reference variance.
 
     Parameters
     ----------
     threshold : float, default=2.0
-        Allowed multiplicative deviation in variance between current and reference distributions.
+        Allowed multiplicative deviation in variance between current and reference
+        distributions.
 
     """
 
@@ -52,7 +54,10 @@ class NumericVarianceDriftCheck:
                 name="variance_drift",
                 metric="variance_ratio",
                 severity=Severity.WARNING,
-                message=(f"{feature}: variance drift detected (ratio={ratio:.4f}, threshold={self.threshold})"),
+                message=(
+                    f"{feature}: variance drift detected (ratio={ratio:.4f}, "
+                    f"threshold={self.threshold})"
+                ),
                 feature=feature,
                 value=float(ratio),
                 threshold=self.threshold,

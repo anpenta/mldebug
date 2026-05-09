@@ -1,3 +1,5 @@
+import pytest
+
 from mldebug import run_checks
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Severity
@@ -47,7 +49,9 @@ def test_categorical_drift_is_detected_by_psi() -> None:
 def test_missing_values_are_flagged() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {
-        "feature_1": inject_numeric_missing_values(generate_normal_data(mean=0), rate=0.3),
+        "feature_1": inject_numeric_missing_values(
+            generate_normal_data(mean=0), rate=0.3
+        ),
     }
 
     schema = {"feature_1": FeatureType.NUMERIC}
@@ -155,3 +159,27 @@ def test_empty_inputs_are_handled() -> None:
     report = run_checks(ref, cur, schema)
 
     assert any(i.name == "empty_schema" for i in report.issues)
+
+
+def test_invalid_schema_type_is_rejected() -> None:
+    import pytest
+
+    with pytest.raises(TypeError):
+        run_checks(
+            reference={"a": [1, 2, 3]},
+            current={"a": [1, 2, 3]},
+            schema={"a": "numeric"},
+        )
+
+
+def test_invalid_dataset_values_are_rejected() -> None:
+    class BadArrayLike:
+        def __array__(self) -> None:
+            raise ValueError("Cannot convert to array")
+
+    with pytest.raises(TypeError):
+        run_checks(
+            reference={"a": BadArrayLike()},
+            current={"a": BadArrayLike()},
+            schema={"a": FeatureType.NUMERIC},
+        )

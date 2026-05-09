@@ -7,8 +7,8 @@ from .severity import Severity
 class Issue:
     """Represents a detected issue from a validation or monitoring check.
 
-    This is the atomic output of all checks and is intended to be consumed by downstream reporting,
-    alerting, or debugging components.
+    This is the atomic output of all checks and is intended to be consumed by downstream
+    reporting, alerting, or debugging components.
 
     Parameters
     ----------
@@ -16,7 +16,8 @@ class Issue:
         Identifier of the issue type (e.g., "ks_test", "missing_values").
 
     metric : str
-        Name of the metric used to detect the issue (e.g., "distribution_shift_score", "missing_rate_increase").
+        Name of the metric used to detect the issue (e.g., "distribution_shift_score",
+        "missing_rate_increase").
 
     severity : Severity
         Importance level of the issue.

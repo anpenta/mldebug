@@ -22,7 +22,9 @@ def test_categorical_missing_value_check_triggers_when_missing_rate_increases() 
     assert issue.value > 0
 
 
-def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> None:
+def test_categorical_missing_value_check_no_trigger_when_missing_rate_is_stable() -> (
+    None
+):
     feature = "feature_1"
 
     ref = inject_categorical_missing_values(
@@ -42,7 +44,9 @@ def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_is_s
     assert issue is None
 
 
-def test_categorical_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
+def test_categorical_missing_value_check_no_trigger_when_missing_rate_decreases() -> (
+    None
+):
     feature = "feature_1"
 
     ref = inject_categorical_missing_values(

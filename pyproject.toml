@@ -82,7 +82,7 @@ lint = [
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 88
 lint.select = [
     "E",
     "F",

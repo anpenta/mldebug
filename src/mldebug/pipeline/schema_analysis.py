@@ -9,12 +9,15 @@ from mldebug.registry import FEATURE_SPECS
 
 
 def analyze_schema(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
+    schema: Mapping[str, FeatureType],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
 ) -> list[Issue]:
     """Analyze schema consistency against reference and current datasets.
 
-    Performs schema validation and detects mismatches between the provided schema and observed features in the
-    datasets, including missing or unexpected features and feature type inconsistencies.
+    Performs schema validation and detects mismatches between the provided schema and
+    observed features in the datasets, including missing or unexpected features and
+    feature type inconsistencies.
 
     Parameters
     ----------
@@ -42,13 +45,31 @@ def analyze_schema(
 
     issues: list[Issue] = []
 
-    issues.extend(_detect_missing_features(schema_keys=schema_keys, data_keys=reference_keys, side="reference"))
-    issues.extend(_detect_missing_features(schema_keys=schema_keys, data_keys=current_keys, side="current"))
+    issues.extend(
+        _detect_missing_features(
+            schema_keys=schema_keys, data_keys=reference_keys, side="reference"
+        )
+    )
+    issues.extend(
+        _detect_missing_features(
+            schema_keys=schema_keys, data_keys=current_keys, side="current"
+        )
+    )
 
-    issues.extend(_detect_unexpected_features(schema_keys=schema_keys, data_keys=reference_keys, side="reference"))
-    issues.extend(_detect_unexpected_features(schema_keys=schema_keys, data_keys=current_keys, side="current"))
+    issues.extend(
+        _detect_unexpected_features(
+            schema_keys=schema_keys, data_keys=reference_keys, side="reference"
+        )
+    )
+    issues.extend(
+        _detect_unexpected_features(
+            schema_keys=schema_keys, data_keys=current_keys, side="current"
+        )
+    )
 
-    issues.extend(_detect_type_mismatches(schema=schema, reference=reference, current=current))
+    issues.extend(
+        _detect_type_mismatches(schema=schema, reference=reference, current=current)
+    )
 
     return issues
 
@@ -62,7 +83,9 @@ def _create_empty_schema_issue() -> Issue:
     )
 
 
-def _detect_missing_features(schema_keys: set[str], data_keys: set[str], side: str) -> list[Issue]:
+def _detect_missing_features(
+    schema_keys: set[str], data_keys: set[str], side: str
+) -> list[Issue]:
     return [
         Issue(
             name=f"missing_feature_{side}",
@@ -75,7 +98,9 @@ def _detect_missing_features(schema_keys: set[str], data_keys: set[str], side: s
     ]
 
 
-def _detect_unexpected_features(schema_keys: set[str], data_keys: set[str], side: str) -> list[Issue]:
+def _detect_unexpected_features(
+    schema_keys: set[str], data_keys: set[str], side: str
+) -> list[Issue]:
     return [
         Issue(
             name=f"unexpected_feature_{side}",
@@ -89,7 +114,9 @@ def _detect_unexpected_features(schema_keys: set[str], data_keys: set[str], side
 
 
 def _detect_type_mismatches(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
+    schema: Mapping[str, FeatureType],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
 ) -> list[Issue]:
     issues: list[Issue] = []
 
@@ -100,7 +127,9 @@ def _detect_type_mismatches(
         if ref is None or cur is None:
             continue
 
-        values = np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)])
+        values = np.concatenate(
+            [np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]
+        )
 
         if not FEATURE_SPECS[declared_type].detector(values):
             issues.append(

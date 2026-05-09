@@ -10,8 +10,9 @@ from mldebug.runtime.feature_context import FeatureContext
 class NumericMissingValueCheck:
     """Detect increase in missing values for a numeric feature.
 
-    This check compares the proportion of missing values (NaNs) between the reference and current data.
-    An issue is reported when the increase in missing rate exceeds the configured threshold.
+    This check compares the proportion of missing values (NaNs) between the reference
+    and current data. An issue is reported when the increase in missing rate exceeds
+    the configured threshold.
 
     Parameters
     ----------

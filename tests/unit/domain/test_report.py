@@ -5,7 +5,9 @@ from mldebug.domain.report import Report
 def test_report_summary_groups_issues_by_severity() -> None:
     report = Report(
         [
-            Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),
+            Issue(
+                name="test", metric="metric", severity=Severity.WARNING, message="msg"
+            ),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
         ],
@@ -24,7 +26,9 @@ def test_report_summary_groups_issues_by_severity() -> None:
 def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
     report = Report(
         [
-            Issue(name="test", metric="metric", severity=Severity.WARNING, message="msg"),
+            Issue(
+                name="test", metric="metric", severity=Severity.WARNING, message="msg"
+            ),
             Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
         ],
     )

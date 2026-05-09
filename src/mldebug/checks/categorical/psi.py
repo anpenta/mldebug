@@ -11,8 +11,9 @@ from mldebug.runtime.feature_context import FeatureContext
 class CategoricalPSICheck:
     """Detect categorical distribution drift using Population Stability Index (PSI).
 
-    This check compares the distribution of categorical values between reference and current data using PSI.
-    An issue is reported when the PSI value exceeds the configured threshold.
+    This check compares the distribution of categorical values between reference and
+    current data using PSI. An issue is reported when the PSI value exceeds the
+    configured threshold.
 
     Parameters
     ----------
@@ -60,7 +61,9 @@ class CategoricalPSICheck:
 
         return None
 
-    def _compute_psi(self, reference: NDArray[np.str_], current: NDArray[np.str_]) -> float:
+    def _compute_psi(
+        self, reference: NDArray[np.str_], current: NDArray[np.str_]
+    ) -> float:
         # Build shared category space (union of all categories).
         all_values = np.concatenate([reference, current])
         _, encoded = np.unique(all_values, return_inverse=True)

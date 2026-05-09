@@ -4,7 +4,8 @@ from enum import Enum
 class FeatureType(Enum):
     """Supported feature types in mldebug.
 
-    Defines the canonical feature categories used across schema validation, normalization, and feature-level checks.
+    Defines the canonical feature categories used across schema validation,
+    normalization, and feature-level checks.
 
     NUMERIC:
         Numeric features validated using numeric-based validation checks.

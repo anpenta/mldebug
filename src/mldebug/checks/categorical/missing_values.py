@@ -8,8 +8,9 @@ from mldebug.runtime.feature_context import FeatureContext
 class CategoricalMissingValueCheck:
     """Detect increase in missing values for a categorical feature.
 
-    This check compares the proportion of missing values between reference and current data. An issue
-    is reported when the increase in missing rate exceeds the configured threshold.
+    This check compares the proportion of missing values between reference and current
+    data. An issue is reported when the increase in missing rate exceeds the configured
+    threshold.
 
     Parameters
     ----------
@@ -31,7 +32,8 @@ class CategoricalMissingValueCheck:
         Returns
         -------
         Issue | None
-            Issue if the increase in missing rate exceeds the configured threshold, otherwise None.
+            Issue if the increase in missing rate exceeds the configured threshold,
+            otherwise None.
 
         """
         reference = context.reference

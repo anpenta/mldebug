@@ -10,8 +10,9 @@ from mldebug.runtime.feature_context import FeatureContext
 class NumericRangeAnomalyCheck:
     """Detect values outside the observed reference range for a numeric feature.
 
-    This check compares current data against the minimum and maximum values observed in the reference data.
-    An issue is reported when one or more values fall outside this range.
+    This check compares current data against the minimum and maximum values observed in
+    the reference data. An issue is reported when one or more values fall outside this
+    range.
 
     Parameters
     ----------
@@ -48,7 +49,9 @@ class NumericRangeAnomalyCheck:
             name="range_anomaly",
             metric="out_of_range_count",
             severity=Severity.WARNING,
-            message=(f"{feature}: {count} values outside [{ref_min:.4f}, {ref_max:.4f}]"),
+            message=(
+                f"{feature}: {count} values outside [{ref_min:.4f}, {ref_max:.4f}]"
+            ),
             feature=feature,
             value=float(count),
             threshold=0.0,

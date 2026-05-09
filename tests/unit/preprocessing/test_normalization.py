@@ -1,12 +1,13 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import numpy as np
 import pytest
 
-from mldebug.preprocessing.normalization import compute_numeric_ratio, normalize_categorical, normalize_numeric
-
-if TYPE_CHECKING:
-    pass
+from mldebug.preprocessing.normalization import (
+    compute_numeric_ratio,
+    normalize_categorical,
+    normalize_numeric,
+)
 
 
 @pytest.mark.parametrize(
@@ -22,7 +23,9 @@ if TYPE_CHECKING:
         ([], []),
     ],
 )
-def test_numeric_values_are_normalized_to_floats(data: list[Any], expected: list[str]) -> None:
+def test_numeric_values_are_normalized_to_floats(
+    data: list[Any], expected: list[str]
+) -> None:
     out = normalize_numeric(data)
 
     assert np.allclose(out, expected, equal_nan=True)
@@ -42,11 +45,16 @@ def test_numeric_values_are_normalized_to_floats(data: list[Any], expected: list
         (["a", "NaN", "b"], ["a", "", "b"]),
         (["a", "None", "b"], ["a", "", "b"]),
         (["a", "none", "b"], ["a", "", "b"]),
-        (["a", "NaN", None, 3], ["a", "", "", "3"]),  # Mixed type and missing value normalization.
+        (
+            ["a", "NaN", None, 3],
+            ["a", "", "", "3"],
+        ),  # Mixed type and missing value normalization.
         ([], []),
     ],
 )
-def test_categorical_values_are_normalized_and_missing_values_are_filled(data: list[Any], expected: list[str]) -> None:
+def test_categorical_values_are_normalized_and_missing_values_are_filled(
+    data: list[Any], expected: list[str]
+) -> None:
     out = normalize_categorical(data)
 
     assert np.array_equal(out, np.array(expected))
