@@ -157,3 +157,25 @@ def test_empty_inputs_are_handled() -> None:
     report = run_checks(ref, cur, schema)
 
     assert any(i.name == "empty_schema" for i in report.issues)
+
+
+def test_invalid_schema_type_is_rejected() -> None:
+    import pytest
+
+    with pytest.raises(TypeError):
+        run_checks(
+            reference={"a": [1, 2, 3]},
+            current={"a": [1, 2, 3]},
+            schema={"a": "numeric"},
+        )
+
+
+def test_invalid_dataset_values_are_rejected() -> None:
+    import pytest
+
+    with pytest.raises(TypeError):
+        run_checks(
+            reference={"a": object()},
+            current={"a": object()},
+            schema={"a": FeatureType.NUMERIC},
+        )
