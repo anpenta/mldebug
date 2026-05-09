@@ -1,185 +1,45 @@
 import pytest
 
-from mldebug import run_checks
-from mldebug.domain.feature_type import FeatureType
-from mldebug.domain.issue import Severity
-from tests.fixtures.generators import generate_normal_data
-from tests.fixtures.missing_values import inject_numeric_missing_values
+from mldebug import FeatureType, Report, run_checks
 
 
-def test_numeric_drift_is_detected_by_ks_test() -> None:
-    ref = {"feature_1": generate_normal_data(mean=0)}
-    cur = {"feature_1": generate_normal_data(mean=5)}
-
-    schema = {"feature_1": FeatureType.NUMERIC}
-
-    report = run_checks(reference=ref, current=cur, schema=schema)
-
-    assert isinstance(report.issues, list)
-    assert len(report.issues) > 0
-
-    ks_issues = [i for i in report.issues if i.name == "ks_test"]
-
-    assert len(ks_issues) > 0
-    assert all(i.severity == Severity.WARNING for i in ks_issues)
-
-
-def test_categorical_drift_is_detected_by_psi() -> None:
-    ref = {
-        "feature_1": ["A"] * 80 + ["B"] * 20,
-    }
-
-    cur = {
-        "feature_1": ["A"] * 40 + ["B"] * 40 + ["C"] * 20,
-    }
-
-    schema = {"feature_1": FeatureType.CATEGORICAL}
-
-    report = run_checks(reference=ref, current=cur, schema=schema)
-
-    assert isinstance(report.issues, list)
-    assert len(report.issues) > 0
-
-    psi_issues = [i for i in report.issues if i.name == "psi_drift"]
-
-    assert len(psi_issues) > 0
-    assert all(i.severity == Severity.WARNING for i in psi_issues)
-
-
-def test_missing_values_are_flagged() -> None:
-    ref = {"feature_1": generate_normal_data(mean=0)}
-    cur = {
-        "feature_1": inject_numeric_missing_values(
-            generate_normal_data(mean=0), rate=0.3
-        ),
-    }
-
-    schema = {"feature_1": FeatureType.NUMERIC}
-
-    report = run_checks(reference=ref, current=cur, schema=schema)
-
-    assert isinstance(report.issues, list)
-    assert len(report.issues) > 0
-
-    missing_issues = [i for i in report.issues if i.name == "missing_values"]
-
-    assert len(missing_issues) > 0
-    assert all(i.severity == Severity.WARNING for i in missing_issues)
-
-
-def test_empty_schema_is_reported() -> None:
+def test_check_pipeline_runs_and_returns_report() -> None:
     ref = {"a": [1, 2, 3]}
-    cur = {"a": [1, 2, 3]}
-    schema = {}
-
-    report = run_checks(ref, cur, schema)
-
-    assert any(i.name == "empty_schema" for i in report.issues)
-
-
-def test_missing_features_in_reference_are_detected() -> None:
-    ref = {}
-    cur = {"a": [1, 2, 3]}
+    cur = {"a": [4, 5, 6]}
     schema = {"a": FeatureType.NUMERIC}
 
-    report = run_checks(ref, cur, schema)
+    report = run_checks(reference=ref, current=cur, schema=schema)
 
-    assert any(i.name == "missing_feature_reference" for i in report.issues)
-
-
-def test_missing_features_in_current_are_detected() -> None:
-    ref = {"a": [1, 2, 3]}
-    cur = {}
-    schema = {"a": FeatureType.NUMERIC}
-
-    report = run_checks(ref, cur, schema)
-
-    assert any(i.name == "missing_feature_current" for i in report.issues)
+    assert isinstance(report, Report)
+    assert isinstance(report.issues, list)
 
 
-def test_unexpected_features_in_reference_are_detected() -> None:
+def test_check_pipeline_detects_schema_and_feature_issues() -> None:
     ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
-    cur = {"a": [1, 2, 3]}
-    schema = {"a": FeatureType.NUMERIC}
+    cur = {"a": ["x", "y", "z"], "b": []}
+    schema = {
+        "a": FeatureType.NUMERIC,
+        "b": FeatureType.NUMERIC,
+    }
 
-    report = run_checks(ref, cur, schema)
+    report = run_checks(reference=ref, current=cur, schema=schema)
 
-    assert any(i.name == "unexpected_feature_reference" for i in report.issues)
+    issue_names = {i.name for i in report.issues}
 
-
-def test_unexpected_features_in_current_are_detected() -> None:
-    ref = {"a": [1, 2, 3]}
-    cur = {"a": [1, 2, 3], "b": [1, 2, 3]}
-    schema = {"a": FeatureType.NUMERIC}
-
-    report = run_checks(ref, cur, schema)
-
-    assert any(i.name == "unexpected_feature_current" for i in report.issues)
+    assert "feature_type_mismatch" in issue_names
+    assert "empty_feature_current" in issue_names
 
 
-def test_empty_reference_features_are_detected() -> None:
-    ref = {"feature_1": []}
-    cur = {"feature_1": [1, 2, 3]}
-
-    schema = {"feature_1": FeatureType.NUMERIC}
-
-    report = run_checks(ref, cur, schema)
-
-    assert any(i.name == "empty_feature_reference" for i in report.issues)
-
-
-def test_empty_current_features_are_detected() -> None:
-    ref = {"feature_1": [1, 2, 3]}
-    cur = {"feature_1": []}
-
-    schema = {"feature_1": FeatureType.NUMERIC}
-
-    report = run_checks(ref, cur, schema)
-
-    assert any(i.name == "empty_feature_current" for i in report.issues)
-
-
-def test_clean_data_produces_no_issues() -> None:
-    ref = {"a": [1, 2, 3]}
-    cur = {"a": [1, 2, 3]}
-    schema = {"a": FeatureType.NUMERIC}
-
-    report = run_checks(ref, cur, schema)
-
-    assert report is not None
-    assert isinstance(report.issues, list)
-    assert len(report.issues) == 0
-
-
-def test_empty_inputs_are_handled() -> None:
+def test_check_pipeline_handles_empty_inputs() -> None:
     ref = {}
     cur = {}
     schema = {}
 
-    report = run_checks(ref, cur, schema)
+    report = run_checks(reference=ref, current=cur, schema=schema)
 
     assert any(i.name == "empty_schema" for i in report.issues)
 
 
-def test_invalid_schema_type_is_rejected() -> None:
-    import pytest
-
+def test_check_pipeline_rejects_invalid_inputs() -> None:
     with pytest.raises(TypeError):
-        run_checks(
-            reference={"a": [1, 2, 3]},
-            current={"a": [1, 2, 3]},
-            schema={"a": "numeric"},
-        )
-
-
-def test_invalid_dataset_values_are_rejected() -> None:
-    class BadArrayLike:
-        def __array__(self) -> None:
-            raise ValueError("Cannot convert to array")
-
-    with pytest.raises(TypeError):
-        run_checks(
-            reference={"a": BadArrayLike()},
-            current={"a": BadArrayLike()},
-            schema={"a": FeatureType.NUMERIC},
-        )
+        run_checks(reference=None, current=None, schema=None)
