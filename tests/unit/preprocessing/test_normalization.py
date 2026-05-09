@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
@@ -6,7 +6,7 @@ import pytest
 from mldebug.preprocessing.normalization import compute_numeric_ratio, normalize_categorical, normalize_numeric
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    pass
 
 
 @pytest.mark.parametrize(
@@ -54,7 +54,7 @@ def test_categorical_values_are_normalized_and_missing_values_are_filled(data: l
 
 
 def test_numeric_ratio_computes_ratio_of_numeric_values() -> None:
-    values = cast("Sequence[Any]", np.array(["1", "2.5", "3"], dtype=object))
+    values = np.array(["1", "2.5", "3"], dtype=object)
 
     ratio = compute_numeric_ratio(values)
 
@@ -62,7 +62,7 @@ def test_numeric_ratio_computes_ratio_of_numeric_values() -> None:
 
 
 def test_numeric_ratio_ignores_non_numeric_values() -> None:
-    values = cast("Sequence[Any]", np.array(["1", "a", "3"], dtype=object))
+    values = np.array(["1", "a", "3"], dtype=object)
 
     ratio = compute_numeric_ratio(values)
 
@@ -70,7 +70,7 @@ def test_numeric_ratio_ignores_non_numeric_values() -> None:
 
 
 def test_numeric_ratio_ignores_missing_values() -> None:
-    values = cast("Sequence[Any]", np.array(["1", "", "  ", "2"], dtype=object))
+    values = np.array(["1", "", "  ", "2"], dtype=object)
 
     ratio = compute_numeric_ratio(values)
 
@@ -78,7 +78,7 @@ def test_numeric_ratio_ignores_missing_values() -> None:
 
 
 def test_numeric_ratio_returns_zero_for_all_non_numeric_values() -> None:
-    values = cast("Sequence[Any]", np.array(["a", "b", ""], dtype=object))
+    values = np.array(["a", "b", ""], dtype=object)
 
     ratio = compute_numeric_ratio(values)
 
@@ -86,7 +86,7 @@ def test_numeric_ratio_returns_zero_for_all_non_numeric_values() -> None:
 
 
 def test_numeric_ratio_returns_zero_for_empty_input() -> None:
-    values = cast("Sequence[Any]", np.array([], dtype=object))
+    values = np.array([], dtype=object)
 
     ratio = compute_numeric_ratio(values)
 

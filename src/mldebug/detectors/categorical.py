@@ -1,6 +1,6 @@
-from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any
+
+from numpy.typing import ArrayLike
 
 from mldebug.preprocessing.normalization import compute_numeric_ratio
 
@@ -9,5 +9,5 @@ from mldebug.preprocessing.normalization import compute_numeric_ratio
 class CategoricalFeatureDetector:
     threshold: float = 0.9
 
-    def __call__(self, values: Sequence[Any]) -> bool:
+    def __call__(self, values: ArrayLike) -> bool:
         return compute_numeric_ratio(values) <= self.threshold

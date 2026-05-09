@@ -1,17 +1,19 @@
-from collections.abc import Mapping, Sequence
-from typing import Any
+from collections.abc import Mapping
+
+from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Issue, Severity
 from mldebug.registry import FEATURE_SPECS
 from mldebug.runtime.feature_context import FeatureContext
+from mldebug.types import Array
 
 
 def run_feature_checks(
     feature: str,
     ftype: FeatureType,
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
 ) -> list[Issue]:
     """Run all checks for a single feature.
 
@@ -23,10 +25,10 @@ def run_feature_checks(
     ftype : FeatureType
         Type of the feature determining which checks are executed.
 
-    reference : Mapping[str, Sequence[Any]]
+    reference : Mapping[str, ArrayLike]
         Reference dataset keyed by feature name.
 
-    current : Mapping[str, Sequence[Any]]
+    current : Mapping[str, ArrayLike]
         Current dataset keyed by feature name.
 
     Returns
@@ -35,25 +37,21 @@ def run_feature_checks(
         Detected issues for the feature.
 
     """
+    spec = FEATURE_SPECS[ftype]
 
-    ref = reference[feature]
-    cur = current[feature]
+    ref = spec.normalizer(reference[feature])
+    cur = spec.normalizer(current[feature])
 
     empty_issues = _collect_empty_feature_issues(feature, ref, cur)
     if empty_issues:
         return empty_issues
-
-    spec = FEATURE_SPECS[ftype]
-
-    ref = spec.normalizer(ref)
-    cur = spec.normalizer(cur)
 
     context = FeatureContext(feature=feature, reference=ref, current=cur)
 
     return [issue for check in spec.checks if (issue := check(context)) is not None]
 
 
-def _collect_empty_feature_issues(feature: str, reference: Sequence[Any], current: Sequence[Any]) -> list[Issue]:
+def _collect_empty_feature_issues(feature: str, reference: Array, current: Array) -> list[Issue]:
     issues: list[Issue] = []
 
     if _is_empty(reference):
@@ -81,5 +79,5 @@ def _collect_empty_feature_issues(feature: str, reference: Sequence[Any], curren
     return issues
 
 
-def _is_empty(data: Sequence[Any]) -> bool:
+def _is_empty(data: Array) -> bool:
     return len(data) == 0

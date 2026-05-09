@@ -1,7 +1,7 @@
-from collections.abc import Mapping, Sequence
-from typing import Any, cast
+from collections.abc import Mapping
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Issue, Severity
@@ -9,7 +9,7 @@ from mldebug.registry import FEATURE_SPECS
 
 
 def analyze_schema(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]]
+    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
 ) -> list[Issue]:
     """Analyze schema consistency against reference and current datasets.
 
@@ -21,10 +21,10 @@ def analyze_schema(
     schema : Mapping[str, FeatureType]
         Feature-to-type mapping defining expected dataset structure.
 
-    reference : Mapping[str, Sequence[Any]]
+    reference : Mapping[str, ArrayLike]
         Reference dataset keyed by feature name.
 
-    current : Mapping[str, Sequence[Any]]
+    current : Mapping[str, ArrayLike]
         Current dataset keyed by feature name.
 
     Returns
@@ -89,7 +89,7 @@ def _detect_unexpected_features(schema_keys: set[str], data_keys: set[str], side
 
 
 def _detect_type_mismatches(
-    schema: Mapping[str, FeatureType], reference: Mapping[str, Sequence[Any]], current: Mapping[str, Sequence[Any]]
+    schema: Mapping[str, FeatureType], reference: Mapping[str, ArrayLike], current: Mapping[str, ArrayLike]
 ) -> list[Issue]:
     issues: list[Issue] = []
 
@@ -100,7 +100,7 @@ def _detect_type_mismatches(
         if ref is None or cur is None:
             continue
 
-        values = cast("Sequence[Any]", np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]))
+        values = np.concatenate([np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)])
 
         if not FEATURE_SPECS[declared_type].detector(values):
             issues.append(
