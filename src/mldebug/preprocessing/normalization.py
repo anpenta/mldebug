@@ -6,6 +6,24 @@ from numpy.typing import ArrayLike, NDArray
 _MISSING_VALUES = ("", "nan", "none", "null")
 
 
+def compute_numeric_score(values: ArrayLike) -> float:
+    """Compute confidence score for numeric feature likelihood in [0, 1]."""
+    numeric_ratio = compute_numeric_ratio(values)
+    unique_ratio = compute_unique_ratio(values)
+
+    structure_penalty = 1.0 - unique_ratio
+    return numeric_ratio * (1.0 - 0.3 * structure_penalty)
+
+
+def compute_categorical_score(values: ArrayLike) -> float:
+    """Compute confidence score for categorical feature likelihood in [0, 1]."""
+    numeric_ratio = compute_numeric_ratio(values)
+    unique_ratio = compute_unique_ratio(values)
+
+    structure_bonus = 1.0 - unique_ratio
+    return structure_bonus * (1.0 - 0.3 * numeric_ratio)
+
+
 def normalize_numeric(values: ArrayLike) -> NDArray[np.floating]:
     """Normalize values into a numeric NumPy array.
 

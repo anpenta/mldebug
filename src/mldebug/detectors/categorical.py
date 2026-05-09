@@ -2,12 +2,13 @@ from dataclasses import dataclass
 
 from numpy.typing import ArrayLike
 
-from mldebug.preprocessing.normalization import compute_numeric_ratio
+from mldebug.preprocessing.normalization import compute_categorical_score
 
 
 @dataclass(frozen=True, slots=True)
 class CategoricalFeatureDetector:
-    threshold: float = 0.9
+    threshold: float = 0.8
 
     def __call__(self, values: ArrayLike) -> bool:
-        return compute_numeric_ratio(values) <= self.threshold
+        score = compute_categorical_score(values)
+        return score >= self.threshold
