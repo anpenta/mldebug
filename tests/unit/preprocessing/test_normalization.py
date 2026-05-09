@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import numpy as np
 import pytest
@@ -8,9 +8,6 @@ from mldebug.preprocessing.normalization import (
     normalize_categorical,
     normalize_numeric,
 )
-
-if TYPE_CHECKING:
-    pass
 
 
 @pytest.mark.parametrize(
