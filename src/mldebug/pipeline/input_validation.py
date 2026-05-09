@@ -1,15 +1,17 @@
 # We are actually doing input validation in this module so we disable the below checks.
 # pyright: reportUnnecessaryIsInstance=false
 # pyright: reportUnnecessaryComparison=false
-from collections.abc import Mapping, Sequence
-from typing import Any
+from collections.abc import Mapping
+
+import numpy as np
+from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 
 
 def validate_inputs(
-    reference: Mapping[str, Sequence[Any]],
-    current: Mapping[str, Sequence[Any]],
+    reference: Mapping[str, ArrayLike],
+    current: Mapping[str, ArrayLike],
     schema: Mapping[str, FeatureType],
 ) -> None:
     """Validate input datasets and schema before running feature checks.
@@ -19,17 +21,17 @@ def validate_inputs(
     feature-level checks are executed.
 
     It validates that:
-    - reference and current are mappings of feature names to sequence-like values
+    - reference and current are mappings of feature names to array-like values
     - schema is a mapping of feature names to FeatureType enums
     - feature names are non-empty strings
-    - dataset values are non-null and sequence-like
+    - dataset values are non-null and array-like
 
     Parameters
     ----------
-    reference : Mapping[str, Sequence[Any]]
+    reference : Mapping[str, ArrayLike]
         Reference dataset keyed by feature name (e.g. training data).
 
-    current : Mapping[str, Sequence[Any]]
+    current : Mapping[str, ArrayLike]
         Current dataset keyed by feature name (e.g. production data).
 
     schema : Mapping[str, FeatureType]
@@ -45,11 +47,9 @@ def validate_inputs(
         If feature names are empty strings.
     """
     _validate_mapping(
-        name="reference", value=reference, expected_desc="array-like sequences"
+        name="reference", value=reference, expected_desc="array-like values"
     )
-    _validate_mapping(
-        name="current", value=current, expected_desc="array-like sequences"
-    )
+    _validate_mapping(name="current", value=current, expected_desc="array-like values")
     _validate_mapping(
         name="schema", value=schema, expected_desc=_get_enum_description(FeatureType)
     )
@@ -88,7 +88,7 @@ def _get_enum_description(enum_type: type[FeatureType]) -> str:
     return f"{enum_type.__name__} ({values})"
 
 
-def _validate_dataset(name: str, dataset: Mapping[str, Sequence[Any]]) -> None:
+def _validate_dataset(name: str, dataset: Mapping[str, ArrayLike]) -> None:
     for feature, values in dataset.items():
         if not isinstance(feature, str):
             raise TypeError(f"Invalid '{name}' dataset. Feature names must be strings.")
@@ -104,8 +104,10 @@ def _validate_dataset(name: str, dataset: Mapping[str, Sequence[Any]]) -> None:
                 "Values cannot be None."
             )
 
-        if not isinstance(values, Sequence):
+        try:
+            np.asarray(values)
+        except Exception as e:
             raise TypeError(
                 f"Invalid values for feature '{feature}' in '{name}'. "
-                "Expected sequence-like data."
-            )
+                "Expected array-like input compatible with numpy."
+            ) from e

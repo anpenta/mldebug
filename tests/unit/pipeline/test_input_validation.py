@@ -146,15 +146,20 @@ def test_input_validation_rejects_none_values_in_dataset(
         validate_inputs(**kwargs)
 
 
+class BadArrayLike:
+    def __array__(self) -> None:
+        raise ValueError("Cannot convert to array")
+
+
 @pytest.mark.parametrize(
     "dataset_name, dataset",
     [
-        ("reference", {"age": object()}),
-        ("current", {"age": object()}),
+        ("reference", {"age": BadArrayLike()}),
+        ("current", {"age": BadArrayLike()}),
     ],
 )
-def test_input_validation_rejects_non_sequence_values_in_dataset(
-    dataset_name: str, dataset: dict[str, object]
+def test_input_validation_rejects_non_array_like_values(
+    dataset_name: str, dataset: dict[str, BadArrayLike]
 ) -> None:
     kwargs = {
         "reference": _get_valid_reference(),
@@ -163,5 +168,7 @@ def test_input_validation_rejects_non_sequence_values_in_dataset(
     }
     kwargs[dataset_name] = dataset
 
-    with pytest.raises(TypeError, match="Expected sequence-like data"):
+    with pytest.raises(
+        TypeError, match="Expected array-like input compatible with numpy."
+    ):
         validate_inputs(**kwargs)
