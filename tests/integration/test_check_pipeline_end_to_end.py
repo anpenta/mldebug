@@ -47,7 +47,9 @@ def test_categorical_drift_is_detected_by_psi() -> None:
 def test_missing_values_are_flagged() -> None:
     ref = {"feature_1": generate_normal_data(mean=0)}
     cur = {
-        "feature_1": inject_numeric_missing_values(generate_normal_data(mean=0), rate=0.3),
+        "feature_1": inject_numeric_missing_values(
+            generate_normal_data(mean=0), rate=0.3
+        ),
     }
 
     schema = {"feature_1": FeatureType.NUMERIC}

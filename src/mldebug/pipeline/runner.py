@@ -15,8 +15,9 @@ def run_checks(
 ) -> Report:
     """Run checks on reference and current datasets.
 
-    This is the main entrypoint of the library. It performs schema analysis (validation and mismatch detection)
-    followed by feature-level checks based on the provided schema, and returns a structured report of issues.
+    This is the main entrypoint of the library. It performs schema analysis (validation
+    and mismatch detection) followed by feature-level checks based on the provided
+    schema, and returns a structured report of issues.
 
     Parameters
     ----------
@@ -44,7 +45,12 @@ def run_checks(
     feature_issues: list[Issue] = []
     for feature in valid_features:
         feature_issues.extend(
-            run_feature_checks(feature=feature, ftype=schema[feature], reference=reference, current=current)
+            run_feature_checks(
+                feature=feature,
+                ftype=schema[feature],
+                reference=reference,
+                current=current,
+            )
         )
 
     return Report(issues=schema_issues + feature_issues)
@@ -56,9 +62,15 @@ def _get_valid_features(
     schema: Mapping[str, FeatureType],
     schema_issues: list[Issue],
 ) -> list[str]:
-    critical_features = {i.feature for i in schema_issues if i.feature and i.severity == Severity.CRITICAL}
+    critical_features = {
+        i.feature
+        for i in schema_issues
+        if i.feature and i.severity == Severity.CRITICAL
+    }
     return [
         feature
         for feature in schema
-        if feature in reference and feature in current and feature not in critical_features
+        if feature in reference
+        and feature in current
+        and feature not in critical_features
     ]

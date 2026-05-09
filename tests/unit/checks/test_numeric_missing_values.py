@@ -22,7 +22,9 @@ def test_numeric_missing_value_check_triggers_when_missing_rate_increases() -> N
     assert issue.value > 0
 
 
-def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stable() -> (
+    None
+):
     feature = "feature_1"
 
     ref = inject_numeric_missing_values(generate_normal_data(), rate=0.05)
@@ -36,7 +38,9 @@ def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_is_stabl
     assert issue is None
 
 
-def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> None:
+def test_numeric_missing_value_check_does_not_trigger_when_missing_rate_decreases() -> (
+    None
+):
     feature = "feature_1"
 
     ref = inject_numeric_missing_values(generate_normal_data(), rate=0.25)

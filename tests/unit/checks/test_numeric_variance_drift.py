@@ -37,7 +37,9 @@ def test_numeric_variance_drift_check_detects_decrease_in_variance_ratio() -> No
     assert issue.feature == feature
 
 
-def test_numeric_variance_drift_check_does_not_trigger_when_variance_is_stable() -> None:
+def test_numeric_variance_drift_check_does_not_trigger_when_variance_is_stable() -> (
+    None
+):
     feature = "feature_1"
 
     ref = generate_normal_data(mean=0, std=1)
@@ -50,7 +52,9 @@ def test_numeric_variance_drift_check_does_not_trigger_when_variance_is_stable()
     assert issue is None
 
 
-def test_numeric_variance_drift_check_returns_none_when_reference_variance_is_zero() -> None:
+def test_numeric_variance_drift_check_returns_none_when_reference_variance_zero() -> (
+    None
+):
     feature = "feature_1"
 
     ref = np.array([5, 5, 5], dtype=float)

@@ -5,7 +5,11 @@ from mldebug.runtime.feature_context import FeatureContext
 
 
 def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
-    context = FeatureContext(feature="color", reference=np.array(["red", "blue"]), current=np.array(["red", "green"]))
+    context = FeatureContext(
+        feature="color",
+        reference=np.array(["red", "blue"]),
+        current=np.array(["red", "green"]),
+    )
 
     issue = CategoricalUnseenCategoryCheck()(context)
 
@@ -16,14 +20,22 @@ def test_unseen_category_check_triggers_when_new_categories_appear() -> None:
 
 
 def test_unseen_category_check_does_not_trigger_when_categories_are_known() -> None:
-    context = FeatureContext(feature="color", reference=np.array(["red", "blue"]), current=np.array(["red", "blue"]))
+    context = FeatureContext(
+        feature="color",
+        reference=np.array(["red", "blue"]),
+        current=np.array(["red", "blue"]),
+    )
     issue = CategoricalUnseenCategoryCheck()(context)
 
     assert issue is None
 
 
 def test_unseen_category_check_counts_multiple_new_categories_correctly() -> None:
-    context = FeatureContext(feature="color", reference=np.array(["red"]), current=np.array(["blue", "green"]))
+    context = FeatureContext(
+        feature="color",
+        reference=np.array(["red"]),
+        current=np.array(["blue", "green"]),
+    )
 
     issue = CategoricalUnseenCategoryCheck()(context)
 
@@ -33,7 +45,9 @@ def test_unseen_category_check_counts_multiple_new_categories_correctly() -> Non
 
 def test_unseen_category_check_counts_unique_categories_not_occurrences() -> None:
     context = FeatureContext(
-        feature="color", reference=np.array(["red"]), current=np.array(["green", "green", "green"])
+        feature="color",
+        reference=np.array(["red"]),
+        current=np.array(["green", "green", "green"]),
     )
 
     issue = CategoricalUnseenCategoryCheck()(context)
@@ -44,7 +58,9 @@ def test_unseen_category_check_counts_unique_categories_not_occurrences() -> Non
 
 
 def test_unseen_category_check_returns_none_for_empty_current() -> None:
-    context = FeatureContext(feature="color", reference=np.array(["red"]), current=np.array([]))
+    context = FeatureContext(
+        feature="color", reference=np.array(["red"]), current=np.array([])
+    )
 
     issue = CategoricalUnseenCategoryCheck()(context)
 

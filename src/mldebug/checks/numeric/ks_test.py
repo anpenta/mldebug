@@ -10,8 +10,9 @@ from mldebug.runtime.feature_context import FeatureContext
 class NumericKSTestCheck:
     """Detect numeric distribution shift using the Kolmogorov-Smirnov (KS) test.
 
-    This check compares the empirical distributions of reference and current data using the two-sample KS test.
-    An issue is reported when the p-value falls below the configured significance level.
+    This check compares the empirical distributions of reference and current data using
+    the two-sample KS test. An issue is reported when the p-value falls below the
+    configured significance level.
 
     Parameters
     ----------
@@ -33,7 +34,8 @@ class NumericKSTestCheck:
         Returns
         -------
         Issue | None
-            Issue if a statistically significant distribution shift is detected, otherwise None.
+            Issue if a statistically significant distribution shift is detected,
+            otherwise None.
 
         """
         reference = context.reference

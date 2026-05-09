@@ -6,7 +6,9 @@ def test_generated_mixed_tabular_dataset_has_consistent_structure() -> None:
     n = 100
     n_features = 10
 
-    reference, current, schema = generate_mixed_tabular_dataset(n=n, n_features=n_features)
+    reference, current, schema = generate_mixed_tabular_dataset(
+        n=n, n_features=n_features
+    )
 
     assert len(reference) == n_features
     assert len(current) == n_features
