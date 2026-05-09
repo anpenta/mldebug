@@ -1,3 +1,5 @@
+import pytest
+
 from mldebug import run_checks
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Severity
@@ -171,11 +173,13 @@ def test_invalid_schema_type_is_rejected() -> None:
 
 
 def test_invalid_dataset_values_are_rejected() -> None:
-    import pytest
+    class BadArrayLike:
+        def __array__(self) -> None:
+            raise ValueError("Cannot convert to array")
 
     with pytest.raises(TypeError):
         run_checks(
-            reference={"a": object()},
-            current={"a": object()},
+            reference={"a": BadArrayLike()},
+            current={"a": BadArrayLike()},
             schema={"a": FeatureType.NUMERIC},
         )
