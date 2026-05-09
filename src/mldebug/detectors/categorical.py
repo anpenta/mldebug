@@ -5,6 +5,7 @@ from numpy.typing import ArrayLike
 from mldebug.preprocessing.normalization import compute_categorical_score
 
 
+# TODO: Add tests.
 @dataclass(frozen=True, slots=True)
 class CategoricalFeatureDetector:
     threshold: float = 0.8

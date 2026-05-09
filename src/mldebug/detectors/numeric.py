@@ -5,6 +5,7 @@ from numpy.typing import ArrayLike
 from mldebug.preprocessing.normalization import compute_numeric_score
 
 
+# TODO: Add tests.
 @dataclass(frozen=True, slots=True)
 class NumericFeatureDetector:
     threshold: float = 0.8
