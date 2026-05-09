@@ -1,8 +1,6 @@
 import pytest
 
-from mldebug import run_checks
-from mldebug.domain.feature_type import FeatureType
-from mldebug.domain.report import Report
+from mldebug import FeatureType, Report, run_checks
 
 
 def test_check_pipeline_runs_and_returns_report() -> None:
