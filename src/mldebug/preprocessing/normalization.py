@@ -58,6 +58,25 @@ def compute_numeric_ratio(values: ArrayLike) -> float:
     return float(numeric_mask.mean())
 
 
+def compute_unique_ratio(values: ArrayLike) -> float:
+    """Compute the proportion of unique values.
+
+    Empty and missing-like values are ignored.
+    """
+    arr = np.asarray(values, dtype=str)
+    arr = np.char.strip(arr)
+
+    lower = np.char.lower(arr)
+    valid = ~np.isin(lower, _MISSING_VALUES)
+
+    if not valid.any():
+        return 0.0
+
+    filtered = arr[valid]
+
+    return float(len(np.unique(filtered)) / len(filtered))
+
+
 def _is_numeric_vector(arr: NDArray[np.str_]) -> NDArray[np.bool_]:
     try:
         arr.astype(float)
