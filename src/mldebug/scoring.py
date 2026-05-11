@@ -11,41 +11,35 @@ _SEVERITY_PENALTY = {
 
 
 def score_issues(issues: list[Issue]) -> dict[str, Any]:
-    """Compute a deterministic quality score for a dataset based on detected issues.
+    """Compute dataset quality score from feature-level issues.
 
-    The scoring is split into two components:
-        - Feature-level issues: aggregated per feature and converted to feature scores.
-        - Schema-level issues: applied as a global penalty on the overall score.
+    Internal scoring function used by Report.score(). System-level issues
+    are excluded before scoring.
 
-    The final output provides:
-        - an overall dataset score (0 - 100)
-        - per-feature scores
-        - a status indicating dataset quality (pass / warning / fail)
-        - the number of schema-level issues
+    Implements:
+    - feature grouping
+    - severity-based penalties
+    - mean aggregation
     """
 
-    feature_buckets: dict[str, list[Issue]] = defaultdict(list)
-    schema_issues: list[Issue] = []
+    feature_issues = [i for i in issues if i.feature is not None]
 
-    for issue in issues:
-        if issue.feature is None:
-            schema_issues.append(issue)
-        else:
-            feature_buckets[issue.feature].append(issue)
+    feature_buckets: dict[str, list[Issue]] = defaultdict(list)
+
+    for issue in feature_issues:
+        assert issue.feature
+        feature_buckets[issue.feature].append(issue)
 
     feature_scores = {
         feature: _score_feature_issues(feature_issues)
         for feature, feature_issues in feature_buckets.items()
     }
 
-    # Base overall is the average of feature scores.
     overall = (
-        sum(feature_scores.values()) / len(feature_scores) if feature_scores else 100.0
+        sum(feature_scores.values()) / len(feature_scores)
+        if feature_scores
+        else 100.0
     )
-
-    schema_penalty = sum(_SEVERITY_PENALTY[i.severity] for i in schema_issues)
-
-    overall = max(0.0, overall - schema_penalty)
 
     status = "fail" if overall < 50 else "warning" if overall < 80 else "pass"
 
@@ -53,7 +47,7 @@ def score_issues(issues: list[Issue]) -> dict[str, Any]:
         "overall_score": overall,
         "feature_scores": feature_scores,
         "status": status,
-        "schema_issue_count": len(schema_issues),
+        "system_issue_count": sum(1 for i in issues if i.feature is None),
     }
 
 
