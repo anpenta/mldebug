@@ -64,9 +64,18 @@ class Report:
         Returns
         -------
         dict[str, Any]
-            - overall_score: dataset quality score in [0, 100]
-            - feature_scores: per-feature scores
-            - status: pass/warning/fail
-            - system_issue_count: number of system-level issues
+            Dictionary containing:
+
+            overall_score : float
+                Dataset quality score in [0, 100]. Higher is better.
+
+            feature_scores : dict[str, float]
+                Per-feature scores.
+
+            status : str
+                pass / warning / fail.
+
+            system_issue_count : int
+                Number of system-level issues.
         """
         return score_issues(self.issues)
