@@ -5,7 +5,7 @@ from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Issue, Severity
-from mldebug.registry import FEATURE_SPECS
+from mldebug.inference.feature_type import infer_feature_type
 
 
 def analyze_schema(
@@ -131,7 +131,7 @@ def _detect_type_mismatches(
             [np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]
         )
 
-        if not FEATURE_SPECS[declared_type].detector(values):
+        if infer_feature_type(values) != declared_type:
             issues.append(
                 Issue(
                     name="feature_type_mismatch",

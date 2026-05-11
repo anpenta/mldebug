@@ -74,7 +74,7 @@ def test_no_type_mismatch_when_values_match_schema() -> None:
 
 def test_type_mismatch_detected_on_mixed_current_values() -> None:
     ref = {"a": [1, 2, 3]}
-    cur = {"a": [1, "x", 3]}
+    cur = {"a": ["x", "y", 1]}
     schema = {"a": FeatureType.NUMERIC}
 
     issues = analyze_schema(schema=schema, reference=ref, current=cur)
