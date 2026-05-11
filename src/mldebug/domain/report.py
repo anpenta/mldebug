@@ -55,15 +55,18 @@ class Report:
         }
 
     def score(self) -> dict[str, Any]:
-        """Compute dataset quality score from detected issues.
+        """Return a dataset quality score.
+
+        The score represents data quality based only on feature-level issues.
+        System-level issues (e.g. schema errors, invalid inputs) are not included
+        in the score but are available in the report.
 
         Returns
         -------
         dict[str, Any]
-            A dictionary containing:
-            - overall_score: float in range [0, 100] representing dataset quality
-            - feature_scores: per-feature quality scores
-            - status: dataset health status ("pass", "warning", or "fail")
-            - schema_issue_count: number of schema-level issues detected
+            - overall_score: dataset quality score in [0, 100]
+            - feature_scores: per-feature scores
+            - status: pass/warning/fail
+            - system_issue_count: number of system-level issues
         """
         return score_issues(self.issues)
