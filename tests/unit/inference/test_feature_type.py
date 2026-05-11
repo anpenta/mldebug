@@ -15,7 +15,9 @@ from mldebug.inference.feature_type import infer_feature_type
         (["1"] * 100, FeatureType.CATEGORICAL),
     ],
 )
-def test_infer_feature_type(values: list[str], expected: FeatureType) -> None:
+def test_infer_feature_type_for_various_cases(
+    values: list[str], expected: FeatureType
+) -> None:
     assert infer_feature_type(values) == expected
 
 
