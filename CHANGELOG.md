@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.6.0] - 2026-05-11
+
+### Added
+- Scoring functionality exposed as Report.score()
+- Improved and unified feature type inference
+- Input validation for strict structure and type checks of input args
+
 ## [0.5.0] - 2026-05-07
 
 ### Added
