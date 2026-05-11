@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Any
 
+from mldebug.scoring import score_issues
+
 from .issue import Issue
 from .severity import Severity
 
@@ -51,3 +53,20 @@ class Report:
                 for i in self.issues
             ],
         }
+
+    def score(self) -> dict[str, Any]:
+        """Return a dataset quality score.
+
+        The score represents data quality based only on feature-level issues.
+        System-level issues (e.g. schema errors, invalid inputs) are not included
+        in the score but are available in the report.
+
+        Returns
+        -------
+        dict[str, Any]
+            - overall_score: dataset quality score in [0, 100]
+            - feature_scores: per-feature scores
+            - status: pass/warning/fail
+            - system_issue_count: number of system-level issues
+        """
+        return score_issues(self.issues)

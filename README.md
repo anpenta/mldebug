@@ -186,6 +186,36 @@ print(report.to_dict())
 }
 ```
 
+#### Scoring
+
+This returns a dataset quality score based only on feature-level issues.
+
+System-level issues (e.g. schema errors, missing features) are reported but excluded from scoring.
+
+```python
+print(report.score())
+```
+
+```json
+{
+  "overall_score": 70.0,
+  "feature_scores": {
+    "age": 70.0,
+    "income": 70.0,
+    "country": 70.0
+  },
+  "status": "warning",
+  "system_issue_count": 0
+}
+```
+
+Interpretation:
+
+- 100 = clean data
+- 80-99 = minor issues
+- 50-79 = degraded data quality
+- < 50 = severe issues
+
 ## Documentation
 
 See [documentation pages](https://anpenta.github.io/mldebug).

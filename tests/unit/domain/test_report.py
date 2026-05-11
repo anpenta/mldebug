@@ -57,3 +57,72 @@ def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
             },
         ],
     }
+
+
+def test_report_score_returns_valid_score_structure() -> None:
+    report = Report(
+        [
+            Issue(
+                name="missing_values",
+                metric="missing_rate",
+                severity=Severity.WARNING,
+                message="msg",
+                feature="age",
+            )
+        ]
+    )
+
+    result = report.score()
+
+    assert "overall_score" in result
+    assert "feature_scores" in result
+    assert "status" in result
+    assert "system_issue_count" in result
+
+
+def test_report_score_empty_report_returns_perfect_score() -> None:
+    report = Report([])
+
+    result = report.score()
+
+    assert result["overall_score"] == 100.0
+    assert result["feature_scores"] == {}
+    assert result["system_issue_count"] == 0
+    assert result["status"] == "pass"
+
+
+def test_report_score_reflects_issue_severity_impact() -> None:
+    report = Report(
+        [
+            Issue(
+                name="drift",
+                metric="ks_test",
+                severity=Severity.WARNING,
+                message="msg",
+                feature="age",
+            )
+        ]
+    )
+
+    result = report.score()
+
+    assert result["overall_score"] < 100
+    assert result["feature_scores"]["age"] < 100
+
+
+def test_report_score_counts_schema_level_issues() -> None:
+    report = Report(
+        [
+            Issue(
+                name="schema_error",
+                metric="schema",
+                severity=Severity.CRITICAL,
+                message="broken",
+                feature=None,
+            )
+        ]
+    )
+
+    result = report.score()
+
+    assert result["system_issue_count"] == 1
