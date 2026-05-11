@@ -77,7 +77,7 @@ def test_report_score_returns_valid_score_structure() -> None:
     assert "overall_score" in result
     assert "feature_scores" in result
     assert "status" in result
-    assert "schema_issue_count" in result
+    assert "system_issue_count" in result
 
 
 def test_report_score_empty_report_returns_perfect_score() -> None:
@@ -87,7 +87,7 @@ def test_report_score_empty_report_returns_perfect_score() -> None:
 
     assert result["overall_score"] == 100.0
     assert result["feature_scores"] == {}
-    assert result["schema_issue_count"] == 0
+    assert result["system_issue_count"] == 0
     assert result["status"] == "pass"
 
 
@@ -125,4 +125,4 @@ def test_report_score_counts_schema_level_issues() -> None:
 
     result = report.score()
 
-    assert result["schema_issue_count"] == 1
+    assert result["system_issue_count"] == 1
