@@ -36,9 +36,7 @@ def score_issues(issues: list[Issue]) -> dict[str, Any]:
     }
 
     overall = (
-        sum(feature_scores.values()) / len(feature_scores)
-        if feature_scores
-        else 100.0
+        sum(feature_scores.values()) / len(feature_scores) if feature_scores else 100.0
     )
 
     status = "fail" if overall < 50 else "warning" if overall < 80 else "pass"
