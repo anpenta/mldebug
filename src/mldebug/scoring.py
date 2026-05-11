@@ -14,13 +14,14 @@ def score_issues(issues: list[Issue]) -> dict[str, Any]:
     """Compute a deterministic quality score for a dataset based on detected issues.
 
     The scoring is split into two components:
-    - Feature-level issues: aggregated per feature and converted into feature scores.
-    - Schema-level issues: applied as a global penalty on the overall score.
+        - Feature-level issues: aggregated per feature and converted to feature scores.
+        - Schema-level issues: applied as a global penalty on the overall score.
 
     The final output provides:
-    - an overall dataset score (0 - 100)
-    - per-feature scores
-    - a status indicating dataset quality (pass / warning / fail)
+        - an overall dataset score (0 - 100)
+        - per-feature scores
+        - a status indicating dataset quality (pass / warning / fail)
+        - the number of schema-level issues
     """
 
     feature_buckets: dict[str, list[Issue]] = defaultdict(list)
