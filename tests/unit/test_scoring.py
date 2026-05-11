@@ -10,7 +10,7 @@ def test_empty_issue_list_returns_perfect_result() -> None:
     assert result["overall_score"] == pytest.approx(100.0)
     assert result["feature_scores"] == {}
     assert result["status"] == "pass"
-    assert result["schema_issue_count"] == 0
+    assert result["system_issue_count"] == 0
 
 
 def test_single_feature_warning_issue_reduces_feature_score() -> None:
@@ -26,8 +26,9 @@ def test_single_feature_warning_issue_reduces_feature_score() -> None:
 
     result = score_issues(issues)
 
+    assert result["overall_score"] < 100
     assert result["feature_scores"]["age"] == pytest.approx(85.0)
-    assert result["schema_issue_count"] == 0
+    assert result["system_issue_count"] == 0
 
 
 def test_multiple_issues_on_same_feature_accumulate_penalty() -> None:
@@ -64,7 +65,7 @@ def test_feature_scores_are_aggregated_across_features() -> None:
     assert result["overall_score"] == pytest.approx(85.0)
 
 
-def test_schema_issues_apply_dataset_level_penalty() -> None:
+def test_system_issues_are_reported_but_do_not_affect_score() -> None:
     issues = [
         Issue(
             name="schema1",
@@ -77,11 +78,11 @@ def test_schema_issues_apply_dataset_level_penalty() -> None:
 
     result = score_issues(issues)
 
-    assert result["overall_score"] == pytest.approx(60.0)
-    assert result["schema_issue_count"] == 1
+    assert result["overall_score"] == pytest.approx(100.0)
+    assert result["system_issue_count"] == 1
 
 
-def test_feature_and_schema_issues_affect_overall_score() -> None:
+def test_system_issues_do_not_affect_overall_score() -> None:
     issues = [
         Issue(
             name="feat1",
@@ -101,8 +102,8 @@ def test_feature_and_schema_issues_affect_overall_score() -> None:
 
     result = score_issues(issues)
 
-    assert result["overall_score"] == pytest.approx(70.0)
-    assert result["status"] == "warning"
+    assert result["overall_score"] == pytest.approx(85.0)
+    assert result["status"] == "pass"
 
 
 @pytest.mark.parametrize(
