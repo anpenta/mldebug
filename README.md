@@ -216,6 +216,35 @@ Interpretation:
 - 50-79 = degraded data quality
 - < 50 = severe issues
 
+### Dataset Validation In CI (Recommended Pattern)
+
+mldebug is designed to be used as a decision gate in CI pipelines.
+
+It compares datasets and produces a report, which can be used to block training or deployment when data quality degrades.
+
+#### CI Gate Example
+
+```python
+from mldebug import validate
+
+report = validate(reference=train_df, current=prod_df)
+
+score = report.score()["overall_score"]
+
+if score < 80:
+    raise SystemExit(report.summary())
+```
+
+#### Minimal CI integration
+
+```yaml
+- name: Install mldebug
+  run: pip install mldebug
+
+- name: Run validation
+  run: python validate_data.py
+```
+
 ## Documentation
 
 See [documentation pages](https://anpenta.github.io/mldebug).
