@@ -1,14 +1,14 @@
 import pytest
 
-from mldebug import FeatureType, Report, run_checks
+from mldebug import FeatureType, Report, validate
 
 
-def test_check_pipeline_runs_and_produces_report() -> None:
+def test_validation_pipeline_runs_and_produces_report() -> None:
     ref = {"a": [1, 2, 3]}
     cur = {"a": [4, 5, 6]}
     schema = {"a": FeatureType.NUMERIC}
 
-    report = run_checks(reference=ref, current=cur, schema=schema)
+    report = validate(reference=ref, current=cur, schema=schema)
 
     assert isinstance(report, Report)
     assert isinstance(report.issues, list)
@@ -20,7 +20,7 @@ def test_check_pipeline_runs_and_produces_report() -> None:
     assert "status" in score
 
 
-def test_check_pipeline_detects_schema_and_feature_issues() -> None:
+def test_validation_pipeline_detects_schema_and_feature_issues() -> None:
     ref = {"a": [1, 2, 3], "b": [1, 2, 3]}
     cur = {"a": ["x", "y", "z"], "b": []}
     schema = {
@@ -28,7 +28,7 @@ def test_check_pipeline_detects_schema_and_feature_issues() -> None:
         "b": FeatureType.NUMERIC,
     }
 
-    report = run_checks(reference=ref, current=cur, schema=schema)
+    report = validate(reference=ref, current=cur, schema=schema)
 
     issue_names = {i.name for i in report.issues}
 
@@ -39,12 +39,12 @@ def test_check_pipeline_detects_schema_and_feature_issues() -> None:
     assert score["overall_score"] <= 100
 
 
-def test_check_pipeline_handles_empty_inputs() -> None:
+def test_validation_pipeline_handles_empty_inputs() -> None:
     ref = {}
     cur = {}
     schema = {}
 
-    report = run_checks(reference=ref, current=cur, schema=schema)
+    report = validate(reference=ref, current=cur, schema=schema)
 
     assert any(i.name == "empty_schema" for i in report.issues)
 
@@ -52,6 +52,6 @@ def test_check_pipeline_handles_empty_inputs() -> None:
     assert score["overall_score"] == pytest.approx(100.0)
 
 
-def test_check_pipeline_rejects_invalid_inputs() -> None:
+def test_validation_pipeline_rejects_invalid_inputs() -> None:
     with pytest.raises(TypeError):
-        run_checks(reference=None, current=None, schema=None)
+        validate(reference=None, current=None, schema=None)

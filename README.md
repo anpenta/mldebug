@@ -46,7 +46,7 @@ mldebug compares:
 - a **reference dataset** (e.g. training data)
 - a **current dataset** (e.g. production data)
 
-It runs a suite of checks and returns a structured report of detected issues.
+It runs a suite of validation checks and returns a structured report of detected issues.
 
 ## Installation
 
@@ -59,7 +59,7 @@ pip install mldebug
 ### Example Usage
 
 ```python
-from mldebug import run_checks, FeatureType
+from mldebug import validate, FeatureType
 import numpy as np
 
 reference = {
@@ -80,7 +80,7 @@ schema = {
     "country": FeatureType.CATEGORICAL,
 }
 
-report = run_checks(reference=reference, current=current, schema=schema)
+report = validate(reference=reference, current=current, schema=schema)
 ```
 
 ### Output Inspection

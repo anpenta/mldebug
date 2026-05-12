@@ -11,12 +11,12 @@ from .input_validation import validate_inputs
 from .schema_analysis import analyze_schema
 
 
-def run_checks(
+def validate(
     reference: Mapping[str, ArrayLike],
     current: Mapping[str, ArrayLike],
     schema: Mapping[str, FeatureType],
 ) -> Report:
-    """Run checks on reference and current datasets.
+    """Run validation checks on reference and current datasets.
 
     This is the main entrypoint of the library. It performs schema analysis (validation
     and mismatch detection) followed by feature-level checks based on the provided
