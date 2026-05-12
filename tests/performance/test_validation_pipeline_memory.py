@@ -1,11 +1,11 @@
 import gc
 import tracemalloc
 
-from mldebug import run_checks
+from mldebug import validate
 from tests.fixtures.datasets import generate_mixed_tabular_dataset
 
 
-def test_check_pipeline_memory_is_bounded() -> None:
+def test_validation_pipeline_memory_is_bounded() -> None:
     reference, current, schema = generate_mixed_tabular_dataset(n=1_000, n_features=10)
 
     gc.collect()
@@ -13,7 +13,7 @@ def test_check_pipeline_memory_is_bounded() -> None:
     tracemalloc.start()
     try:
         for _ in range(2):
-            run_checks(reference=reference, current=current, schema=schema)
+            validate(reference=reference, current=current, schema=schema)
         _, peak_bytes = tracemalloc.get_traced_memory()
     finally:
         tracemalloc.stop()

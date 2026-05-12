@@ -136,7 +136,7 @@ def _detect_type_mismatches(
                 Issue(
                     name="feature_type_mismatch",
                     metric="schema",
-                    severity=Severity.WARNING,
+                    severity=Severity.CRITICAL,
                     message=(
                         f"{feature}: declared {declared_type.value.lower()} "
                         f"but observed values do not conform to this type"
