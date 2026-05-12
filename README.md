@@ -235,7 +235,7 @@ if score < 80:
     raise SystemExit(report.summary())
 ```
 
-#### Minimal CI integration
+#### Minimal CI Integration
 
 ```yaml
 - name: Install mldebug
