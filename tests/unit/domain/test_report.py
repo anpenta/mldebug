@@ -2,6 +2,47 @@ from mldebug.domain.issue import Issue, Severity
 from mldebug.domain.report import Report
 
 
+def test_report_sorting_is_deterministic() -> None:
+    issues = [
+        Issue(
+            name="b", metric="m", severity=Severity.WARNING, message="msg", feature="b"
+        ),
+        Issue(
+            name="a", metric="m", severity=Severity.WARNING, message="msg", feature="a"
+        ),
+        Issue(
+            name="c", metric="m", severity=Severity.WARNING, message="msg", feature="c"
+        ),
+    ]
+
+    r1 = Report(issues)
+    r2 = Report(list(reversed(issues)))
+
+    assert r1.issues == r2.issues
+
+
+def test_report_sorting_order_is_feature_then_name() -> None:
+    issues = [
+        Issue(
+            name="z", metric="m", severity=Severity.WARNING, message="msg", feature="b"
+        ),
+        Issue(
+            name="a", metric="m", severity=Severity.WARNING, message="msg", feature="a"
+        ),
+        Issue(
+            name="b", metric="m", severity=Severity.WARNING, message="msg", feature="a"
+        ),
+    ]
+
+    report = Report(issues)
+
+    assert [(i.feature, i.name) for i in report.issues] == [
+        ("a", "a"),
+        ("a", "b"),
+        ("b", "z"),
+    ]
+
+
 def test_report_summary_groups_issues_by_severity() -> None:
     report = Report(
         [
@@ -26,10 +67,10 @@ def test_report_summary_groups_issues_by_severity() -> None:
 def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
     report = Report(
         [
+            Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
             Issue(
                 name="test", metric="metric", severity=Severity.WARNING, message="msg"
             ),
-            Issue(name="test", metric="metric", severity=Severity.INFO, message="msg"),
         ],
     )
 
@@ -40,7 +81,7 @@ def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
             {
                 "name": "test",
                 "metric": "metric",
-                "severity": "warning",
+                "severity": "info",
                 "message": "msg",
                 "feature": None,
                 "value": None,
@@ -49,7 +90,7 @@ def test_report_to_dict_serializes_all_issues_with_full_schema() -> None:
             {
                 "name": "test",
                 "metric": "metric",
-                "severity": "info",
+                "severity": "warning",
                 "message": "msg",
                 "feature": None,
                 "value": None,

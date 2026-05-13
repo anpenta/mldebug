@@ -93,12 +93,12 @@ for issue in report.issues:
 ```
 
 ```text
-[WARNING] variance_drift - age: variance drift detected (ratio=25.0000, threshold=2.0)
 [WARNING] range_anomaly - age: 3 values outside [20.0000, 22.0000]
-[WARNING] variance_drift - income: variance drift detected (ratio=0.2500, threshold=2.0)
-[WARNING] range_anomaly - income: 3 values outside [1000.0000, 1200.0000]
+[WARNING] variance_drift - age: variance drift detected (ratio=25.0000, threshold=2.0)
 [WARNING] psi_drift - country: PSI drift detected (18.0152)
 [WARNING] unseen_categories - country: 1 unseen categories detected (e.g. ['DE'])
+[WARNING] range_anomaly - income: 3 values outside [1000.0000, 1200.0000]
+[WARNING] variance_drift - income: variance drift detected (ratio=0.2500, threshold=2.0)
 ```
 
 #### Summary
@@ -129,15 +129,6 @@ print(report.to_dict())
 {
   "issues": [
     {
-      "name": "variance_drift",
-      "metric": "variance_ratio",
-      "severity": "warning",
-      "message": "age: variance drift detected (ratio=25.0000, threshold=2.0)",
-      "feature": "age",
-      "value": 25.000000000000004,
-      "threshold": 2.0
-    },
-    {
       "name": "range_anomaly",
       "metric": "out_of_range_count",
       "severity": "warning",
@@ -150,19 +141,10 @@ print(report.to_dict())
       "name": "variance_drift",
       "metric": "variance_ratio",
       "severity": "warning",
-      "message": "income: variance drift detected (ratio=0.2500, threshold=2.0)",
-      "feature": "income",
-      "value": 0.25,
+      "message": "age: variance drift detected (ratio=25.0000, threshold=2.0)",
+      "feature": "age",
+      "value": 25.000000000000004,
       "threshold": 2.0
-    },
-    {
-      "name": "range_anomaly",
-      "metric": "out_of_range_count",
-      "severity": "warning",
-      "message": "income: 3 values outside [1000.0000, 1200.0000]",
-      "feature": "income",
-      "value": 3.0,
-      "threshold": 0.0
     },
     {
       "name": "psi_drift",
@@ -181,6 +163,24 @@ print(report.to_dict())
       "feature": "country",
       "value": 1.0,
       "threshold": 0.0
+    },
+    {
+      "name": "range_anomaly",
+      "metric": "out_of_range_count",
+      "severity": "warning",
+      "message": "income: 3 values outside [1000.0000, 1200.0000]",
+      "feature": "income",
+      "value": 3.0,
+      "threshold": 0.0
+    },
+    {
+      "name": "variance_drift",
+      "metric": "variance_ratio",
+      "severity": "warning",
+      "message": "income: variance drift detected (ratio=0.2500, threshold=2.0)",
+      "feature": "income",
+      "value": 0.25,
+      "threshold": 2.0
     }
   ]
 }
@@ -201,8 +201,8 @@ print(report.score())
   "overall_score": 70.0,
   "feature_scores": {
     "age": 70.0,
-    "income": 70.0,
-    "country": 70.0
+    "country": 70.0,
+    "income": 70.0
   },
   "status": "warning",
   "system_issue_count": 0

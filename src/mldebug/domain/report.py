@@ -20,6 +20,19 @@ class Report:
 
     issues: list[Issue]
 
+    def __post_init__(self) -> None:
+        # Ensure deterministic issue ordering.
+        sorted_issues = sorted(
+            self.issues,
+            key=lambda issue: (
+                issue.feature or "",
+                issue.name,
+                issue.severity.value,
+            ),
+        )
+
+        object.__setattr__(self, "issues", sorted_issues)
+
     def summary(self) -> dict[str, Any]:
         """Summarize issues by severity and total count."""
         counts = {
