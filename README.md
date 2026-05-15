@@ -202,9 +202,8 @@ uv sync
 ### Commands
 
 ```bash
-uv run poe test
 uv run poe lint
-uv run poe lint-check
+uv run poe test
 ```
 
 ## Contributing
