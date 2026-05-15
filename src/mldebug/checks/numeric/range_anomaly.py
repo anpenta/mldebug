@@ -50,7 +50,7 @@ class NumericRangeAnomalyCheck:
             metric="out_of_range_count",
             severity=Severity.WARNING,
             message=(
-                f"{feature}: {count} value(s) outside [{ref_min:.4f}, {ref_max:.4f}]"
+                f"{feature}: {count} values outside [{ref_min:.4f}, {ref_max:.4f}]"
             ),
             feature=feature,
             value=float(count),
