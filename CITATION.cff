@@ -11,4 +11,4 @@ url: "https://github.com/anpenta/mldebug"
 repository-code: "https://github.com/anpenta/mldebug"
 license: "MIT"
 
-abstract: "mldebug is a lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
+abstract: "mldebug is a lightweight Python package for validating and comparing datasets in machine learning pipelines."
