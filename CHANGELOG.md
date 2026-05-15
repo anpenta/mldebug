@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.7.0] - 2026-05-15
+
+### Added
+- Modification of public api to `validate()` instead of `run_checks()`
+- Deterministic sorting of detected issues in report
+
 ## [0.6.0] - 2026-05-11
 
 ### Added
