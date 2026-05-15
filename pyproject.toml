@@ -1,6 +1,6 @@
 [project]
 name = "mldebug"
-description = "A lightweight Python package for comparing datasets and detecting unexpected changes in machine learning systems."
+description = "A lightweight Python package for validating and comparing datasets in machine learning pipelines."
 authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.noreply.github.com"}]
 readme = "README.md"
 requires-python = ">=3.11,<3.15"
