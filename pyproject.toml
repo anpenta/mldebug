@@ -5,8 +5,18 @@ authors = [{name = "Andreas Pentaliotis", email = "40018182+anpenta@users.norepl
 readme = "README.md"
 requires-python = ">=3.11,<3.15"
 license = "MIT"
-keywords = ["machine-learning", "debugging", "production", "ml", "monitoring"]
 dynamic = ["version"]
+keywords = [
+    "machine-learning",
+    "mlops",
+    "data-validation",
+    "dataset-validation",
+    "schema-validation",
+    "data-quality",
+    "data-drift",
+    "drift-detection",
+    "feature-validation",
+]
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -20,6 +30,8 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Quality Assurance",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
 ]
