@@ -10,11 +10,11 @@ keywords = [
     "machine-learning",
     "mlops",
     "data-validation",
+    "dataset-validation",
+    "schema-validation",
     "data-quality",
     "data-drift",
     "drift-detection",
-    "dataset-validation",
-    "schema-validation",
     "feature-validation",
 ]
 
