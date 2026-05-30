@@ -92,3 +92,40 @@ class Report:
                 Number of system-level issues.
         """
         return score_issues(self.issues)
+
+    def is_clean(self) -> bool:
+        """Check if report contains no issues.
+
+        Returns
+        -------
+        bool
+            True if the report contains no issues, False otherwise.
+        """
+        return len(self.issues) == 0
+
+    def has_critical(self) -> bool:
+        """Check if any issue has critical severity.
+
+        Returns
+        -------
+        bool
+            True if at least one issue has critical severity, False otherwise.
+        """
+        return any(issue.severity == Severity.CRITICAL for issue in self.issues)
+
+    def highest_severity(self) -> Severity | None:
+        """Return the highest severity level in the report.
+
+        Returns
+        -------
+        Severity | None
+            The highest severity level (CRITICAL > WARNING > INFO), or None if
+            no issues are present.
+        """
+        if not self.issues:
+            return None
+
+        severity_order = {Severity.CRITICAL: 3, Severity.WARNING: 2, Severity.INFO: 1}
+        return max(
+            self.issues, key=lambda issue: severity_order[issue.severity]
+        ).severity
