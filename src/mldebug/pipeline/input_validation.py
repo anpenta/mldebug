@@ -57,7 +57,7 @@ def validate_inputs(
     validate_mapping(
         name="schema", value=schema, expected_desc=f"'{FeatureType.__name__}' values"
     )
-    
+
     validate_schema(schema=schema)
 
     validate_feature_dataset(name="reference", dataset=reference)
