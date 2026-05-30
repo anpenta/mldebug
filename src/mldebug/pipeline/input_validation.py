@@ -1,6 +1,3 @@
-# We are actually doing input validation in this module so we disable the below checks.
-# pyright: reportUnnecessaryIsInstance=false
-# pyright: reportUnnecessaryComparison=false
 from collections.abc import Mapping
 
 from numpy.typing import ArrayLike

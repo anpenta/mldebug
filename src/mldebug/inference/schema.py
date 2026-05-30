@@ -1,4 +1,3 @@
-# pyright: reportUnnecessaryIsInstance=false
 from collections.abc import Mapping
 
 from numpy.typing import ArrayLike

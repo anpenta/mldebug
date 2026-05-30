@@ -1,5 +1,3 @@
-# We are actually doing input validation in here so disabling below check.
-# pyright: reportArgumentType=false
 from typing import Any
 
 import pytest
