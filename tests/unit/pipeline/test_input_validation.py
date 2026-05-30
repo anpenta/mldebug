@@ -172,3 +172,24 @@ def test_input_validation_rejects_non_array_like_values(
         TypeError, match="Expected array-like input compatible with numpy."
     ):
         validate_inputs(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "dataset_name, dataset",
+    [
+        ("reference", {"age": [[1, 2], [3, 4]]}),
+        ("current", {"age": [[1, 2], [3, 4]]}),
+    ],
+)
+def test_input_validation_rejects_non_1d_feature_values(
+    dataset_name: str, dataset: dict[str, list[list[int]]]
+) -> None:
+    kwargs = {
+        "reference": _get_valid_reference(),
+        "current": _get_valid_current(),
+        "schema": _get_valid_schema(),
+    }
+    kwargs[dataset_name] = dataset
+
+    with pytest.raises(TypeError, match="one-dimensional"):
+        validate_inputs(**kwargs)
