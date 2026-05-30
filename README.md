@@ -60,10 +60,8 @@ report.score()
 
 mlbebug offers a convenience helper for schema inference in case you don't have a schema.
 
-The returned schema can be used directly with `validate()`.
-
 ```python
-from mldebug import infer_schema, validate
+from mldebug import infer_schema
 import numpy as np
 
 dataset = {
@@ -79,6 +77,8 @@ print(schema)
 ```text
 {'age': <FeatureType.NUMERIC: 'numeric'>, 'country': <FeatureType.CATEGORICAL: 'categorical'>}
 ```
+
+The returned schema can then be passed to `validate()`.
 
 ## Understanding the output
 
