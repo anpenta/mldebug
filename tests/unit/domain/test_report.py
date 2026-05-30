@@ -1,3 +1,5 @@
+import pytest
+
 from mldebug.domain.issue import Issue, Severity
 from mldebug.domain.report import Report
 
@@ -167,3 +169,139 @@ def test_report_score_counts_schema_level_issues() -> None:
     result = report.score()
 
     assert result["system_issue_count"] == 1
+
+
+@pytest.mark.parametrize(
+    "issues, expected",
+    [
+        ([], True),
+        (
+            [
+                Issue(
+                    name="test",
+                    metric="metric",
+                    severity=Severity.INFO,
+                    message="msg",
+                )
+            ],
+            False,
+        ),
+    ],
+)
+def test_report_is_clean_expected_behavior(issues: list[Issue], expected: bool) -> None:
+    report = Report(issues)
+
+    assert report.is_clean() is expected
+
+
+@pytest.mark.parametrize(
+    "issues, expected",
+    [
+        (
+            [
+                Issue(
+                    name="schema_error",
+                    metric="schema",
+                    severity=Severity.CRITICAL,
+                    message="broken",
+                ),
+                Issue(
+                    name="warning",
+                    metric="metric",
+                    severity=Severity.WARNING,
+                    message="msg",
+                ),
+            ],
+            True,
+        ),
+        (
+            [
+                Issue(
+                    name="warning",
+                    metric="metric",
+                    severity=Severity.WARNING,
+                    message="msg",
+                ),
+                Issue(
+                    name="info",
+                    metric="metric",
+                    severity=Severity.INFO,
+                    message="msg",
+                ),
+            ],
+            False,
+        ),
+        ([], False),
+    ],
+)
+def test_report_has_critical_expected_behavior(
+    issues: list[Issue], expected: bool
+) -> None:
+    report = Report(issues)
+
+    assert report.has_critical() is expected
+
+
+@pytest.mark.parametrize(
+    "issues, expected",
+    [
+        (
+            [
+                Issue(
+                    name="info",
+                    metric="metric",
+                    severity=Severity.INFO,
+                    message="msg",
+                ),
+                Issue(
+                    name="critical",
+                    metric="metric",
+                    severity=Severity.CRITICAL,
+                    message="msg",
+                ),
+                Issue(
+                    name="warning",
+                    metric="metric",
+                    severity=Severity.WARNING,
+                    message="msg",
+                ),
+            ],
+            Severity.CRITICAL,
+        ),
+        (
+            [
+                Issue(
+                    name="info",
+                    metric="metric",
+                    severity=Severity.INFO,
+                    message="msg",
+                ),
+                Issue(
+                    name="warning",
+                    metric="metric",
+                    severity=Severity.WARNING,
+                    message="msg",
+                ),
+            ],
+            Severity.WARNING,
+        ),
+        (
+            [
+                Issue(
+                    name="info",
+                    metric="metric",
+                    severity=Severity.INFO,
+                    message="msg",
+                )
+            ],
+            Severity.INFO,
+        ),
+        ([], None),
+    ],
+)
+def test_report_highest_severity_expected_behavior(
+    issues: list[Issue], expected: Severity | None
+) -> None:
+    report = Report(issues)
+
+    assert report.highest_severity() == expected
