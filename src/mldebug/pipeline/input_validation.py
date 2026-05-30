@@ -24,7 +24,7 @@ def validate_inputs(
     - reference and current are mappings of feature names to array-like values
     - schema is a mapping of feature names to FeatureType enums
     - feature names are non-empty strings
-    - dataset values are non-null and array-like
+    - dataset values are non-null, one-dimensional, and array-like
 
     Parameters
     ----------
@@ -105,9 +105,15 @@ def _validate_dataset(name: str, dataset: Mapping[str, ArrayLike]) -> None:
             )
 
         try:
-            np.asarray(values)
+            array = np.asarray(values)
         except Exception as e:
             raise TypeError(
                 f"Invalid values for feature '{feature}' in '{name}'. "
                 "Expected array-like input compatible with numpy."
             ) from e
+
+        if array.ndim != 1:
+            raise TypeError(
+                f"Invalid values for feature '{feature}' in '{name}'. "
+                "Feature values must be one-dimensional."
+            )
