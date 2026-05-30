@@ -56,6 +56,30 @@ report = validate(reference=reference, current=current, schema=schema)
 report.score()
 ```
 
+## Schema inference
+
+mlbebug offers a convenience helper for schema inference in case you don't have a schema.
+
+The returned schema can be used directly with `validate()`.
+
+```python
+from mldebug import infer_schema, validate
+import numpy as np
+
+dataset = {
+  "age": np.array([20, 21, 22]),
+  "country": ["US", "CA", "US"],
+}
+
+schema = infer_schema(dataset)
+
+print(schema)
+```
+
+```text
+{'age': <FeatureType.NUMERIC: 'numeric'>, 'country': <FeatureType.CATEGORICAL: 'categorical'>}
+```
+
 ## Understanding the output
 
 mldebug returns a report object containing detected issues and inspection methods.
