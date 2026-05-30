@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.8.0] - 2026-05-30
+
+### Added
+- Add `highest_severity()`, `has_critical()`, and `is_clean()` methods to `Report`
+- Add schema inference convenience function
+- Add 1d feature value array validation
+- Expose version through `__version__` dunder
+
 ## [0.7.0] - 2026-05-15
 
 ### Added
