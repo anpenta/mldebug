@@ -12,6 +12,7 @@ import importlib.metadata as _importlib_metadata
 from .domain.feature_type import FeatureType
 from .domain.issue import Issue, Severity
 from .domain.report import Report
+from .inference.schema import infer_schema
 from .pipeline.runner import validate
 
 try:
@@ -25,5 +26,6 @@ __all__ = [
     "Severity",
     "FeatureType",
     "validate",
+    "infer_schema",
     "__version__",
 ]
