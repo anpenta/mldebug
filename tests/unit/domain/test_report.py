@@ -234,12 +234,12 @@ def test_report_is_clean_expected_behavior(issues: list[Issue], expected: bool) 
         ([], False),
     ],
 )
-def test_report_has_critical_expected_behavior(
+def test_report_has_critical_issues_expected_behavior(
     issues: list[Issue], expected: bool
 ) -> None:
     report = Report(issues)
 
-    assert report.has_critical() is expected
+    assert report.has_critical_issues() is expected
 
 
 @pytest.mark.parametrize(

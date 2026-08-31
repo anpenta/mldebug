@@ -103,7 +103,7 @@ class Report:
         """
         return len(self.issues) == 0
 
-    def has_critical(self) -> bool:
+    def has_critical_issues(self) -> bool:
         """Check if any issue has critical severity.
 
         Returns
