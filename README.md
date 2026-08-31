@@ -55,7 +55,7 @@ report = validate(reference=reference, current=current, schema=schema)
 
 print(report.score())
 print(report.is_clean())
-print(report.has_critical())
+print(report.has_critical_issues())
 ```
 
 ## Schema inference
@@ -86,7 +86,7 @@ The returned schema can then be passed to `validate()`.
 
 mldebug returns a report object containing detected issues and inspection methods.
 
-Start by checking overall data quality with `report.score()`. For common pass/fail decisions, use convenience helpers such as `report.is_clean()`, `report.has_critical()`, and `report.highest_severity()` alongside `report.summary()` or `report.to_dict()` when you need full issue details.
+Start by checking overall data quality with `report.score()`. For common pass/fail decisions, use convenience helpers such as `report.is_clean()`, `report.has_critical_issues()`, and `report.highest_severity()` alongside `report.summary()` or `report.to_dict()` when you need full issue details.
 
 ### Issues
 
@@ -166,7 +166,7 @@ from mldebug import Severity
 
 if report.is_clean():
     print("No issues detected")
-elif report.has_critical():
+elif report.has_critical_issues():
     print("Critical issues found")
 elif report.highest_severity() == Severity.WARNING:
     print("Warnings only")
@@ -209,7 +209,7 @@ from mldebug import Severity, validate
 report = validate(reference=train_df, current=prod_df)
 quality = report.score()
 
-if report.has_critical():
+if report.has_critical_issues():
     raise SystemExit(report.to_dict())
 
 if quality["overall_score"] < 80:
