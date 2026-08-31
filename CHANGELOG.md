@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.9.0] - 2026-08-31
+
+### Added
+- Rename `has_critical()` to `has_critical_issues()`
+
 ## [0.8.0] - 2026-05-30
 
 ### Added
