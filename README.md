@@ -273,3 +273,7 @@ See [CITATION.cff](https://github.com/anpenta/mldebug/blob/main/CITATION.cff) or
 ## License
 
 See [LICENSE](https://github.com/anpenta/mldebug/blob/main/LICENSE).
+
+## Support
+
+If you find mldebug useful, you can support its continued development by [buying me a coffee](https://buymeacoffee.com/anpenta). Contributions are entirely voluntary. mldebug remains free and open source.
