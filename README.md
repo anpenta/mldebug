@@ -276,6 +276,6 @@ See [LICENSE](https://github.com/anpenta/mldebug/blob/main/LICENSE).
 
 ## Support
 
-If you find mldebug useful, consider sharing it with others or [starring the repository](https://github.com/anpenta/mldebug).
+If you find mldebug useful, consider sharing it with others or [starring its repository](https://github.com/anpenta/mldebug).
 
 You can also support my work by [buying me a coffee](https://buymeacoffee.com/anpenta). Contributions are entirely voluntary. The project remains free and open source.
