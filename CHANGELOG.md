@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Fixed
+- Honor declared categorical types for numeric category codes and accept constant
+  numeric features. Report non-missing, non-numeric values in declared numeric
+  features as schema mismatches.
+
 ## [0.9.0] - 2026-08-31
 
 ### Added

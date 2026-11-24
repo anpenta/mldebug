@@ -60,7 +60,7 @@ print(report.has_critical_issues())
 
 ## Schema inference
 
-mlbebug offers a convenience helper for schema inference in case you don't have a schema.
+mldebug offers a convenience helper for schema inference in case you don't have a schema.
 
 ```python
 from mldebug import infer_schema
@@ -80,7 +80,13 @@ print(schema)
 {'age': <FeatureType.NUMERIC: 'numeric'>, 'country': <FeatureType.CATEGORICAL: 'categorical'>}
 ```
 
-The returned schema can then be passed to `validate()`.
+Review the inferred schema before passing it to `validate()`. For example, if numbers
+represent category codes in your dataset, declare that feature as
+`FeatureType.CATEGORICAL`.
+
+For features declared as `FeatureType.NUMERIC`, `validate()` requires every non-missing
+value to be numeric or parseable as a number. This includes numeric strings such as
+`"42"`.
 
 ## Understanding the output
 

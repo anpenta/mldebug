@@ -52,6 +52,45 @@ def test_validation_pipeline_handles_empty_inputs() -> None:
     assert score["overall_score"] == pytest.approx(100.0)
 
 
+def test_validation_uses_declared_types_for_numeric_categories_and_constants() -> None:
+    reference = {"code": [1, 2, 1], "constant": [0] * 200}
+    current = {"code": [1, 3, 1], "constant": [1] * 200}
+    schema = {"code": FeatureType.CATEGORICAL, "constant": FeatureType.NUMERIC}
+
+    report = validate(reference=reference, current=current, schema=schema)
+
+    assert not report.has_critical_issues()
+    assert any(
+        issue.name == "psi_drift" and issue.feature == "code" for issue in report.issues
+    )
+    assert any(
+        issue.name == "range_anomaly" and issue.feature == "constant"
+        for issue in report.issues
+    )
+
+
+def test_validation_runs_missing_value_check_on_all_missing_numeric_batch() -> None:
+    report = validate(
+        reference={"x": ["1", "2"]},
+        current={"x": [None, "null"]},
+        schema={"x": FeatureType.NUMERIC},
+    )
+
+    assert not report.has_critical_issues()
+    assert any(issue.name == "missing_values" for issue in report.issues)
+
+
+def test_validation_reports_numeric_type_mismatch_even_for_one_invalid_value() -> None:
+    report = validate(
+        reference={"x": list(range(100))},
+        current={"x": [*range(99), "invalid"]},
+        schema={"x": FeatureType.NUMERIC},
+    )
+
+    assert report.has_critical_issues()
+    assert any(issue.name == "feature_type_mismatch" for issue in report.issues)
+
+
 def test_validation_pipeline_rejects_invalid_inputs() -> None:
     with pytest.raises(TypeError):
         validate(reference=None, current=None, schema=None)

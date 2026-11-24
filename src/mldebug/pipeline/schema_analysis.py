@@ -1,11 +1,14 @@
 from collections.abc import Mapping
 
-import numpy as np
 from numpy.typing import ArrayLike
 
 from mldebug.domain.feature_type import FeatureType
 from mldebug.domain.issue import Issue, Severity
-from mldebug.inference.feature_type import infer_feature_type
+from mldebug.preprocessing.shared import (
+    compute_present_mask,
+    is_numeric_vector,
+    normalize_str_array,
+)
 
 
 def analyze_schema(
@@ -121,17 +124,16 @@ def _detect_type_mismatches(
     issues: list[Issue] = []
 
     for feature, declared_type in schema.items():
+        if declared_type != FeatureType.NUMERIC:
+            continue
+
         ref = reference.get(feature)
         cur = current.get(feature)
 
         if ref is None or cur is None:
             continue
 
-        values = np.concatenate(
-            [np.asarray(ref, dtype=object), np.asarray(cur, dtype=object)]
-        )
-
-        if infer_feature_type(values) != declared_type:
+        if _contains_non_numeric_values(ref) or _contains_non_numeric_values(cur):
             issues.append(
                 Issue(
                     name="feature_type_mismatch",
@@ -146,3 +148,9 @@ def _detect_type_mismatches(
             )
 
     return issues
+
+
+def _contains_non_numeric_values(values: ArrayLike) -> bool:
+    normalized = normalize_str_array(values)
+    present = normalized[compute_present_mask(normalized)]
+    return not is_numeric_vector(present).all()
