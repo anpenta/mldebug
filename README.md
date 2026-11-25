@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="mldebug" width="220" />
+</p>
+
 # mldebug
 
 [![CI](https://github.com/anpenta/mldebug/actions/workflows/ci.yml/badge.svg)](https://github.com/anpenta/mldebug/actions/workflows/ci.yml)
