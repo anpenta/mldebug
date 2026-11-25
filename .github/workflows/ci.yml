@@ -73,6 +73,7 @@ jobs:
             - name: Build documentation
               run: >-
                   uv run pdoc src/* -d numpy -o ./docs --no-show-source
+                  --template-directory pdoc-templates
                   --logo https://raw.githubusercontent.com/anpenta/mldebug/main/assets/mldebug-logo.svg
             - name: Build package
               run: uv build --out-dir ./dist
