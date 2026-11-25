@@ -71,9 +71,11 @@ jobs:
             - name: Install environment
               run: uv sync --frozen
             - name: Build documentation
-              run: >-
-                  uv run pdoc src/* -d numpy -o ./docs --no-show-source
-                  --logo https://raw.githubusercontent.com/anpenta/mldebug/main/assets/mldebug-logo.svg
+              run: |
+                  uv run pdoc src/* -d numpy -o ./docs --no-show-source \
+                      --logo https://raw.githubusercontent.com/anpenta/mldebug/main/assets/mldebug-logo.svg
+                  # Keep the logo at 40% of the mobile menu width so the API links sit higher.
+                  find docs -name '*.html' -exec sed -i 's|</head>|<style>@media (max-width: 769px) { nav.pdoc .logo { width: 40% } }</style></head>|' {} +
             - name: Build package
               run: uv build --out-dir ./dist
             - name: Upload package artifacts
