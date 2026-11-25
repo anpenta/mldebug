@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="mldebug" width="220" />
+  <img src="https://raw.githubusercontent.com/anpenta/mldebug/main/assets/logo.png" alt="mldebug" width="220" />
 </p>
 
 # mldebug

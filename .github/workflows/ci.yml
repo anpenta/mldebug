@@ -71,7 +71,9 @@ jobs:
             - name: Install environment
               run: uv sync --frozen
             - name: Build documentation
-              run: uv run pdoc src/* -d numpy -o ./docs --no-show-source
+              run: >-
+                  uv run pdoc src/* -d numpy -o ./docs --no-show-source
+                  --logo https://raw.githubusercontent.com/anpenta/mldebug/main/assets/logo.svg
             - name: Build package
               run: uv build --out-dir ./dist
             - name: Upload package artifacts
