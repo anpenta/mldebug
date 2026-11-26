@@ -233,7 +233,7 @@ if report.highest_severity() == Severity.WARNING:
 
 ## Documentation
 
-Read the [mldebug documentation](https://anpenta.github.io/mldebug).
+The [documentation](https://anpenta.github.io/mldebug) explains how to validate and compare datasets with mldebug.
 
 ## Status
 
@@ -278,7 +278,7 @@ See [CITATION.cff](https://github.com/anpenta/mldebug/blob/main/CITATION.cff) or
 
 The mldebug package is licensed under the [MIT License](https://github.com/anpenta/mldebug/blob/main/LICENSE).
 
-The standalone logo files ([SVG](assets/mldebug-logo.svg) and [PNG](assets/mldebug-logo.png)) are excluded from the licensing above. You may show the unmodified logo when referring to this project, as long as you don’t imply endorsement or affiliation. Ask for permission before modifying the logo or using it as branding for another project.
+The standalone logo files ([SVG](https://github.com/anpenta/mldebug/blob/main/assets/mldebug-logo.svg) and [PNG](https://github.com/anpenta/mldebug/blob/main/assets/mldebug-logo.png)) are excluded from the licensing above. You may show the unmodified logo when referring to this project, as long as you don’t imply endorsement or affiliation. Ask for permission before modifying the logo or using it as branding for another project.
 
 ## Support
 
