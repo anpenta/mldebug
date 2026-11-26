@@ -233,7 +233,7 @@ if report.highest_severity() == Severity.WARNING:
 
 ## Documentation
 
-The [documentation](https://anpenta.github.io/mldebug) explains how to validate and compare datasets with mldebug.
+See [documentation pages](https://anpenta.github.io/mldebug).
 
 ## Status
 
