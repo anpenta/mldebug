@@ -278,6 +278,12 @@ See [CITATION.cff](https://github.com/anpenta/mldebug/blob/main/CITATION.cff) or
 
 See [LICENSE](https://github.com/anpenta/mldebug/blob/main/LICENSE).
 
+### Logo use
+
+The [mldebug logo SVG](assets/mldebug-logo.svg) and [PNG](assets/mldebug-logo.png) are excluded from the MIT license and have the separate terms below.
+
+You may show the unmodified logo to identify this project in articles, talks, and listings, provided the use does not imply endorsement or affiliation. Ask for permission before modifying the logo or using it as branding for another project.
+
 ## Support
 
 If you find mldebug useful, consider sharing it with others or [starring its GitHub repository](https://github.com/anpenta/mldebug).
